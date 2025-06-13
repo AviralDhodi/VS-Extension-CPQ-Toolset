@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPQ Toolset</title>
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <link rel="stylesheet" href="dashboard/dashboard.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i data-lucide="settings" class="nav-icon"></i>
+                <span class="nav-title">CPQ Toolset</span>
+            </div>
+            <div class="nav-info">
+                <span id="app-count" class="app-count">Loading...</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="header-section">
+            <h1 class="main-title">Welcome to CPQ Toolset</h1>
+            <p class="main-subtitle">Choose a tool to get started</p>
+        </div>
+
+        <div id="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Discovering available tools...</p>
+        </div>
+
+        <div id="error" class="error-state hidden">
+            <i data-lucide="alert-circle" class="error-icon"></i>
+            <p id="error-message">Failed to load applications</p>
+            <button id="retry-btn" class="retry-btn">Retry</button>
+        </div>
+
+        <div id="apps-grid" class="apps-grid hidden">
+            <!-- Apps will be populated here -->
+        </div>
+
+        <div id="empty-state" class="empty-state hidden">
+            <i data-lucide="folder-open" class="empty-icon"></i>
+            <h3>No Tools Available</h3>
+            <p>No applications found in the apps directory</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 CPQ Toolset. Built for Salesforce CPQ Development.</p>
+        </div>
+    </footer>
+
+    <script src="dashboard/dashboard.js"></script>
+</body>
+</html>

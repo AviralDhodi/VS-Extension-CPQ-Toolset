@@ -1,0 +1,136 @@
+{
+  "version": "1.0.0",
+  "createdAt": "2025-06-13T04:59:05.664Z",
+  "orgs": [
+    {
+      "username": "aviraldhodi1@gmail.com",
+      "orgId": "00D5j00000CNjZHEA1",
+      "instanceUrl": "https://d5j00000cnjzhea1-dev-ed.develop.my.salesforce.com",
+      "alias": "Project 3",
+      "type": "production",
+      "isDefault": false,
+      "isDevHub": false,
+      "connectedStatus": "Connected"
+    },
+    {
+      "username": "aviraldhodi@brave-goat-hsejmn.com",
+      "orgId": "00D5i00000CZe7rEAD",
+      "instanceUrl": "https://brave-goat-hsejmn-dev-ed.trailblaze.my.salesforce.com",
+      "alias": "Project 4",
+      "type": "production",
+      "isDefault": false,
+      "isDevHub": true,
+      "connectedStatus": "Connected"
+    },
+    {
+      "username": "aviraldhodi@empathetic-impala-lbxwvo.com",
+      "orgId": "00DdM00000CyDbNUAV",
+      "instanceUrl": "https://empathetic-impala-lbxwvo-dev-ed.trailblaze.my.salesforce.com",
+      "alias": "Project 5",
+      "type": "production",
+      "isDefault": false,
+      "isDevHub": false,
+      "connectedStatus": "Connected"
+    }
+  ],
+  "objects": {
+    "SBQQ__PriceCondition__c": {
+      "Fields": [
+        "Name",
+        "SBQQ__Field__c",
+        "SBQQ__FilterFormula__c",
+        "SBQQ__FilterType__c",
+        "SBQQ__Index__c",
+        "SBQQ__Object__c",
+        "SBQQ__Operator__c",
+        "SBQQ__ParentRuleIsActive__c",
+        "SBQQ__RuleTargetsCalculator__c",
+        "SBQQ__TestedFormula__c",
+        "SBQQ__Value__c",
+        "SBQQ__Rule__c.Name"
+      ],
+      "Active": [],
+      "foreignKey": "Name",
+      "ActiveCondition": "",
+      "LastModifiedBetween": [
+        null,
+        null
+      ],
+      "CreatedBetween": [
+        null,
+        null
+      ],
+      "validatedAt": "2025-06-13T05:02:23.088Z",
+      "objectName": "SBQQ__PriceCondition__c"
+    },
+    "SBQQ__PriceRule__c": {
+      "Fields": [
+        "Name",
+        "SBQQ__Active__c",
+        "SBQQ__AdvancedCondition__c",
+        "SBQQ__ConditionsMet__c",
+        "SBQQ__ConfiguratorEvaluationEvent__c",
+        "SBQQ__EvaluationEvent__c",
+        "SBQQ__EvaluationOrder__c",
+        "SBQQ__LookupObject__c",
+        "SBQQ__TargetObject__c"
+      ],
+      "Active": [
+        "SBQQ__Active__c"
+      ],
+      "foreignKey": "Name",
+      "ActiveCondition": "SBQQ__Active__c = TRUE",
+      "LastModifiedBetween": [
+        "2025-06-05",
+        "2025-06-13"
+      ],
+      "CreatedBetween": [
+        "2025-06-03",
+        "2025-06-20"
+      ],
+      "validatedAt": "2025-06-13T05:04:14.852Z",
+      "objectName": "SBQQ__PriceRule__c"
+    },
+    "SBQQ__PriceAction__c": {
+      "Fields": [
+        "SBQQ__Rule__c.Name",
+        "Name",
+        "SBQQ__Value__c",
+        "SBQQ__ValueField__c",
+        "SBQQ__TargetObject__c",
+        "SBQQ__RuleTargetsCalculator__c",
+        "SBQQ__SourceLookupField__c",
+        "SBQQ__RuleLookupObject__c",
+        "SBQQ__ParentRuleIsActive__c",
+        "SBQQ__Order__c",
+        "SBQQ__Formula__c"
+      ],
+      "Active": [],
+      "foreignKey": "Name",
+      "ActiveCondition": "",
+      "LastModifiedBetween": [
+        null,
+        null
+      ],
+      "CreatedBetween": [
+        null,
+        null
+      ],
+      "validatedAt": "2025-06-13T05:04:30.502Z",
+      "objectName": "SBQQ__PriceAction__c"
+    }
+  },
+  "defaultDateFilters": {
+    "LastModifiedBetween": null,
+    "CreatedBetween": null
+  },
+  "metadata": {
+    "totalOrgs": 3,
+    "orgNames": [
+      "aviraldhodi1@gmail.com",
+      "aviraldhodi@brave-goat-hsejmn.com",
+      "aviraldhodi@empathetic-impala-lbxwvo.com"
+    ]
+  },
+  "lastModified": "2025-06-13T05:04:30.504Z"
+}

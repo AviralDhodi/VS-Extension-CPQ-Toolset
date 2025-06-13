@@ -1,0 +1,55 @@
+{
+  "name": "cpq-toolset",
+  "version": "1.0.0",
+  "description": "CPQ Toolset - VS Code Extension with Express Server for Salesforce CPQ multi-org data comparison",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run extension:watch\"",
+    "server:dev": "cd server && npm run dev",
+    "extension:watch": "cd extension && npm run watch",
+    "build": "npm run extension:build && npm run server:build",
+    "extension:build": "cd extension && npm run compile",
+    "server:build": "cd server && npm run build",
+    "check-deps": "node scripts/check-dependencies.js",
+    "test": "npm run test --workspaces",
+    "clean": "npm run clean --workspaces && rm -rf tmp/ && rm -rf logs/",
+    "postinstall": "npm run check-deps"
+  },
+  "keywords": [
+    "salesforce", 
+    "cpq", 
+    "vscode-extension", 
+    "data-comparison", 
+    "multi-org",
+    "sfdx",
+    "graphql"
+  ],
+  "author": "Aviral",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "workspaces": [
+    "extension",
+    "server"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/cpq-toolset.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/cpq-toolset/issues"
+  },
+  "homepage": "https://github.com/yourusername/cpq-toolset#readme",
+  "dependencies": {},
+  "optionalDependencies": {},
+  "peerDependencies": {},
+  "config": {
+    "python_required": "3.8.0",
+    "sfdx_required": "7.0.0"
+  }
+}

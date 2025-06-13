@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPQ Toolset - Data Comparison</title>
+    <link rel="stylesheet" href="/shared/css/global.css">
+    <link rel="stylesheet" href="/apps/data-comparison/css/org-selection.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <div class="header-content">
+                <h1>
+                    <i data-lucide="git-compare" class="header-icon"></i>
+                    Data Comparison Tool
+                </h1>
+                <p>Compare configuration data across multiple Salesforce orgs</p>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="workflow-steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Select Configuration</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Choose Objects</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Review Results</div>
+                </div>
+            </div>
+
+            <div class="org-section">
+                <div class="section-header">
+                    <h2>Get Started</h2>
+                    <p>Choose how you want to configure your comparison</p>
+                </div>
+
+                <div id="loading-state" class="state-container">
+                    <div class="loading-spinner"></div>
+                    <p>Loading authenticated orgs...</p>
+                </div>
+
+                <div id="error-state" class="state-container hidden">
+                    <div class="error-message">
+                        <i data-lucide="alert-circle" class="error-icon"></i>
+                        <span id="error-text">Failed to load orgs</span>
+                    </div>
+                    <button id="retry-btn" class="btn btn-secondary">
+                        <i data-lucide="refresh-cw"></i>
+                        Retry
+                    </button>
+                </div>
+
+                <div id="config-choice" class="state-container hidden">
+                    <div class="config-options">
+                        <div class="config-option">
+                            <div class="config-option-icon">
+                                <i data-lucide="upload" class="option-icon"></i>
+                            </div>
+                            <div class="config-option-content">
+                                <h3>I have a config file</h3>
+                                <p>Upload an existing configuration file to start comparison</p>
+                                <button id="upload-config-btn" class="config-btn config-btn-secondary">
+                                    <i data-lucide="file-plus"></i>
+                                    Upload Config File
+                                </button>
+                                <!-- Hidden file input -->
+                                <input type="file" id="config-file-input" accept=".json" style="display: none;">
+                            </div>
+                        </div>
+
+                        <div class="config-option-divider">
+                            <span>OR</span>
+                        </div>
+
+                        <div class="config-option">
+                            <div class="config-option-icon">
+                                <i data-lucide="settings" class="option-icon"></i>
+                            </div>
+                            <div class="config-option-content">
+                                <h3>Create new configuration</h3>
+                                <p>Select orgs and configure objects for comparison</p>
+                                <button id="create-config-btn" class="config-btn config-btn-primary">
+                                    <i data-lucide="plus"></i>
+                                    Start New Config
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="org-selection" class="state-container hidden">
+                    <div class="org-list-header">
+                        <h3>Select Organizations</h3>
+                        <p>Choose 2 or more orgs to compare (minimum required)</p>
+                        <div class="org-actions">
+                            <button id="select-all-btn" class="btn btn-ghost">Select All</button>
+                            <button id="clear-selection-btn" class="btn btn-ghost">Clear Selection</button>
+                        </div>
+                    </div>
+
+                    <div id="org-list" class="org-list">
+                        <!-- Orgs will be populated here -->
+                    </div>
+
+                    <div class="action-bar">
+                        <button id="back-to-config-btn" class="btn btn-secondary">
+                            <i data-lucide="arrow-left"></i>
+                            Back
+                        </button>
+                        <button id="validate-btn" class="btn btn-secondary" disabled>
+                            Validate Selection
+                        </button>
+                        <button id="next-btn" class="btn btn-primary" disabled>
+                            Next: Configure Objects
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="upload-progress" class="state-container hidden">
+                    <div class="upload-status">
+                        <div class="upload-icon">
+                            <i data-lucide="upload-cloud" class="status-icon"></i>
+                        </div>
+                        <h3>Processing Configuration</h3>
+                        <p id="upload-status-text">Validating uploaded config...</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="upload-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="validation-results" class="validation-results hidden">
+                    <h3>Validation Results</h3>
+                    <div id="validation-list"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- App-specific JavaScript -->
+    <script src="/apps/data-comparison/js/org-selection.js"></script>
+</body>
+</html>
