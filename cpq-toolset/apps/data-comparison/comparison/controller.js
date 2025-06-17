@@ -4,7 +4,7 @@ const { spawn } = require('child_process');
 const { createLogger } = require('../../../shared/logging/logger');
 const path = require('path');
 const fs = require('fs');
-const pythonCommand = 'python';
+const pythonCommand = path.resolve(__dirname, '../../py/python.exe');
 
 
 
