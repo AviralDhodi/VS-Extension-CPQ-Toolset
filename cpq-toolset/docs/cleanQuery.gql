@@ -1,0 +1,25 @@
+query PriceActions {
+  uiapi {
+    query {
+      SBQQ__PriceAction__c(
+        first: 200,
+        where: {
+          SBQQ__ParentRuleIsActive__c: { eq: true }
+        }
+      ) {
+        edges {
+          node {
+            Name { value }
+            SBQQ__Rule__c { value displayValue }
+            SBQQ__Value__c { value }
+            SBQQ__TargetObject__c { value }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}

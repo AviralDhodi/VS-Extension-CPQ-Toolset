@@ -1,5 +1,6 @@
 const { getSFDXRunner } = require('../../../shared/sfdx/runner');
 const { createLogger } = require('../../../shared/logging/logger');
+const { executeGraphQLQuery, injectAfterCursor, escapeGraphQLForCLI } = require('./graphql_cli_runner');
 
 const logger = createLogger({ appName: 'DataComparison-SFDX' });
 const sfdx = getSFDXRunner(logger);
@@ -243,158 +244,84 @@ class DataComparisonSFDX {
      */
 
     buildGraphQLQuery(objectName, objectConfig) {
-        this.logger.info('🏗️ Building GraphQL query', { 
-            objectName, 
-            configKeys: Object.keys(objectConfig),
-            configDetails: objectConfig
-        });
+    this.logger.info('🏗️ Building GraphQL query', { 
+        objectName, 
+        configKeys: Object.keys(objectConfig),
+        configDetails: objectConfig
+    });
 
-        const { 
-            foreignKey, 
-            Fields = [], 
-            ActiveCondition, 
-            LastModifiedBetween, 
-            CreatedBetween 
-        } = objectConfig;
+    const { 
+        foreignKey, 
+        Fields = [], 
+        ActiveCondition, 
+        LastModifiedBetween, 
+        CreatedBetween 
+    } = objectConfig;
 
-        const systemFields = ['Id', 'CreatedDate', 'LastModifiedDate', 'CreatedBy.Name'];
-        const allFields = [...new Set([foreignKey, ...systemFields, ...Fields])];
-        
-        // ✅ FIXED: Dynamic date filter building
-        let whereClause = '';
-        const conditions = [];
+    const systemFields = ['Id', 'CreatedDate', 'LastModifiedDate', 'CreatedBy.Name'];
+    const allFields = [...new Set([foreignKey, ...systemFields, ...Fields])];
 
-        // Only add date filters if they have valid (non-null) values
-        if (LastModifiedBetween && LastModifiedBetween.length === 2 && 
-            LastModifiedBetween[0] !== null && LastModifiedBetween[1] !== null) {
-            // [0] is start date (greater than), [1] is end date (less than)
-            conditions.push(`LastModifiedDate >= ${LastModifiedBetween[0]}T00:00:00Z`);
-            conditions.push(`LastModifiedDate <= ${LastModifiedBetween[1]}T23:59:59Z`);
-            
-            this.logger.debug('Added LastModifiedBetween filter', { 
-                objectName, 
-                startDate: LastModifiedBetween[0],
-                endDate: LastModifiedBetween[1]
-            });
-        }
-        
-        if (CreatedBetween && CreatedBetween.length === 2 && 
-            CreatedBetween[0] !== null && CreatedBetween[1] !== null) {
-            // [0] is start date (greater than), [1] is end date (less than)
-            conditions.push(`CreatedDate >= ${CreatedBetween[0]}T00:00:00Z`);
-            conditions.push(`CreatedDate <= ${CreatedBetween[1]}T23:59:59Z`);
-            
-            this.logger.debug('Added CreatedBetween filter', { 
-                objectName, 
-                startDate: CreatedBetween[0],
-                endDate: CreatedBetween[1]
-            });
-        }
+    const whereConditions = [];
 
-        // Only add ActiveCondition if it exists and is not empty
-        if (ActiveCondition && ActiveCondition.trim() !== '') {
-            conditions.push(`(${ActiveCondition})`);
-            
-            this.logger.debug('Added ActiveCondition filter', { 
-                objectName, 
-                condition: ActiveCondition 
-            });
-        }
-
-        // Build WHERE clause only if we have conditions
-        if (conditions.length > 0) {
-            whereClause = `(where: {and: [{${conditions.join(' AND ')}}]})`;
-        } else {
-            whereClause = '(first: 200)'; // No filters, just pagination
-        }
-
-        // ✅ FIXED: Single-line GraphQL query (no \n characters)
-        const query = `{uiapi{query{${objectName}${whereClause}{edges{node{${allFields.map(field => {
-            if (field === 'Id') {
-                return 'Id';
-            }
-            if (field.includes('.')) {
-                const [parent, child] = field.split('.');
-                return `${parent}{${child}{value}}`;
-            }
-            return `${field}{value}`;
-        }).join(' ')}}pageInfo{hasNextPage endCursor}}}}}}`;
-
-        this.logger.info('✅ GraphQL query generated', {
-            objectName,
-            queryLength: query.length,
-            fieldCount: allFields.length,
-            hasDateFilters: !!(LastModifiedBetween || CreatedBetween),
-            hasActiveCondition: !!ActiveCondition,
-            conditionsApplied: conditions.length,
-            whereClause: whereClause
-        });
-
-        return query;
+    // Skip foreignKey filters (null check unsupported in SF GraphQL)
+    if (foreignKey && foreignKey !== 'Id') {
+        this.logger.warn('⛔ Skipping GraphQL filter on foreignKey (null filters not supported)', { foreignKey });
     }
 
+    // ✅ Parse ActiveCondition safely (only = and != for now)
+    if (ActiveCondition && ActiveCondition.trim() !== '') {
+        const parsed = ActiveCondition
+            .replace(/(\w+)\s*=\s*true/gi, '$1: { eq: true }')
+            .replace(/(\w+)\s*=\s*false/gi, '$1: { eq: false }')
+            .replace(/(\w+)\s*!=\s*null/gi, '$1: { neq: null }')
+            .replace(/(\w+)\s*=\s*null/gi, '$1: { eq: null }');
+
+        whereConditions.push(parsed);
+        this.logger.debug('✅ Transformed ActiveCondition to GraphQL', { original: ActiveCondition, parsed });
+    }
+
+    // Skip date filters (client-side only)
+    if (LastModifiedBetween || CreatedBetween) {
+        this.logger.warn('⛔ Skipping GraphQL date filters — applied in post-fetch only', {
+            objectName,
+            LastModifiedBetween,
+            CreatedBetween
+        });
+    }
+
+    const whereClause = whereConditions.length > 0
+        ? `(first: 200, where: { ${whereConditions.join(', ')} })`
+        : '(first: 200)';
 
 
-    /*buildGraphQLQuery(objectName, objectConfig) {
-        const { 
-            foreignKey, 
-            Fields = [], 
-            ActiveCondition, 
-            LastModifiedBetween, 
-            CreatedBetween 
-        } = objectConfig;
-
-        // Build field selection - always include system fields and foreign key
-        const systemFields = ['Id', 'CreatedDate', 'LastModifiedDate', 'CreatedBy.Name'];
-        const allFields = [...new Set([foreignKey, ...systemFields, ...Fields])];
-        
-        // Build WHERE conditions
-        const conditions = [`${foreignKey} != null`];
-        
-        if (LastModifiedBetween && LastModifiedBetween.length === 2) {
-            conditions.push(`LastModifiedDate >= ${LastModifiedBetween[0]}T00:00:00Z`);
-            conditions.push(`LastModifiedDate <= ${LastModifiedBetween[1]}T23:59:59Z`);
-        }
-        
-        if (CreatedBetween && CreatedBetween.length === 2) {
-            conditions.push(`CreatedDate >= ${CreatedBetween[0]}T00:00:00Z`);
-            conditions.push(`CreatedDate <= ${CreatedBetween[1]}T23:59:59Z`);
-        }
-        
-        if (ActiveCondition) {
-            conditions.push(`(${ActiveCondition})`);
-        }
-
-        const whereClause = conditions.join(' AND ');
-        
-        // Build GraphQL query
-        const query = `{
-            uiapi {
-                query {
-                    ${objectName}(where: {and: [{${whereClause}}]}) {
-                        edges {
-                            node {
-                                ${allFields.map(field => {
-                                    // Handle relationship fields like CreatedBy.Name
-                                    if (field.includes('.')) {
-                                        const [parent, child] = field.split('.');
-                                        return `${parent} { ${child}.value }`;
-                                    }
-                                    return `${field}.value`;
-                                }).join('\n                                ')}
-                            }
-                        }
-                        pageInfo {
-                            hasNextPage
-                            endCursor
-                        }
-                    }
-                }
+    const fieldString = allFields.map(field => {
+        if (field === 'Id') return 'Id';
+        if (field.includes('.')) {
+            let [parent, child] = field.split('.');
+            if (parent.endsWith('__c')) {
+                parent = parent.replace(/__c$/, '__r');
             }
-        }`;
+            return `${parent}{${child}{value}}`;
+        }
+        return `${field}{value}`;
+    }).join(' ');
 
-        return query;
-    }*/
+    const query = `{uiapi{query{${objectName}${whereClause}{edges{node{${fieldString}}}pageInfo{hasNextPage endCursor}}}}}`;
+
+    this.logger.info('✅ GraphQL query generated', {
+        objectName,
+        queryLength: query.length,
+        fieldCount: allFields.length,
+        hasDateFilters: !!(LastModifiedBetween || CreatedBetween),
+        hasActiveCondition: !!ActiveCondition,
+        whereClause
+    });
+
+    return query;
+}
+
+
+
 
     /**
      * Execute GraphQL query for a specific org
@@ -405,182 +332,32 @@ class DataComparisonSFDX {
      */
     
     async executeGraphQLQuery(query, username, cursor = null) {
-    this.logger.info('🔄 Starting GraphQL execution', { 
-        username, 
-        hasCursor: !!cursor,
-        queryLength: query.length,
-        cursorValue: cursor ? cursor.substring(0, 20) + '...' : null
-    });
-
-    // Add pagination cursor if provided
-    let paginatedQuery = query;
-    if (cursor) {
-        paginatedQuery = query.replace(
-            /Account\(first: \d+\)/,
-            `Account(first: 200, after: "${cursor}")`
-        );
-        
-        this.logger.debug('Pagination cursor added to query', {
+        this.logger.info('🔄 Starting GraphQL execution', {
             username,
-            cursor: cursor.substring(0, 50) + '...',
-            originalLength: query.length,
-            paginatedLength: paginatedQuery.length
-        });
-    }
-
-    // Escape quotes for command line
-    const escapedQuery = paginatedQuery.replace(/"/g, '\\"');
-
-    // ✅ FIX: Use 'body' instead of 'query'
-    const command = this.runner.buildCommand('api request graphql', {
-        'target-org': username,
-        body: `"${escapedQuery}"` // ✅ This must be 'body'
-    });
-
-    // 🚀 LOG THE EXACT CLI COMMAND
-    this.logger.info('🚀 EXACT CLI COMMAND EXECUTING', {
-        username,
-        fullCommand: `sf ${command}`,
-        commandLength: command.length
-    });
-
-    // 📋 LOG THE EXACT GRAPHQL QUERY
-    this.logger.info('📋 GRAPHQL QUERY BEING SENT', {
-        username,
-        query: paginatedQuery,
-        queryFormatted: JSON.stringify(paginatedQuery, null, 2)
-    });
-
-    try {
-        const startTime = Date.now();
-        
-        // 🎯 LOG COMMAND EXECUTION START
-        this.logger.info('⚡ EXECUTING SFDX COMMAND NOW', {
-            username,
-            timestamp: new Date().toISOString(),
-            queryPreview: query.substring(0, 100) + '...'
-        });
-
-
-        const result = await Promise.race([
-            this.runner.runWithJsonOutput(command),
-            new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Command timeout after 2 minutes')), 120000)
-            )
-        ]);
-        const executionTime = Date.now() - startTime;
-
-        // 📥 LOG RAW SFDX RESPONSE
-        this.logger.info('📥 RAW SFDX CLI RESPONSE', {
-            username,
-            executionTimeMs: executionTime,
-            hasResult: !!result,
-            resultKeys: result ? Object.keys(result) : [],
-            rawResponse: JSON.stringify(result, null, 2).substring(0, 2000) + 
-                        (JSON.stringify(result).length > 2000 ? '...[TRUNCATED]' : '')
-        });
-
-        // 🔍 ANALYZE RESPONSE STRUCTURE
-        const responseData = result?.result?.data?.uiapi?.query;
-        const objectName = responseData ? Object.keys(responseData)[0] : 'unknown';
-        const queryData = responseData?.[objectName];
-        const recordCount = queryData?.edges?.length || 0;
-        const hasNextPage = queryData?.pageInfo?.hasNextPage || false;
-        const endCursor = queryData?.pageInfo?.endCursor;
-
-        this.logger.info('🔍 RESPONSE ANALYSIS', {
-            username,
-            objectName,
-            recordsFetched: recordCount,
-            hasNextPage,
-            endCursor: endCursor ? endCursor.substring(0, 20) + '...' : null,
-            responseStructure: {
-                hasResult: !!result?.result,
-                hasData: !!result?.result?.data,
-                hasUiapi: !!result?.result?.data?.uiapi,
-                hasQuery: !!result?.result?.data?.uiapi?.query,
-                queryObjects: responseData ? Object.keys(responseData) : []
-            }
-        });
-
-        // 📊 LOG FIRST RECORD SAMPLE (if any)
-        if (queryData?.edges?.length > 0) {
-            const sampleRecord = queryData.edges[0].node;
-            const fieldNames = Object.keys(sampleRecord);
-            
-            this.logger.info('📊 SAMPLE RECORD STRUCTURE', {
-                username,
-                objectName,
-                fieldCount: fieldNames.length,
-                fieldNames: fieldNames,
-                sampleId: sampleRecord.Id,
-                sampleData: JSON.stringify(sampleRecord, null, 2)
-            });
-        }
-
-        return result.result;
-
-    } catch (error) {
-        // 🚨 LOG DETAILED ERROR INFORMATION
-        this.logger.error('🚨 SFDX CLI COMMAND FAILED', { 
-            username, 
-            error: error.message,
-            errorType: error.constructor.name,
-            errorStack: error.stack,
-            commandThatFailed: `sf ${command}`,
-            queryPreview: paginatedQuery.substring(0, 300) + '...',
-            executionContext: {
-                timestamp: new Date().toISOString(),
-                nodeVersion: process.version,
-                workingDirectory: process.cwd()
-            }
-        });
-
-        // 🔧 LOG DEBUGGING SUGGESTIONS
-        this.logger.info('🔧 DEBUGGING SUGGESTIONS', {
-            username,
-            suggestions: [
-                'Check if org is authenticated: sf org list',
-                'Test basic connectivity: sf org display --target-org ' + username,
-                'Verify GraphQL API access: sf api request rest --target-org ' + username + ' --path /services/data/v57.0/',
-                'Check SFDX CLI version: sf version'
-            ]
-        });
-
-        throw error;
-    }
-}
-
-
-    /*async executeGraphQLQuery(query, username, cursor = null) {
-        this.logger.info('Executing GraphQL query', { username, hasCursor: !!cursor });
-
-        // Add pagination cursor if provided
-        let paginatedQuery = query;
-        if (cursor) {
-            paginatedQuery = query.replace(
-                /where: {and: \[{([^}]+)}\]\}/,
-                `where: {and: [{$1}]}, after: "${cursor}"`
-            );
-        }
-
-        const command = this.runner.buildCommand('api request graphql', {
-            'target-org': username,
-            query: `"${paginatedQuery.replace(/"/g, '\\"')}"`
+            hasCursor: !!cursor,
+            queryLength: query.length,
+            cursorValue: cursor ? cursor.substring(0, 20) + '...' : null
         });
 
         try {
-            const result = await this.runner.runWithJsonOutput(command);
-            return result.result;
+            const result = await executeGraphQLQuery(query, username, cursor);
+            return result;
         } catch (error) {
-            this.logger.error('GraphQL query failed', { 
-                username, 
+            this.logger.error('🚨 GraphQL CLI execution failed', {
+                username,
                 error: error.message,
-                query: paginatedQuery.substring(0, 200) + '...'
+                errorType: error.constructor.name,
+                errorStack: error.stack,
+                executionContext: {
+                    timestamp: new Date().toISOString(),
+                    nodeVersion: process.version,
+                    workingDirectory: process.cwd()
+                }
             });
             throw error;
         }
-    }*/
+    }
+
 
     /**
      * Fetch all records for an object across multiple orgs with pagination
@@ -871,98 +648,6 @@ async testGraphQLConnectivity(username) {
     }
 }
 }
-
-
-/*async fetchObjectDataAllOrgs(objectName, objectConfig, usernames) {
-        this.logger.info('Fetching object data for all orgs', { 
-            objectName, 
-            orgCount: usernames.length 
-        });
-
-        const query = this.buildGraphQLQuery(objectName, objectConfig);
-        const orgData = {};
-
-        for (const username of usernames) {
-            this.logger.info('Fetching data for org', { username, objectName });
-            
-            let allRecords = [];
-            let hasNextPage = true;
-            let cursor = null;
-            let pageCount = 0;
-
-            while (hasNextPage) {
-                try {
-                    const result = await this.executeGraphQLQuery(query, username, cursor);
-                    
-                    // Navigate GraphQL response structure
-                    const queryData = result?.data?.uiapi?.query?.[objectName];
-                    
-                    if (!queryData) {
-                        this.logger.warn('No query data found', { username, objectName });
-                        break;
-                    }
-
-                    const records = queryData.edges?.map(edge => {
-                        const node = edge.node;
-                        const record = { Id: node.Id?.value };
-                        
-                        // Extract field values
-                        Object.keys(node).forEach(fieldKey => {
-                            if (fieldKey !== 'Id') {
-                                if (typeof node[fieldKey] === 'object' && node[fieldKey]?.value !== undefined) {
-                                    record[fieldKey] = node[fieldKey].value;
-                                } else if (typeof node[fieldKey] === 'object') {
-                                    // Handle relationship fields
-                                    Object.keys(node[fieldKey]).forEach(subField => {
-                                        if (node[fieldKey][subField]?.value !== undefined) {
-                                            record[`${fieldKey}.${subField}`] = node[fieldKey][subField].value;
-                                        }
-                                    });
-                                }
-                            }
-                        });
-
-                        return record;
-                    }) || [];
-
-                    allRecords = allRecords.concat(records);
-                    pageCount++;
-
-                    // Check pagination
-                    hasNextPage = queryData.pageInfo?.hasNextPage || false;
-                    cursor = queryData.pageInfo?.endCursor;
-
-                    this.logger.debug('GraphQL page fetched', { 
-                        username, 
-                        objectName, 
-                        pageCount, 
-                        recordsThisPage: records.length,
-                        totalRecords: allRecords.length,
-                        hasNextPage 
-                    });
-
-                } catch (error) {
-                    this.logger.error('Error fetching GraphQL page', { 
-                        username, 
-                        objectName, 
-                        pageCount, 
-                        error: error.message 
-                    });
-                    hasNextPage = false; // Stop pagination on error
-                }
-            }
-
-            orgData[username] = allRecords;
-            this.logger.info('Completed data fetch for org', { 
-                username, 
-                objectName, 
-                totalRecords: allRecords.length,
-                totalPages: pageCount 
-            });
-        }
-
-        return orgData;
-    }*/
 
 
 

@@ -1,0 +1,31 @@
+﻿$content = @'
+query PriceActions {
+  uiapi {
+    query {
+      SBQQ__PriceAction__c(
+        first: 200,
+        where: {
+          SBQQ__ParentRuleIsActive__c: { eq: true },
+          LastModifiedDate: { ge: "2025-06-05", le: "2025-06-13" }
+        }
+      ) {
+        edges {
+          node {
+            Name { value }
+            SBQQ__Rule__c { Name { value } }
+            SBQQ__Value__c { value }
+            SBQQ__TargetObject__c { value }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}
+'@
+
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText(".\testQuery.gql", $content, $utf8NoBom)
