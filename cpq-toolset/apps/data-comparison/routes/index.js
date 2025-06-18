@@ -11,7 +11,13 @@ const {
 const {
     createLogger
 } = require('../../../shared/logging/logger');
-const ComparisonController = require('../comparison/controller');
+const {
+    ComparisonController
+} = require('../comparison/controller');
+const { spawnFetchers } = require('../worker/spawnFetchers');
+
+const { convertJsonlToParquet } = require('../worker/convertParquet');
+
 
 const logger = createLogger({
     appName: 'DataComparison'
@@ -491,7 +497,7 @@ router.post('/comparison/start', async (req, res) => {
         global.comparisonStates[comparisonId] = comparisonState;
 
         // Start background process
-        startComparisonProcess(comparisonId, config).catch(error => {
+        startComparisonProcess(comparisonId, config, configPath).catch(error => {
             logger.error('Comparison process failed', { comparisonId, error: error.message });
             comparisonState.status = 'failed';
             comparisonState.error = error.message;
@@ -884,7 +890,7 @@ router.get('/test/graphql/:username', async (req, res) => {
 
 
 // Update the startComparisonProcess function
-async function startComparisonProcess(comparisonId, config) {
+async function startComparisonProcess(comparisonId, config, configPath) {
     const state = global.comparisonStates[comparisonId];
 
     try {
@@ -897,29 +903,9 @@ async function startComparisonProcess(comparisonId, config) {
         state.progress.phase = 'data_fetch';
         const allOrgData = {};
 
-        for (const [objectName, objectConfig] of Object.entries(config.objects)) {
-            state.progress.currentObject = objectName;
-            logger.info('Fetching data for object', {
-                comparisonId,
-                objectName
-            });
-
-            try {
-                // Fetch data from all orgs for this object
-                const orgData = await dataComparisonSFDX.fetchObjectDataAllOrgs(
-                    objectName,
-                    objectConfig,
-                    orgUsernames
-                );
-
-                allOrgData[objectName] = orgData;
-
-                // Log data fetch summary
-                const summary = Object.entries(orgData).map(([org, records]) =>
-                    `${org}: ${records.length} records`
-                ).join(', ');
-                logger.info(`Data fetched for ${objectName}: ${summary}`);
-
+       try {
+                // Fetch data from all orgs and write to buffers
+                await spawnFetchers(config, comparisonId, config.inputNumberOfProcesses);
             } catch (fetchError) {
                 logger.error('Data fetch failed for object', {
                     comparisonId,
@@ -928,8 +914,8 @@ async function startComparisonProcess(comparisonId, config) {
                 });
                 throw fetchError;
             }
-        }
-
+        
+        await convertJsonlToParquet(path.join(__dirname, `../data-extract/${comparisonId}`));
         // Now process comparison using the hybrid controller
         state.progress.phase = 'comparison';
         state.progress.currentObject = 'Processing comparison';
@@ -940,28 +926,27 @@ async function startComparisonProcess(comparisonId, config) {
             totalOrgs: orgUsernames.length
         });
 
+
+
         const comparisonResult = await comparisonController.processComparison(
             comparisonId,
             config,
-            allOrgData
+            configPath
         );
 
         // Update state with results
-        state.results = comparisonResult.results || {};
-        state.engineUsed = comparisonResult.engine;
-        state.engineInfo = comparisonResult.engineInfo;
+        //state.results = comparisonResult.results || {};
 
-        if (comparisonResult.fallbackUsed) {
+        /*if (comparisonResult.fallbackUsed) {
             state.warnings = state.warnings || [];
             state.warnings.push(`Fallback to Node.js engine: ${comparisonResult.fallbackReason}`);
-        }
+        }*/
 
         state.status = 'completed';
         state.endTime = new Date().toISOString();
 
         logger.info('Comparison completed', {
             comparisonId,
-            engine: comparisonResult.engine,
             objectsProcessed: Object.keys(state.results).length
         });
 
