@@ -1,4 +1,0 @@
-# apps/data-comparison/python/requirements.txt
-# No third-party dependencies needed
-# All modules used are from the Python standard library
-pandas==2.2.2

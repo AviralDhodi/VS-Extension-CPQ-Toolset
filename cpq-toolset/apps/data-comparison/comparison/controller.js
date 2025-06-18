@@ -4,7 +4,7 @@ const { spawn } = require('child_process');
 const { createLogger } = require('../../../shared/logging/logger');
 const path = require('path');
 const fs = require('fs');
-const pythonCommand = path.resolve(__dirname, '../../py/python.exe');
+const pythonCommand = path.resolve(__dirname, '../../../py/python.exe');
 
 
 
@@ -27,6 +27,12 @@ class ComparisonController {
             // You can add more dynamic args like --exclude-fields, --objects etc.
         ];
         return new Promise((resolve, reject) => {
+
+            this.logger.info('Running Python command:', {
+                command: pythonCommand,
+                args: args
+            }); 
+
             const pythonProcess = spawn(pythonCommand, args, {
                 stdio: ['pipe', 'pipe', 'pipe'],
                 env: { ...process.env, PYTHONUNBUFFERED: '1' }

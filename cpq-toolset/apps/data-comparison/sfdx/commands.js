@@ -258,15 +258,10 @@ class DataComparisonSFDX {
         CreatedBetween 
     } = objectConfig;
 
-    const systemFields = ['Id', 'CreatedDate', 'LastModifiedDate', 'CreatedBy.Name'];
+    const systemFields = [ 'CreatedDate', 'LastModifiedDate', 'CreatedBy.Name'];
     const allFields = [...new Set([foreignKey, ...systemFields, ...Fields])];
 
     const whereConditions = [];
-
-    // Skip foreignKey filters (null check unsupported in SF GraphQL)
-    if (foreignKey && foreignKey !== 'Id') {
-        this.logger.warn('⛔ Skipping GraphQL filter on foreignKey (null filters not supported)', { foreignKey });
-    }
 
     // ✅ Parse ActiveCondition safely (only = and != for now)
     if (ActiveCondition && ActiveCondition.trim() !== '') {
@@ -280,7 +275,7 @@ class DataComparisonSFDX {
         this.logger.debug('✅ Transformed ActiveCondition to GraphQL', { original: ActiveCondition, parsed });
     }
 
-    // Skip date filters (client-side only)
+    // Skclient-side only)
     if (LastModifiedBetween || CreatedBetween) {
         this.logger.warn('⛔ Skipping GraphQL date filters — applied in post-fetch only', {
             objectName,
@@ -295,7 +290,6 @@ class DataComparisonSFDX {
 
 
     const fieldString = allFields.map(field => {
-        if (field === 'Id') return 'Id';
         if (field.includes('.')) {
             let [parent, child] = field.split('.');
             if (parent.endsWith('__c')) {
@@ -310,11 +304,7 @@ class DataComparisonSFDX {
 
     this.logger.info('✅ GraphQL query generated', {
         objectName,
-        queryLength: query.length,
-        fieldCount: allFields.length,
-        hasDateFilters: !!(LastModifiedBetween || CreatedBetween),
-        hasActiveCondition: !!ActiveCondition,
-        whereClause
+        query: query
     });
 
     return query;
