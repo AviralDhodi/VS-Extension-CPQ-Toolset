@@ -1,0 +1,81 @@
+<div class="comparison-status-container">
+    <div class="status-header">
+        <h2>Data Comparison Status</h2>
+        <div class="status-indicator">
+            <span id="status-badge" class="status-badge initializing">Initializing</span>
+        </div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-header">
+            <h3>Progress</h3>
+            <span id="progress-text">Starting...</span>
+        </div>
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <div class="phases-section">
+        <h3>Execution Phases</h3>
+        <div class="phases-list">
+            <div class="phase" id="phase-data-fetch">
+                <span class="phase-icon">📥</span>
+                <span class="phase-name">Data Fetch</span>
+                <span class="phase-status">Pending</span>
+            </div>
+            <div class="phase" id="phase-data-preparation">
+                <span class="phase-icon">🔄</span>
+                <span class="phase-name">Data Preparation</span>
+                <span class="phase-status">Pending</span>
+            </div>
+            <div class="phase" id="phase-comparison">
+                <span class="phase-icon">🐍</span>
+                <span class="phase-name">Python Comparison</span>
+                <span class="phase-status">Pending</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-section">
+        <h3>Details</h3>
+        <div class="details-grid">
+            <div class="detail-item">
+                <label>Comparison ID:</label>
+                <span id="comparison-id">-</span>
+            </div>
+            <div class="detail-item">
+                <label>Started:</label>
+                <span id="start-time">-</span>
+            </div>
+            <div class="detail-item">
+                <label>Engine:</label>
+                <span id="engine-used">Python</span>
+            </div>
+            <div class="detail-item">
+                <label>Duration:</label>
+                <span id="duration">-</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="logs-section">
+        <h3>Status Updates</h3>
+        <div id="status-logs" class="status-logs">
+            <div class="log-entry">
+                <span class="log-time">Starting comparison...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions-section">
+        <button id="refresh-btn" class="btn btn-secondary">Refresh Status</button>
+        <button id="download-btn" class="btn btn-primary" disabled>Download Results</button>
+        <button id="new-comparison-btn" class="btn btn-outline">New Comparison</button>
+    </div>
+
+    <div id="error-section" class="error-section" style="display: none;">
+        <h3>Error Details</h3>
+        <div id="error-message" class="error-message"></div>
+    </div>
+</div>

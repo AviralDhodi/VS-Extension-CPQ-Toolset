@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Selection</title>
+    <link rel="stylesheet" href="/data-comparison/objectSelection/index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="object-selection">
+                <!-- Header Section -->
+                <div class="selection-header">
+                    <h2 class="selection-title">Object & Field Selection</h2>
+                    <p class="selection-description">
+                        Select objects and fields for comparison. Choose a foreign key for each object.
+                    </p>
+                    <div class="config-info">
+                        <span class="config-name" id="config-name">Loading configuration...</span>
+                        <span class="org-count" id="org-count">0 orgs</span>
+                    </div>
+                </div>
+
+                <!-- Progress Steps -->
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-icon"><i data-lucide="building"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Organizations</div>
+                            <div class="step-description">Selected</div>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step active">
+                        <div class="step-icon"><i data-lucide="database"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Objects & Fields</div>
+                            <div class="step-description">Configure selection</div>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step">
+                        <div class="step-icon"><i data-lucide="filter"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Filters</div>
+                            <div class="step-description">Date & Active</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three Panel Layout -->
+                <div class="panels-container">
+                    <!-- Panel 1: Objects -->
+                    <div class="panel panel-objects">
+                        <div class="panel-header">
+                            <h3>Common Objects</h3>
+                            <div class="panel-controls">
+                                <div class="search-box">
+                                    <i data-lucide="search" class="search-icon"></i>
+                                    <input type="text" id="object-search" placeholder="Search objects..." />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div id="objects-loading" class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p class="loading-text">Loading common objects...</p>
+                        </div>
+
+                        <!-- Error State -->
+                        <div id="objects-error" class="error-state hidden">
+                            <div class="error-icon">
+                                <i data-lucide="x-circle"></i>
+                            </div>
+                            <div class="error-content">
+                                <h4>Failed to Load Objects</h4>
+                                <p id="objects-error-message">An error occurred while loading objects.</p>
+                                <button id="retry-objects-btn" class="btn btn-secondary">
+                                    <i data-lucide="refresh-cw"></i>
+                                    Retry
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Objects List -->
+                        <div id="objects-content" class="panel-content hidden">
+                            <div class="objects-list" id="objects-list">
+                                <!-- Objects will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Fields -->
+                    <div class="panel panel-fields">
+                        <div class="panel-header">
+                            <h3>Fields</h3>
+                            <div class="panel-controls">
+                                <button id="select-all-fields" class="btn-link" disabled>
+                                    <i data-lucide="check-square"></i>
+                                    Select All
+                                </button>
+                                <button id="clear-fields" class="btn-link" disabled>
+                                    <i data-lucide="square"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="fields-empty" class="empty-state">
+                            <div class="empty-icon">
+                                <i data-lucide="table"></i>
+                            </div>
+                            <h4>Select an Object</h4>
+                            <p>Choose an object from the left panel to view its fields</p>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="fields-loading" class="loading-state hidden">
+                            <div class="loading-spinner"></div>
+                            <p class="loading-text">Loading fields...</p>
+                        </div>
+
+                        <!-- Fields List -->
+                        <div id="fields-content" class="panel-content hidden">
+                            <div class="fields-toolbar">
+                                <div class="field-info">
+                                    <span class="selected-object" id="selected-object">Object Name</span>
+                                    <span class="field-count" id="field-count">0 fields</span>
+                                </div>
+                                <div class="foreign-key-info">
+                                    <i data-lucide="star" class="fk-icon"></i>
+                                    <span class="fk-text">Click star to mark foreign key</span>
+                                </div>
+                            </div>
+                            <div class="fields-list" id="fields-list">
+                                <!-- Fields will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 3: Configuration -->
+                    <div class="panel panel-config">
+                        <div class="panel-header">
+                            <h3>Configuration</h3>
+                            <div class="panel-controls">
+                                <div class="config-status" id="config-status">
+                                    <span class="status-indicator pending"></span>
+                                    <span class="status-text">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="config-empty" class="empty-state">
+                            <div class="empty-icon">
+                                <i data-lucide="settings"></i>
+                            </div>
+                            <h4>No Configuration</h4>
+                            <p>Select objects and fields to build your configuration</p>
+                        </div>
+
+                        <!-- Configuration Content -->
+                        <div id="config-content" class="panel-content hidden">
+                            <div class="config-summary">
+                                <div class="summary-header">
+                                    <h4>Selected Objects</h4>
+                                    <span class="object-count" id="object-count">0 objects</span>
+                                </div>
+                                <div class="configured-objects" id="configured-objects">
+                                    <!-- Configured objects will be shown here -->
+                                </div>
+                            </div>
+
+                            <div class="validation-section">
+                                <h4>Validation</h4>
+                                <div class="validation-info">
+                                    <div class="validation-item">
+                                        <i data-lucide="info" class="validation-icon"></i>
+                                        <span>Each object must have a foreign key selected</span>
+                                    </div>
+                                    <div class="validation-item">
+                                        <i data-lucide="check" class="validation-icon"></i>
+                                        <span>At least one field must be selected per object</span>
+                                    </div>
+                                </div>
+                                
+                                <button id="validate-config-btn" class="btn btn-secondary" disabled>
+                                    <i data-lucide="check-circle"></i>
+                                    Validate & Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="action-bar">
+                    <div class="action-left">
+                        <button id="back-to-config-btn" class="btn btn-outline">
+                            <i data-lucide="arrow-left"></i>
+                            Back to Configuration
+                        </button>
+                    </div>
+                    <div class="action-right">
+                        <button id="proceed-filters-btn" class="btn btn-primary" disabled>
+                            <i data-lucide="arrow-right"></i>
+                            Configure Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Validation Results Modal -->
+                <div id="validation-modal" class="modal hidden">
+                    <div class="modal-overlay"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Validation Results</h3>
+                            <button class="modal-close" id="close-validation-modal">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="validation-results">
+                                <!-- Validation results will be populated here -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="fix-validation-btn" class="btn btn-secondary">
+                                <i data-lucide="tool"></i>
+                                Fix Issues
+                            </button>
+                            <button id="save-anyway-btn" class="btn btn-warning" disabled>
+                                <i data-lucide="save"></i>
+                                Save Anyway
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/data-comparison/objectSelection/index.js"></script>
+</body>
+</html>

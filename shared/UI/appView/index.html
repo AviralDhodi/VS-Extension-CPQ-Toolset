@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPQ Toolset Extension</title>
+    <link rel="stylesheet" href="/shared/appView/index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body data-theme="light">
+    <!-- Extension Header -->
+    <header class="extension-header">
+        <div class="header-left">
+            <div class="active-app-info">
+                <i data-lucide="box" class="app-icon"></i>
+                <span class="active-app-label">App:</span>
+                <span id="active-app-name" class="active-app-name">Loading...</span>
+            </div>
+            <div id="app-state" class="app-state loading">
+                <i data-lucide="loader" class="state-icon"></i>
+                <span id="app-state-text">Loading...</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button id="theme-toggle" class="theme-toggle">
+                <i data-lucide="sun" class="theme-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <iframe id="app-frame" class="app-frame" src="/"></iframe>
+    </div>
+
+    <!-- Extension Footer -->
+    <footer class="extension-footer">
+        <div class="footer-controls">
+            <button id="log-toggle" class="log-toggle">
+                <i data-lucide="file-text" class="log-icon"></i>
+                <span>Logs</span>
+                <i data-lucide="chevron-up" class="chevron-icon"></i>
+            </button>
+            
+            <div id="loader-section" class="loader-section">
+                <span id="loader-text" class="loader-text">Loading...</span>
+                <div class="loader-bar">
+                    <div id="loader-progress" class="loader-progress"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Log Panel -->
+        <div id="log-panel" class="log-panel">
+            <div class="log-content">
+                <div class="log-header">
+                    <h4 class="log-title">Extension Logs</h4>
+                    <button id="clear-logs" class="clear-logs-btn">
+                        <i data-lucide="trash-2"></i>
+                        Clear
+                    </button>
+                </div>
+                <div id="log-entries" class="log-entries">
+                    <!-- Log entries will be added here -->
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/shared/appView/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Comparison Tool</title>
+    <link rel="stylesheet" href="/data-comparison/index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="app-brand">
+                    <div class="app-icon">
+                        <i data-lucide="git-compare" class="brand-icon"></i>
+                    </div>
+                    <div class="app-info">
+                        <h1 class="app-title">Data Comparison Tool</h1>
+                        <p class="app-subtitle">Compare Salesforce CPQ configurations across orgs</p>
+                    </div>
+                </div>
+                <div class="app-status">
+                    <div class="status-indicator ready">
+                        <i data-lucide="check-circle" class="status-icon"></i>
+                        <span class="status-text">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="welcome-section">
+                <div class="welcome-header">
+                    <h2 class="welcome-title">Get Started</h2>
+                    <p class="welcome-description">
+                        Choose how you'd like to begin comparing your Salesforce CPQ configurations.
+                    </p>
+                </div>
+
+                <div class="options-container">
+                    <!-- Option 1: Upload Configuration -->
+                    <div class="option-card" id="upload-option">
+                        <div class="option-icon upload-icon">
+                            <i data-lucide="upload" class="icon"></i>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">I have a configuration</h3>
+                            <p class="option-description">
+                                Upload an existing configuration file to start comparing with other org setups.
+                            </p>
+                            <div class="option-features">
+                                <div class="feature-item">
+                                    <i data-lucide="file-text" class="feature-icon"></i>
+                                    <span>Support for JSON, CSV, Excel formats</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="zap" class="feature-icon"></i>
+                                    <span>Quick comparison analysis</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="file" id="config-file-input" accept=".json,.csv,.xlsx,.xls" style="display: none;">
+                        <button class="option-button upload-btn">
+                            <i data-lucide="upload-cloud" class="button-icon"></i>
+                            Upload Configuration
+                        </button>
+                    </div>
+
+                    <!-- Option 2: Create Configuration -->
+                    <div class="option-card" id="create-option">
+                        <div class="option-icon create-icon">
+                            <i data-lucide="plus-circle" class="icon"></i>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">I want to create one</h3>
+                            <p class="option-description">
+                                Build a new comparison configuration by connecting to your Salesforce orgs.
+                            </p>
+                            <div class="option-features">
+                                <div class="feature-item">
+                                    <i data-lucide="settings" class="feature-icon"></i>
+                                    <span>Guided configuration wizard</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="cloud" class="feature-icon"></i>
+                                    <span>Direct SFDX integration</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="option-button create-btn">
+                            <i data-lucide="plus" class="button-icon"></i>
+                            Create Configuration
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="info-section">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i data-lucide="info" class="icon"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4 class="info-title">What is Configuration Comparison?</h4>
+                            <p class="info-text">
+                                Compare CPQ settings, price rules, product rules, and other configurations 
+                                between different Salesforce orgs to identify differences and ensure consistency.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- App Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <span class="app-version">v1.0.0</span>
+                    <span class="separator">•</span>
+                    <span class="app-state" id="app-state">Idle</span>
+                </div>
+                <div class="footer-right">
+                    <div class="connection-status">
+                        <i data-lucide="wifi" class="connection-icon"></i>
+                        <span class="connection-text">Extension Connected</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/data-comparison/index.js"></script>
+</body>
+</html>

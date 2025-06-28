@@ -1,0 +1,120 @@
+<!-- apps/upcoming-app/components/appView/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming App</title>
+    <link rel="stylesheet" href="/upcoming-app/appView/index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Same loader structure as data-comparison -->
+    <div id="app-loader" class="app-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading component...</div>
+            <div class="loader-progress">
+                <div class="progress-bar">
+                    <div id="loader-progress-fill" class="progress-fill"></div>
+                </div>
+                <div class="progress-text">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="component-container" class="component-container">
+        <!-- Components load here -->
+    </div>
+
+    <div id="error-container" class="error-container hidden">
+        <div class="error-content">
+            <div class="error-icon">
+                <i data-lucide="x-circle"></i>
+            </div>
+            <h3 class="error-title">Component Load Failed</h3>
+            <p class="error-message" id="error-message">Failed to load component.</p>
+            <button id="retry-button" class="retry-button">
+                <i data-lucide="refresh-cw"></i>
+                Retry
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Reuse DataComparisonAppView with app-specific changes
+        class UpcomingAppView extends DataComparisonAppView {
+            constructor() {
+                super();
+                this.appName = 'Upcoming App';
+                this.basePath = '/upcoming-app';
+            }
+            
+            async loadComponent(componentName, stateData = {}) {
+                try {
+                    this.showLoader(`Loading ${componentName}...`);
+                    this.hideError();
+                    
+                    this.updateLoaderProgress(25, 'Fetching component...');
+                    
+                    const response = await fetch(`${this.basePath}/components/${componentName}/index.html`);
+                    if (!response.ok) {
+                        throw new Error(`Component ${componentName} not found`);
+                    }
+                    
+                    const componentHtml = await response.text();
+                    this.updateLoaderProgress(50, 'Component fetched...');
+                    
+                    this.elements.componentContainer.innerHTML = componentHtml;
+                    this.updateLoaderProgress(75, 'Rendering...');
+                    
+                    await this.loadComponentAssets(componentName);
+                    this.updateLoaderProgress(100, 'Ready!');
+                    
+                    setTimeout(() => {
+                        this.elements.componentContainer.classList.add('loaded');
+                        this.hideLoader();
+                        this.currentComponent = componentName;
+                        this.initializeLucideIcons();
+                        this.sendLogToShell('info', `${this.appName} component ${componentName} loaded`);
+                    }, 300);
+                    
+                } catch (error) {
+                    this.showError(error.message);
+                    this.sendLogToShell('error', `Failed to load ${componentName}: ${error.message}`);
+                }
+            }
+            
+            async loadComponentAssets(componentName) {
+                const promises = [
+                    this.loadCSS(`${this.basePath}/components/${componentName}/index.css`),
+                    this.loadJS(`${this.basePath}/components/${componentName}/index.js`)
+                ];
+                await Promise.allSettled(promises);
+            }
+            
+            notifyStateChange(component, data) {
+                fetch(`${this.basePath}/api/state`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ component, data })
+                }).then(response => response.json())
+                  .then(result => {
+                      if (result.success) {
+                          this.sendLogToShell('info', `${this.appName} state changed to ${component}`);
+                      }
+                  })
+                  .catch(err => {
+                      this.sendLogToShell('error', `State change failed: ${err.message}`);
+                  });
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            window.upcomingAppView = new UpcomingAppView();
+        });
+    </script>
+    <script src="/data-comparison/appView/index.js"></script>
+    <script src="/upcoming-app/appView/index.js"></script>
+</body>
+</html>

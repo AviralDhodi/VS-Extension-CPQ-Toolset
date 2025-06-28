@@ -1,0 +1,483 @@
+/* ========================================
+   EXTENSION LEVEL THEME SYSTEM
+   ======================================== */
+:root {
+    /* Base Properties */
+    --ext-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --ext-border-radius: 8px;
+    --ext-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --ext-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+    
+    /* Light Theme (Default) */
+    --ext-bg-primary: #ffffff;
+    --ext-bg-secondary: #f8fafc;
+    --ext-bg-tertiary: #f1f5f9;
+    --ext-text-primary: #1e293b;
+    --ext-text-secondary: #64748b;
+    --ext-text-tertiary: #94a3b8;
+    --ext-border: #e2e8f0;
+    --ext-border-hover: #cbd5e1;
+    --ext-accent: #3b82f6;
+    --ext-accent-hover: #2563eb;
+    --ext-success: #10b981;
+    --ext-warning: #f59e0b;
+    --ext-error: #ef4444;
+    
+    /* Component Heights */
+    --ext-header-height: 56px;
+    --ext-footer-height: 40px;
+    --ext-log-panel-height: 0px;
+    --ext-log-panel-max-height: 200px;
+    
+    /* App Shared Variables - Apps can inherit these */
+    --app-bg-primary: var(--ext-bg-primary);
+    --app-bg-secondary: var(--ext-bg-secondary);
+    --app-bg-tertiary: var(--ext-bg-tertiary);
+    --app-text-primary: var(--ext-text-primary);
+    --app-text-secondary: var(--ext-text-secondary);
+    --app-text-tertiary: var(--ext-text-tertiary);
+    --app-border: var(--ext-border);
+    --app-border-hover: var(--ext-border-hover);
+    --app-accent: var(--ext-accent);
+    --app-accent-hover: var(--ext-accent-hover);
+    --app-success: var(--ext-success);
+    --app-warning: var(--ext-warning);
+    --app-error: var(--ext-error);
+    --app-transition: var(--ext-transition);
+    --app-border-radius: var(--ext-border-radius);
+    --app-shadow: var(--ext-shadow);
+    --app-shadow-lg: var(--ext-shadow-lg);
+}
+
+[data-theme="dark"] {
+    /* Dark Theme Colors */
+    --ext-bg-primary: #0f172a;
+    --ext-bg-secondary: #1e293b;
+    --ext-bg-tertiary: #334155;
+    --ext-text-primary: #f8fafc;
+    --ext-text-secondary: #cbd5e1;
+    --ext-text-tertiary: #94a3b8;
+    --ext-border: #334155;
+    --ext-border-hover: #475569;
+    --ext-accent: #60a5fa;
+    --ext-accent-hover: #3b82f6;
+    --ext-success: #34d399;
+    --ext-warning: #fbbf24;
+    --ext-error: #f87171;
+    --ext-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --ext-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.4);
+    
+    /* Update App Variables for Dark Theme */
+    --app-bg-primary: var(--ext-bg-primary);
+    --app-bg-secondary: var(--ext-bg-secondary);
+    --app-bg-tertiary: var(--ext-bg-tertiary);
+    --app-text-primary: var(--ext-text-primary);
+    --app-text-secondary: var(--ext-text-secondary);
+    --app-text-tertiary: var(--ext-text-tertiary);
+    --app-border: var(--ext-border);
+    --app-border-hover: var(--ext-border-hover);
+    --app-accent: var(--ext-accent);
+    --app-accent-hover: var(--ext-accent-hover);
+    --app-success: var(--ext-success);
+    --app-warning: var(--ext-warning);
+    --app-error: var(--ext-error);
+}
+
+/* ========================================
+   EXTENSION SHELL LAYOUT
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: var(--ext-bg-primary);
+    color: var(--ext-text-primary);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: var(--ext-transition);
+    overflow: hidden;
+}
+
+/* ========================================
+   HEADER - Extension Controls
+   ======================================== */
+.extension-header {
+    height: var(--ext-header-height);
+    background: var(--ext-bg-secondary);
+    border-bottom: 1px solid var(--ext-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.active-app-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--ext-text-secondary);
+}
+
+.app-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.active-app-label {
+    color: var(--ext-text-tertiary);
+}
+
+.active-app-name {
+    font-weight: 600;
+    color: var(--ext-text-primary);
+}
+
+.app-state {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: var(--ext-bg-tertiary);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    border: 1px solid transparent;
+    transition: var(--ext-transition);
+}
+
+.app-state .state-icon {
+    width: 8px;
+    height: 8px;
+}
+
+.app-state.idle {
+    color: var(--ext-text-tertiary);
+    border-color: var(--ext-border);
+}
+
+.app-state.loading {
+    color: var(--ext-warning);
+    border-color: var(--ext-warning);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.app-state.success {
+    color: var(--ext-success);
+    border-color: var(--ext-success);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.app-state.error {
+    color: var(--ext-error);
+    border-color: var(--ext-error);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: 1px solid var(--ext-border);
+    border-radius: var(--ext-border-radius);
+    color: var(--ext-text-secondary);
+    cursor: pointer;
+    transition: var(--ext-transition);
+}
+
+.theme-toggle:hover {
+    background: var(--ext-bg-tertiary);
+    border-color: var(--ext-border-hover);
+    color: var(--ext-text-primary);
+}
+
+.theme-toggle .theme-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* ========================================
+   MAIN CONTENT AREA
+   ======================================== */
+.app-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: var(--ext-bg-primary);
+    flex: 1;
+}
+
+/* ========================================
+   FOOTER - Logs & Loader
+   ======================================== */
+.extension-footer {
+    background: var(--ext-bg-secondary);
+    border-top: 1px solid var(--ext-border);
+    position: relative;
+    z-index: 100;
+}
+
+.footer-controls {
+    height: var(--ext-footer-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.log-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--ext-text-secondary);
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: var(--ext-transition);
+}
+
+.log-toggle:hover {
+    background: var(--ext-bg-tertiary);
+    color: var(--ext-text-primary);
+}
+
+.log-toggle.active {
+    color: var(--ext-accent);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.log-toggle .log-icon,
+.log-toggle .chevron-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.log-toggle .chevron-icon {
+    transition: transform 0.3s ease;
+}
+
+.log-toggle.active .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.loader-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--ext-transition);
+}
+
+.loader-section.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loader-text {
+    font-size: 0.875rem;
+    color: var(--ext-text-secondary);
+    white-space: nowrap;
+}
+
+.loader-bar {
+    width: 120px;
+    height: 3px;
+    background: var(--ext-bg-tertiary);
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--ext-border);
+}
+
+.loader-progress {
+    height: 100%;
+    background: var(--ext-accent);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s ease;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ========================================
+   LOG PANEL
+   ======================================== */
+.log-panel {
+    height: var(--ext-log-panel-height);
+    max-height: var(--ext-log-panel-max-height);
+    background: var(--ext-bg-primary);
+    border-top: 1px solid var(--ext-border);
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.log-panel.expanded {
+    height: var(--ext-log-panel-max-height);
+}
+
+.log-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--ext-border);
+}
+
+.log-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ext-text-primary);
+}
+
+.clear-logs-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: none;
+    border: none;
+    color: var(--ext-text-tertiary);
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: var(--ext-transition);
+}
+
+.clear-logs-btn:hover {
+    color: var(--ext-error);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.clear-logs-btn i {
+    width: 12px;
+    height: 12px;
+}
+
+.log-entries {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    overflow-y: auto;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.log-entry {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+    padding: 0.25rem 0;
+    align-items: baseline;
+}
+
+.log-timestamp {
+    color: var(--ext-text-tertiary);
+    font-weight: 500;
+    min-width: 70px;
+}
+
+.log-level {
+    font-weight: 600;
+    min-width: 50px;
+}
+
+.log-app {
+    color: var(--ext-accent);
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.log-message {
+    color: var(--ext-text-secondary);
+    flex: 1;
+}
+
+.log-entry.info .log-level {
+    color: var(--ext-accent);
+}
+
+.log-entry.success .log-level {
+    color: var(--ext-success);
+}
+
+.log-entry.warning .log-level {
+    color: var(--ext-warning);
+}
+
+.log-entry.error .log-level {
+    color: var(--ext-error);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .extension-header {
+        padding: 0 0.75rem;
+    }
+    
+    .header-left {
+        gap: 0.75rem;
+    }
+    
+    .active-app-info {
+        font-size: 0.8125rem;
+    }
+    
+    .footer-controls {
+        padding: 0 0.75rem;
+        gap: 0.5rem;
+    }
+    
+    .loader-section {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.375rem;
+    }
+    
+    .loader-bar {
+        width: 100px;
+    }
+}

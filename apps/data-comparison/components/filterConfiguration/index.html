@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Configuration</title>
+    <link rel="stylesheet" href="/data-comparison/filterConfiguration/index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="filter-configuration">
+                <!-- Header Section -->
+                <div class="filter-header">
+                    <h2 class="filter-title">Filter Configuration</h2>
+                    <p class="filter-description">
+                        Configure date filters and active conditions for each organization and object.
+                    </p>
+                    <div class="config-info">
+                        <span class="config-name" id="config-name">Loading configuration...</span>
+                        <span class="org-count" id="org-count">0 orgs</span>
+                        <span class="object-count" id="object-count">0 objects</span>
+                    </div>
+                </div>
+
+                <!-- Progress Steps -->
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-icon"><i data-lucide="building"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Organizations</div>
+                            <div class="step-description">Selected</div>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step completed">
+                        <div class="step-icon"><i data-lucide="database"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Objects & Fields</div>
+                            <div class="step-description">Configured</div>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step active">
+                        <div class="step-icon"><i data-lucide="filter"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Filters</div>
+                            <div class="step-description">Date & Active</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Configuration Panel -->
+                <div class="filter-panel">
+                    <!-- Organization Selector -->
+                    <div class="org-selector">
+                        <div class="selector-header">
+                            <h3>Select Organization</h3>
+                            <div class="org-info">
+                                <span class="current-org" id="current-org">No organization selected</span>
+                            </div>
+                        </div>
+                        <div class="org-dropdown">
+                            <select id="org-select" class="org-select">
+                                <option value="">Choose an organization...</option>
+                                <!-- Organizations will be populated here -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Object Search and Selection -->
+                    <div class="object-search-section" id="object-search-section" style="display: none;">
+                        <div class="search-header">
+                            <h3>Select Object</h3>
+                            <div class="search-controls">
+                                <div class="search-box">
+                                    <i data-lucide="search" class="search-icon"></i>
+                                    <input type="text" id="object-search" placeholder="Search objects..." />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="objects-grid" id="objects-grid">
+                            <!-- Objects will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Filter Configuration Form -->
+                    <div class="filter-form" id="filter-form" style="display: none;">
+                        <div class="form-header">
+                            <h3>Configure Filters</h3>
+                            <div class="form-info">
+                                <span class="selected-org" id="selected-org">Organization</span>
+                                <span class="separator">•</span>
+                                <span class="selected-object" id="selected-object">Object</span>
+                            </div>
+                        </div>
+
+                        <!-- Active Conditions Section -->
+                        <div class="filter-section">
+                            <div class="section-header">
+                                <h4>
+                                    <i data-lucide="toggle-left"></i>
+                                    Active Conditions
+                                </h4>
+                                <div class="section-toggle">
+                                    <input type="checkbox" id="enable-active-filter" class="toggle-checkbox">
+                                    <label for="enable-active-filter" class="toggle-label">Enable</label>
+                                </div>
+                            </div>
+                            
+                            <div class="active-config" id="active-config">
+                                <div class="fields-selection">
+                                    <h5>Available Fields</h5>
+                                    <div class="fields-list" id="active-fields-list">
+                                        <!-- Active fields will be populated here -->
+                                    </div>
+                                </div>
+                                
+                                <div class="condition-builder">
+                                    <h5>Active Condition</h5>
+                                    <div class="condition-input">
+                                        <textarea id="active-condition" 
+                                                placeholder="e.g., SBQQ__Active__c = TRUE"
+                                                rows="3"></textarea>
+                                        <div class="condition-help">
+                                            <i data-lucide="info"></i>
+                                            <span>Build a condition using selected active fields</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Date Filters Section -->
+                        <div class="filter-section">
+                            <div class="section-header">
+                                <h4>
+                                    <i data-lucide="calendar"></i>
+                                    Date Filters
+                                </h4>
+                                <div class="section-toggle">
+                                    <input type="checkbox" id="enable-date-filter" class="toggle-checkbox">
+                                    <label for="enable-date-filter" class="toggle-label">Enable</label>
+                                </div>
+                            </div>
+                            
+                            <div class="date-config" id="date-config">
+                                <!-- Created Date Filter -->
+                                <div class="date-filter-group">
+                                    <div class="date-filter-header">
+                                        <h5>Created Date</h5>
+                                        <input type="checkbox" id="enable-created-filter" class="filter-checkbox">
+                                    </div>
+                                    <div class="date-range" id="created-date-range">
+                                        <div class="date-input">
+                                            <label for="created-start">From</label>
+                                            <input type="date" id="created-start" class="date-field">
+                                        </div>
+                                        <div class="date-input">
+                                            <label for="created-end">To</label>
+                                            <input type="date" id="created-end" class="date-field">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modified Date Filter -->
+                                <div class="date-filter-group">
+                                    <div class="date-filter-header">
+                                        <h5>Last Modified Date</h5>
+                                        <input type="checkbox" id="enable-modified-filter" class="filter-checkbox">
+                                    </div>
+                                    <div class="date-range" id="modified-date-range">
+                                        <div class="date-input">
+                                            <label for="modified-start">From</label>
+                                            <input type="date" id="modified-start" class="date-field">
+                                        </div>
+                                        <div class="date-input">
+                                            <label for="modified-end">To</label>
+                                            <input type="date" id="modified-end" class="date-field">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filter Actions -->
+                        <div class="filter-actions">
+                            <button id="preview-filter-btn" class="btn btn-secondary">
+                                <i data-lucide="eye"></i>
+                                Preview Filter
+                            </button>
+                            <button id="save-filter-btn" class="btn btn-primary">
+                                <i data-lucide="save"></i>
+                                Save Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Summary -->
+                <div class="filter-summary" id="filter-summary">
+                    <div class="summary-header">
+                        <h3>Filter Summary</h3>
+                        <div class="summary-stats">
+                            <span class="stat-item">
+                                <span class="stat-number" id="configured-count">0</span>
+                                <span class="stat-label">Configured</span>
+                            </span>
+                            <span class="stat-item">
+                                <span class="stat-number" id="total-count">0</span>
+                                <span class="stat-label">Total</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-content">
+                        <div class="summary-grid" id="summary-grid">
+                            <!-- Filter summaries will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="action-bar">
+                    <div class="action-left">
+                        <button id="back-to-objects-btn" class="btn btn-outline">
+                            <i data-lucide="arrow-left"></i>
+                            Back to Objects
+                        </button>
+                    </div>
+                    <div class="action-right">
+                        <button id="finish-config-btn" class="btn btn-primary" disabled>
+                            <i data-lucide="check"></i>
+                            Finish Configuration
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Modal -->
+                <div id="preview-modal" class="modal hidden">
+                    <div class="modal-overlay"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Filter Preview</h3>
+                            <button class="modal-close" id="close-preview-modal">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="preview-content">
+                                <div class="preview-section">
+                                    <h4>SOQL Query Preview</h4>
+                                    <div class="query-preview" id="query-preview">
+                                        <!-- Generated SOQL will be shown here -->
+                                    </div>
+                                </div>
+                                <div class="preview-section">
+                                    <h4>Filter Details</h4>
+                                    <div class="filter-details" id="filter-details">
+                                        <!-- Filter breakdown will be shown here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="copy-query-btn" class="btn btn-secondary">
+                                <i data-lucide="copy"></i>
+                                Copy Query
+                            </button>
+                            <button id="apply-preview-btn" class="btn btn-primary">
+                                <i data-lucide="check"></i>
+                                Apply This Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/data-comparison/filterConfiguration/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "name": "cpq-toolset-v2",
+  "publisher": "aviral",
+  "version": "2.0.0",
+  "main": "extension.js",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "activationEvents": [
+    "onCommand:cpq-toolset.launch"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "cpq-toolset.launch",
+        "title": "CPQ Toolset: Launch Tool"
+      }
+    ],
+    "configuration": {
+      "title": "CPQ Toolset",
+      "properties": {
+        "cpq-toolset.salesforceCliPath": {
+          "type": "string",
+          "default": "",
+          "description": "Full path to Salesforce CLI executable (sf or sfdx). Leave empty for auto-detection.",
+          "examples": [
+            "C:\\Program Files\\Salesforce CLI\\bin\\sf.exe",
+            "/usr/local/bin/sf",
+            "/opt/homebrew/bin/sf"
+          ],
+          "scope": "window"
+        },
+        "cpq-toolset.enableDebugLogging": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable debug logging for CPQ Toolset operations",
+          "scope": "window"
+        },
+        "cpq-toolset.defaultTimeout": {
+          "type": "number",
+          "default": 120000,
+          "description": "Default timeout for SFDX commands in milliseconds",
+          "minimum": 10000,
+          "maximum": 600000,
+          "scope": "window"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build-server": "node scripts/build-server.js",
+    "build-extension": "node scripts/build-extension.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.5"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "multer": "^2.0.1",
+    "open": "^10.1.2",
+    "sqlite3": "^5.1.7"
+  }
+}

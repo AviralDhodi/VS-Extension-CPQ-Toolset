@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Org Selection - Data Comparison</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="org-selection-header">
+            <div class="header-content">
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Data Comparison</span>
+                    <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+                    <span class="breadcrumb-item active">Organization Selection</span>
+                </div>
+                <h1 class="page-title">Select Organizations</h1>
+                <p class="page-description">
+                    Choose the Salesforce organizations you want to compare for CPQ configuration differences.
+                </p>
+            </div>
+        </header>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step active" id="step-orgs">
+                <div class="step-icon">
+                    <i data-lucide="building"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Select Organizations</div>
+                    <div class="step-description">Choose orgs to compare</div>
+                </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" id="step-config">
+                <div class="step-icon">
+                    <i data-lucide="settings"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Generate Configuration</div>
+                    <div class="step-description">Create config file</div>
+                </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" id="step-objects">
+                <div class="step-icon">
+                    <i data-lucide="database"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Object & Date Filters</div>
+                    <div class="step-description">Configure per object per org</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="org-selection-main">
+            <!-- Loading State -->
+            <div id="loading-state" class="state-container loading-state">
+                <div class="loading-content">
+                    <div class="loading-spinner"></div>
+                    <h3 class="loading-title">Loading Organizations</h3>
+                    <p class="loading-text">Fetching authenticated Salesforce organizations...</p>
+                    <div class="loading-details">
+                        <span class="loading-step">Executing: sf org list --json</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="state-container error-state hidden">
+                <div class="error-content">
+                    <div class="error-icon">
+                        <i data-lucide="alert-circle"></i>
+                    </div>
+                    <h3 class="error-title">Failed to Load Organizations</h3>
+                    <p class="error-message" id="error-message">An error occurred while loading organizations.</p>
+                    <div class="error-actions">
+                        <button id="retry-btn" class="btn btn-secondary">
+                            <i data-lucide="refresh-cw"></i>
+                            Try Again
+                        </button>
+                        <button id="back-btn" class="btn btn-outline">
+                            <i data-lucide="arrow-left"></i>
+                            Back to Welcome
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Org Selection State -->
+            <div id="org-selection-state" class="state-container org-selection-state hidden">
+                <div class="selection-header">
+                    <h3>Available Organizations</h3>
+                    <div class="selection-toolbar">
+                        <div class="selection-info">
+                            <span id="selection-count">0 organizations selected</span>
+                            <span class="selection-requirement">(select 2 or more)</span>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button id="select-all-btn" class="btn-link">
+                                <i data-lucide="check-square"></i>
+                                Select All
+                            </button>
+                            <button id="clear-selection-btn" class="btn-link">
+                                <i data-lucide="square"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="orgs-container" class="orgs-container">
+                    <div id="orgs-list" class="orgs-list">
+                        <!-- Organizations will be populated here -->
+                    </div>
+                </div>
+
+                <div class="selection-actions">
+                    <button id="generate-config-btn" class="btn btn-primary" disabled>
+                        <i data-lucide="save"></i>
+                        Generate Configuration
+                    </button>
+                </div>
+            </div>
+
+            <!-- Config Generation State -->
+            <div id="config-generation-state" class="state-container config-generation-state hidden">
+                <div class="generation-content">
+                    <div class="generation-icon">
+                        <i data-lucide="settings"></i>
+                    </div>
+                    <h3 class="generation-title">Generating Configuration</h3>
+                    <p class="generation-text">Creating configuration file with selected organizations...</p>
+                    
+                    <div class="generation-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="generation-progress-fill"></div>
+                        </div>
+                        <div class="progress-text" id="generation-progress-text">0%</div>
+                    </div>
+
+                    <div class="generation-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Organizations:</span>
+                            <span id="generation-org-count" class="detail-value">0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Config File:</span>
+                            <span id="generation-filename" class="detail-value">Generating...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success State -->
+            <div id="success-state" class="state-container success-state hidden">
+                <div class="success-content">
+                    <div class="success-icon">
+                        <i data-lucide="check-circle"></i>
+                    </div>
+                    <h3 class="success-title">Configuration Generated Successfully!</h3>
+                    <p class="success-text">Your comparison configuration has been created and saved.</p>
+                    
+                    <div class="config-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">Configuration File:</span>
+                            <span id="success-filename" class="summary-value">config_xxx.json</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Organizations:</span>
+                            <span id="success-org-count" class="summary-value">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Created:</span>
+                            <span id="success-created-time" class="summary-value">Just now</span>
+                        </div>
+                    </div>
+
+                    <div class="success-actions">
+                        <button id="proceed-to-objects-btn" class="btn btn-primary">
+                            <i data-lucide="database"></i>
+                            Configure Objects & Date Filters
+                        </button>
+                        <button id="create-another-btn" class="btn btn-outline">
+                            <i data-lucide="plus"></i>
+                            Create Another Configuration
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+</body>
+</html>

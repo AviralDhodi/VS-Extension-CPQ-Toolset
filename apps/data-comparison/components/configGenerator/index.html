@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Generator</title>
+    <link rel="stylesheet" href="/data-comparison/configGenerator/index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="config-generator">
+                <!-- Header Section -->
+                <div class="generator-header">
+                    <h2 class="generator-title">Configuration Generator</h2>
+                    <p class="generator-description">
+                        Create a new CPQ data comparison configuration by selecting organizations and defining comparison parameters.
+                    </p>
+                </div>
+
+                <!-- Progress Steps -->
+                <div class="progress-steps">
+                    <div class="step active" id="step-orgs">
+                        <div class="step-icon">
+                            <i data-lucide="building"></i>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">Select Organizations</div>
+                            <div class="step-description">Choose orgs to compare</div>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" id="step-config">
+                        <div class="step-icon">
+                            <i data-lucide="settings"></i>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">Generate Configuration</div>
+                            <div class="step-description">Create config file</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State: Org Selection -->
+                <div id="org-selection-state" class="generator-state active">
+                    <div class="state-header">
+                        <h3>Select Organizations</h3>
+                        <p>Choose 2 or more Salesforce organizations to compare</p>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="orgs-loading" class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Loading authenticated organizations...</p>
+                    </div>
+
+                    <!-- Error State -->
+                    <div id="orgs-error" class="error-state hidden">
+                        <div class="error-icon">
+                            <i data-lucide="x-circle"></i>
+                        </div>
+                        <div class="error-content">
+                            <h4>Failed to Load Organizations</h4>
+                            <p id="orgs-error-message">An error occurred while loading organizations.</p>
+                            <button id="retry-orgs-btn" class="btn btn-secondary">
+                                <i data-lucide="refresh-cw"></i>
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Org List -->
+                    <div id="orgs-content" class="orgs-content hidden">
+                        <div class="orgs-toolbar">
+                            <div class="selection-info">
+                                <span id="selection-count">0 organizations selected</span>
+                                <span class="selection-requirement">(minimum 2 required)</span>
+                            </div>
+                            <div class="toolbar-actions">
+                                <button id="select-all-orgs" class="btn-link">Select All</button>
+                                <button id="clear-orgs" class="btn-link">Clear</button>
+                            </div>
+                        </div>
+
+                        <div id="orgs-list" class="orgs-list">
+                            <!-- Organizations will be populated here -->
+                        </div>
+
+                        <div class="orgs-actions">
+                            <button id="validate-orgs-btn" class="btn btn-secondary" disabled>
+                                <i data-lucide="check-circle"></i>
+                                Validate Organizations
+                            </button>
+                            <button id="proceed-config-btn" class="btn btn-primary" disabled>
+                                <i data-lucide="arrow-right"></i>
+                                Generate Configuration
+                            </button>
+                        </div>
+
+                        <!-- Validation Results -->
+                        <div id="validation-results" class="validation-results hidden">
+                            <h4>Validation Results</h4>
+                            <div id="validation-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State: Config Creation -->
+                <div id="config-creation-state" class="generator-state hidden">
+                    <div class="state-header">
+                        <h3>Generating Configuration</h3>
+                        <p>Creating configuration file with selected organizations</p>
+                    </div>
+
+                    <!-- Config Progress -->
+                    <div class="config-progress">
+                        <div class="progress-info">
+                            <div class="progress-title" id="config-progress-title">Initializing...</div>
+                            <div class="progress-details" id="config-progress-details">Starting configuration generation process</div>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="config-progress-fill" style="width: 0%"></div>
+                        </div>
+                        
+                        <div class="progress-stats">
+                            <span class="progress-percentage" id="config-progress-percentage">0%</span>
+                            <span class="progress-commands" id="config-progress-commands">0 / 0 commands</span>
+                        </div>
+                    </div>
+
+                    <!-- SFDX Command Log -->
+                    <div class="sfdx-log">
+                        <div class="log-header">
+                            <h4>SFDX Operations</h4>
+                            <button id="toggle-sfdx-log" class="btn-link">
+                                <i data-lucide="chevron-down"></i>
+                                Show Details
+                            </button>
+                        </div>
+                        <div id="sfdx-log-content" class="log-content hidden">
+                            <!-- SFDX command logs will appear here -->
+                        </div>
+                    </div>
+
+                    <!-- Config Success -->
+                    <div id="config-success" class="config-success hidden">
+                        <div class="success-icon">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div class="success-content">
+                            <h4>Configuration Generated Successfully!</h4>
+                            <div class="config-summary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Configuration File:</span>
+                                    <span class="summary-value" id="config-filename">config_xxx.json</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Organizations:</span>
+                                    <span class="summary-value" id="config-orgs-count">0</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Created:</span>
+                                    <span class="summary-value" id="config-created-time">Just now</span>
+                                </div>
+                            </div>
+                            <div class="success-actions">
+                                <button id="start-object-selection-btn" class="btn btn-primary">
+                                    <i data-lucide="database"></i>
+                                    Start Object Selection
+                                </button>
+                                <button id="create-another-config-btn" class="btn btn-secondary">
+                                    <i data-lucide="plus"></i>
+                                    Create Another Configuration
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Config Error -->
+                    <div id="config-error" class="config-error hidden">
+                        <div class="error-icon">
+                            <i data-lucide="x-circle"></i>
+                        </div>
+                        <div class="error-content">
+                            <h4>Configuration Generation Failed</h4>
+                            <p id="config-error-message">An error occurred during configuration generation.</p>
+                            <div class="error-actions">
+                                <button id="retry-config-btn" class="btn btn-secondary">
+                                    <i data-lucide="refresh-cw"></i>
+                                    Retry Generation
+                                </button>
+                                <button id="back-to-orgs-btn" class="btn btn-outline">
+                                    <i data-lucide="arrow-left"></i>
+                                    Back to Org Selection
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/data-comparison/configGenerator/index.js"></script>
+</body>
+</html>

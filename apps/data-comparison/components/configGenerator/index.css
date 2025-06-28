@@ -1,0 +1,775 @@
+/* ========================================
+   CONFIG GENERATOR THEME INHERITANCE
+   ======================================== */
+:root {
+    /* Default Light Theme (fallback if shell doesn't provide) */
+    --app-bg-primary: #ffffff;
+    --app-bg-secondary: #f8fafc;
+    --app-bg-tertiary: #f1f5f9;
+    --app-text-primary: #1e293b;
+    --app-text-secondary: #64748b;
+    --app-text-tertiary: #94a3b8;
+    --app-border: #e2e8f0;
+    --app-border-hover: #cbd5e1;
+    --app-accent: #3b82f6;
+    --app-accent-hover: #2563eb;
+    --app-success: #10b981;
+    --app-warning: #f59e0b;
+    --app-error: #ef4444;
+    --app-transition: all 0.3s ease;
+    --app-border-radius: 8px;
+    --app-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --app-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+    
+    /* Config Generator specific colors */
+    --generator-primary: #8b5cf6;
+    --generator-primary-hover: #7c3aed;
+    --generator-secondary: #06b6d4;
+    --generator-secondary-hover: #0891b2;
+}
+
+[data-theme="dark"] {
+    --app-bg-primary: #0f172a;
+    --app-bg-secondary: #1e293b;
+    --app-bg-tertiary: #334155;
+    --app-text-primary: #f8fafc;
+    --app-text-secondary: #cbd5e1;
+    --app-text-tertiary: #94a3b8;
+    --app-border: #334155;
+    --app-border-hover: #475569;
+    --app-accent: #60a5fa;
+    --app-accent-hover: #3b82f6;
+    --app-success: #34d399;
+    --app-warning: #fbbf24;
+    --app-error: #f87171;
+    --app-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --app-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: var(--app-bg-primary);
+    color: var(--app-text-primary);
+    line-height: 1.6;
+    transition: var(--app-transition);
+    margin: 0;
+    padding: 0;
+}
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--app-bg-primary);
+}
+
+.app-main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ========================================
+   CONFIG GENERATOR LAYOUT
+   ======================================== */
+.config-generator {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.generator-header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.generator-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--app-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.generator-description {
+    font-size: 1.125rem;
+    color: var(--app-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   PROGRESS STEPS
+   ======================================== */
+.progress-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    padding: 0 2rem;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: var(--app-border-radius);
+    background: var(--app-bg-secondary);
+    border: 2px solid var(--app-border);
+    transition: var(--app-transition);
+    opacity: 0.6;
+}
+
+.step.active {
+    opacity: 1;
+    border-color: var(--generator-primary);
+    background: var(--generator-primary);
+    color: white;
+}
+
+.step.completed {
+    opacity: 1;
+    border-color: var(--app-success);
+    background: var(--app-success);
+    color: white;
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    color: inherit;
+}
+
+.step.active .step-icon,
+.step.completed .step-icon {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.step:not(.active):not(.completed) .step-icon {
+    background: var(--app-bg-tertiary);
+    color: var(--app-text-tertiary);
+}
+
+.step-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-title {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.step-description {
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+.step-connector {
+    width: 60px;
+    height: 2px;
+    background: var(--app-border);
+    margin: 0 1rem;
+}
+
+/* ========================================
+   GENERATOR STATES
+   ======================================== */
+.generator-state {
+    background: var(--app-bg-secondary);
+    border-radius: calc(var(--app-border-radius) * 1.5);
+    padding: 2rem;
+    border: 1px solid var(--app-border);
+    display: none;
+}
+
+.generator-state.active {
+    display: block;
+}
+
+.state-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.state-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--app-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.state-header p {
+    color: var(--app-text-secondary);
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--app-border);
+    border-top: 3px solid var(--generator-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: var(--app-text-secondary);
+    font-size: 1rem;
+}
+
+/* ========================================
+   ERROR STATES
+   ======================================== */
+.error-state,
+.config-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 3rem;
+    text-align: center;
+}
+
+.error-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--app-error);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-content h4 {
+    color: var(--app-text-primary);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.error-content p {
+    color: var(--app-text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* ========================================
+   ORG SELECTION
+   ======================================== */
+.orgs-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.orgs-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--app-bg-tertiary);
+    border-radius: var(--app-border-radius);
+}
+
+.selection-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.selection-requirement {
+    color: var(--app-text-tertiary);
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.orgs-list {
+    display: grid;
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.org-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--app-bg-primary);
+    border: 2px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    cursor: pointer;
+    transition: var(--app-transition);
+}
+
+.org-item:hover {
+    border-color: var(--app-border-hover);
+    background: var(--app-bg-tertiary);
+}
+
+.org-item.selected {
+    border-color: var(--generator-primary);
+    background: rgba(139, 92, 246, 0.1);
+}
+
+.org-checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.org-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--generator-primary);
+}
+
+.org-info {
+    flex: 1;
+}
+
+.org-name {
+    font-weight: 600;
+    color: var(--app-text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.org-details {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+}
+
+.org-username {
+    color: var(--app-text-secondary);
+}
+
+.org-status {
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.org-status.connected {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--app-success);
+}
+
+.org-status.disconnected {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--app-error);
+}
+
+.org-type {
+    padding: 0.25rem 0.75rem;
+    background: var(--app-bg-tertiary);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: var(--app-text-tertiary);
+}
+
+.orgs-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* ========================================
+   CONFIG CREATION PROGRESS
+   ======================================== */
+.config-progress {
+    background: var(--app-bg-tertiary);
+    border-radius: var(--app-border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-info {
+    margin-bottom: 1rem;
+}
+
+.progress-title {
+    font-weight: 600;
+    color: var(--app-text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.progress-details {
+    color: var(--app-text-secondary);
+    font-size: 0.875rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--app-border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--generator-primary), var(--generator-secondary));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.progress-percentage {
+    font-weight: 600;
+    color: var(--generator-primary);
+}
+
+.progress-commands {
+    color: var(--app-text-secondary);
+}
+
+/* ========================================
+   SFDX LOG
+   ======================================== */
+.sfdx-log {
+    background: var(--app-bg-primary);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    margin-bottom: 1.5rem;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--app-border);
+}
+
+.log-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--app-text-primary);
+}
+
+.log-content {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 1rem;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.log-entry {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.log-timestamp {
+    color: var(--app-text-tertiary);
+    font-weight: 500;
+    min-width: 70px;
+}
+
+.log-message {
+    color: var(--app-text-secondary);
+    flex: 1;
+}
+
+.log-entry.info .log-message {
+    color: var(--app-accent);
+}
+
+.log-entry.success .log-message {
+    color: var(--app-success);
+}
+
+.log-entry.error .log-message {
+    color: var(--app-error);
+}
+
+/* ========================================
+   SUCCESS STATE
+   ======================================== */
+.config-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 3rem;
+    text-align: center;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--app-success);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-content h4 {
+    color: var(--app-text-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.config-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--app-border);
+}
+
+.summary-label {
+    color: var(--app-text-secondary);
+    font-weight: 500;
+}
+
+.summary-value {
+    color: var(--app-text-primary);
+    font-weight: 600;
+}
+
+.success-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--app-border-radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--app-transition);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: var(--generator-primary);
+    color: white;
+}
+
+.btn-primary:not(:disabled):hover {
+    background: var(--generator-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--app-shadow);
+}
+
+.btn-secondary {
+    background: var(--generator-secondary);
+    color: white;
+}
+
+.btn-secondary:not(:disabled):hover {
+    background: var(--generator-secondary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--app-shadow);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--app-text-primary);
+    border: 2px solid var(--app-border);
+}
+
+.btn-outline:hover {
+    border-color: var(--app-border-hover);
+    background: var(--app-bg-tertiary);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--app-accent);
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: var(--app-transition);
+}
+
+.btn-link:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--app-accent-hover);
+}
+
+/* ========================================
+   UTILITIES
+   ======================================== */
+.hidden {
+    display: none !important;
+}
+
+/* ========================================
+   VALIDATION RESULTS
+   ======================================== */
+.validation-results {
+    margin-top: 1.5rem;
+    background: var(--app-bg-primary);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    padding: 1.5rem;
+}
+
+.validation-results h4 {
+    margin-bottom: 1rem;
+    color: var(--app-text-primary);
+}
+
+#validation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.validation-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: var(--app-border-radius);
+    background: var(--app-bg-tertiary);
+}
+
+.validation-item.valid {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--app-success);
+}
+
+.validation-item.invalid {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--app-error);
+}
+
+.validation-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.validation-item.valid .validation-icon {
+    color: var(--app-success);
+}
+
+.validation-item.invalid .validation-icon {
+    color: var(--app-error);
+}
+
+.validation-org {
+    font-weight: 600;
+    color: var(--app-text-primary);
+    min-width: 200px;
+}
+
+.validation-message {
+    color: var(--app-text-secondary);
+    flex: 1;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .app-main {
+        padding: 1rem;
+    }
+    
+    .generator-title {
+        font-size: 1.75rem;
+    }
+    
+    .progress-steps {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .step-connector {
+        display: none;
+    }
+    
+    .orgs-actions {
+        flex-direction: column;
+    }
+    
+    .success-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+}

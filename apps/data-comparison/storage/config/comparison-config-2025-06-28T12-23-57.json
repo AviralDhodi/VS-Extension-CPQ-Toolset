@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "createdAt": "2025-06-28T12:23:57.513Z",
+  "createdBy": "Config Generator v2",
+  "orgs": [
+    {
+      "username": "aviral@mohanstationers.com",
+      "alias": "aviral@mohanstationers.com",
+      "type": "unknown"
+    },
+    {
+      "username": "aviral@mohanstationers.com",
+      "alias": "aviral@mohanstationers.com",
+      "type": "unknown"
+    }
+  ],
+  "metadata": {
+    "orgNames": [
+      "aviral@mohanstationers.com",
+      "aviral@mohanstationers.com"
+    ],
+    "totalOrgs": 2,
+    "configType": "multi-org-comparison"
+  },
+  "objects": {},
+  "settings": {
+    "includeStandardObjects": true,
+    "includeCustomObjects": true,
+    "maxFieldsPerObject": 50
+  }
+}

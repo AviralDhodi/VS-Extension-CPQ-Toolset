@@ -1,0 +1,376 @@
+/* ========================================
+   DATA COMPARISON APP THEME INHERITANCE
+   ======================================== */
+:root {
+    /* Default Light Theme (fallback if shell doesn't provide) */
+    --app-bg-primary: #ffffff;
+    --app-bg-secondary: #f8fafc;
+    --app-bg-tertiary: #f1f5f9;
+    --app-text-primary: #1e293b;
+    --app-text-secondary: #64748b;
+    --app-text-tertiary: #94a3b8;
+    --app-border: #e2e8f0;
+    --app-border-hover: #cbd5e1;
+    --app-accent: #3b82f6;
+    --app-accent-hover: #2563eb;
+    --app-success: #10b981;
+    --app-warning: #f59e0b;
+    --app-error: #ef4444;
+    --app-transition: all 0.3s ease;
+    --app-border-radius: 8px;
+    --app-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --app-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+    
+    /* App-specific variables */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    /* Data Comparison specific colors */
+    --upload-color: #8b5cf6;
+    --upload-color-hover: #7c3aed;
+    --create-color: #06b6d4;
+    --create-color-hover: #0891b2;
+}
+
+/* Dark Theme Override (when data-theme="dark" is set by shell) */
+[data-theme="dark"] {
+    --app-bg-primary: #0f172a;
+    --app-bg-secondary: #1e293b;
+    --app-bg-tertiary: #334155;
+    --app-text-primary: #f8fafc;
+    --app-text-secondary: #cbd5e1;
+    --app-text-tertiary: #94a3b8;
+    --app-border: #334155;
+    --app-border-hover: #475569;
+    --app-accent: #60a5fa;
+    --app-accent-hover: #3b82f6;
+    --app-success: #34d399;
+    --app-warning: #fbbf24;
+    --app-error: #f87171;
+    --app-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --app-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: var(--app-bg-primary);
+    color: var(--app-text-primary);
+    line-height: 1.6;
+    transition: var(--app-transition);
+    margin: 0;
+    padding: 0;
+}
+
+/* Override app styles - remove duplicate headers/footers when in shell */
+.app-header, .app-footer {
+    display: none;
+}
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    background: var(--app-bg-primary);
+}
+
+.app-main {
+    flex: 1;
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
+    background: var(--app-bg-primary);
+}
+
+/* ========================================
+   WELCOME SECTION
+   ======================================== */
+.welcome-section {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.welcome-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--app-text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.welcome-description {
+    font-size: 1.125rem;
+    color: var(--app-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ========================================
+   OPTIONS CONTAINER
+   ======================================== */
+.options-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.option-card {
+    background: var(--app-bg-secondary);
+    border: 2px solid var(--app-border);
+    border-radius: calc(var(--app-border-radius) * 1.5);
+    padding: var(--spacing-xl);
+    transition: var(--app-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.option-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--app-shadow-lg);
+    border-color: var(--app-border-hover);
+}
+
+.option-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--upload-color), var(--create-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.option-card:hover::before {
+    opacity: 1;
+}
+
+.option-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+    color: white;
+    position: relative;
+}
+
+.upload-icon {
+    background: linear-gradient(135deg, var(--upload-color), var(--upload-color-hover));
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+}
+
+.create-icon {
+    background: linear-gradient(135deg, var(--create-color), var(--create-color-hover));
+    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+}
+
+.option-icon .icon {
+    width: 28px;
+    height: 28px;
+}
+
+.option-content {
+    margin-bottom: var(--spacing-xl);
+}
+
+.option-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--app-text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.option-description {
+    color: var(--app-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+}
+
+.option-features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--app-text-secondary);
+}
+
+.feature-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--app-accent);
+    flex-shrink: 0;
+}
+
+.option-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: none;
+    border-radius: var(--app-border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--app-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-btn {
+    background: linear-gradient(135deg, var(--upload-color), var(--upload-color-hover));
+    color: white;
+}
+
+.create-btn {
+    background: linear-gradient(135deg, var(--create-color), var(--create-color-hover));
+    color: white;
+}
+
+.option-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.option-button:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: var(--app-shadow-lg);
+}
+
+.button-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.coming-soon {
+    position: absolute;
+    top: -2px;
+    right: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+/* ========================================
+   INFO SECTION
+   ======================================== */
+.info-section {
+    margin-top: var(--spacing-xl);
+}
+
+.info-card {
+    background: var(--app-bg-tertiary);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    padding: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.info-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--app-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.info-icon .icon {
+    width: 20px;
+    height: 20px;
+}
+
+.info-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--app-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.info-text {
+    color: var(--app-text-secondary);
+    line-height: 1.6;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .app-main {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+    
+    .welcome-title {
+        font-size: 1.875rem;
+    }
+    
+    .welcome-description {
+        font-size: 1rem;
+    }
+    
+    .options-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    .option-card {
+        padding: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .option-icon {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .option-icon .icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .option-title {
+        font-size: 1.25rem;
+    }
+}
