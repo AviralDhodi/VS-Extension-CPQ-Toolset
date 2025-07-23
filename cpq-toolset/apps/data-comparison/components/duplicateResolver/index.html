@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicate Foreign Key Resolution - CPQ Toolset</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <link rel="stylesheet" href="/data-comparison/components/duplicateResolver/index.css">
+</head>
+<body class="slds-theme_dark">
+    <div class="slds-scope">
+        <!-- Page Header -->
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-data-integration-hub">
+                                <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#data_integration_hub"></use>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate">Duplicate Foreign Key Resolution</span>
+                                </h1>
+                            </div>
+                            <p class="slds-page-header__name-meta">Resolve duplicate foreign keys before comparison</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Banner -->
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+            <span class="slds-assistive-text">Warning</span>
+            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Warning">
+                <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#warning"></use>
+                </svg>
+            </span>
+            <h2>Duplicate foreign keys detected in your data</h2>
+            <p>Multiple records share the same foreign key value. Please resolve these duplicates before proceeding with the comparison.</p>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="slds-box slds-m-top_medium slds-m-bottom_medium">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <div class="slds-text-heading_small">Total Duplicates</div>
+                    <div class="slds-text-heading_large" id="total-duplicates">-</div>
+                </div>
+                <div class="slds-col">
+                    <div class="slds-text-heading_small">Affected Organizations</div>
+                    <div class="slds-text-heading_large" id="affected-orgs">-</div>
+                </div>
+                <div class="slds-col">
+                    <div class="slds-text-heading_small">Affected Objects</div>
+                    <div class="slds-text-heading_large" id="affected-objects">-</div>
+                </div>
+                <div class="slds-col">
+                    <div class="slds-text-heading_small">Resolution Progress</div>
+                    <div class="slds-text-heading_large" id="resolution-progress">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resolution Options -->
+        <div class="slds-box slds-m-bottom_medium">
+            <h3 class="slds-text-heading_small slds-m-bottom_small">Global Resolution Options</h3>
+            <div class="slds-button-group" role="group">
+                <button id="resolve-all-keep-first" class="slds-button slds-button_neutral">
+                    Keep First Record for All
+                </button>
+                <button id="resolve-all-keep-last" class="slds-button slds-button_neutral">
+                    Keep Last Record for All
+                </button>
+                <button id="skip-all-fks" class="slds-button slds-button_neutral">
+                    Skip All Foreign Keys
+                </button>
+            </div>
+        </div>
+
+        <!-- Duplicate Groups Container -->
+        <div id="duplicate-groups-container">
+            <!-- Dynamic content will be inserted here -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="slds-docked-form-footer">
+            <button id="cancel-btn" class="slds-button slds-button_neutral">Cancel</button>
+            <button id="apply-resolution-btn" class="slds-button slds-button_brand" disabled>Apply Resolution</button>
+        </div>
+    </div>
+
+    <!-- Templates -->
+    <template id="duplicate-group-template">
+        <article class="slds-card slds-m-bottom_medium duplicate-group">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title">
+                            <span class="org-name"></span> - <span class="object-name"></span>
+                        </h2>
+                        <p class="slds-text-body_small">
+                            Foreign Key: <span class="fk-field"></span> | 
+                            Value: <span class="fk-value"></span> | 
+                            <span class="record-count"></span> duplicate records
+                        </p>
+                    </div>
+                    <div class="slds-no-flex">
+                        <div class="slds-button-group">
+                            <button class="slds-button slds-button_icon slds-button_icon-border expand-btn" title="Expand/Collapse">
+                                <svg class="slds-button__icon" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            </div>
+            <div class="slds-card__body slds-card__body_inner duplicate-details" style="display: none;">
+                <div class="resolution-options slds-m-bottom_small">
+                    <fieldset class="slds-form-element">
+                        <legend class="slds-form-element__legend slds-form-element__label">
+                            <abbr class="slds-required" title="required">* </abbr>Resolution Action
+                        </legend>
+                        <div class="slds-form-element__control">
+                            <div class="slds-radio_button-group">
+                                <span class="slds-button slds-radio_button">
+                                    <input type="radio" name="resolution" value="keep" class="resolution-keep">
+                                    <label class="slds-radio_button__label">
+                                        <span class="slds-radio_faux">Keep Selected Record</span>
+                                    </label>
+                                </span>
+                                <span class="slds-button slds-radio_button">
+                                    <input type="radio" name="resolution" value="skip" class="resolution-skip">
+                                    <label class="slds-radio_button__label">
+                                        <span class="slds-radio_faux">Skip This Foreign Key</span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="records-table-container">
+                    <!-- Records table will be inserted here -->
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <template id="records-table-template">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th scope="col" style="width: 3rem;">
+                        <div class="slds-th__action">
+                            <span class="slds-assistive-text">Select Record</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action slds-th__action_sortable">
+                            <span class="slds-truncate">Record ID</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action slds-th__action_sortable">
+                            <span class="slds-truncate">Name</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Key Fields</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Differences</span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamic rows will be inserted here -->
+            </tbody>
+        </table>
+    </template>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="slds-backdrop" style="display: none;">
+        <div class="slds-spinner_container">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

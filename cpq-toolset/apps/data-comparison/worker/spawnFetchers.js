@@ -1,101 +1,316 @@
-const { fork } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const logger = require('../../../shared/logging/logger').createLogger({ appName: 'DataComparison-Spawn' });
+// CPQ Toolset v3 - Spawn Fetchers Coordinator
+const { spawn, fork } = require('child_process')
+const path = require('path')
+const fs = require('fs')
+const { logger } = require('../../../shared/utils/logger')
+const { getInstance: getPathResolver } = require('../../../shared/utils/pathResolver')
 
-function splitArrayIntoChunks(array, chunks) {
-    const result = [];
-    const chunkSize = Math.ceil(array.length / chunks);
-    for (let i = 0; i < array.length; i += chunkSize) {
-        result.push(array.slice(i, i + chunkSize));
+class FetchCoordinator {
+  constructor(options = {}) {
+    this.pathResolver = getPathResolver()
+    this.maxConcurrentFetchers = options.maxConcurrentFetchers || 3
+    this.timeout = options.timeout || 300000 // 5 minutes
+    this.activeFetchers = new Map()
+    this.fetchQueue = []
+    this.results = new Map()
+    this.errors = new Map()
+    this.progressCallback = options.progressCallback || null
+  }
+
+  /**
+   * Start parallel data fetching for multiple org-object combinations
+   */
+  async startParallelFetching(config, outputDir) {
+    const { orgs, objects } = config
+    
+    logger.info('Starting parallel data fetching', {
+      orgs: orgs.length,
+      objects: Object.keys(objects).length,
+      maxConcurrent: this.maxConcurrentFetchers
+    })
+
+    // Ensure output directory exists
+    this._ensureOutputDirectory(outputDir)
+
+    // Create fetch tasks for each org-object combination
+    const fetchTasks = this._createFetchTasks(orgs, objects, outputDir)
+    
+    logger.info(`Created ${fetchTasks.length} fetch tasks`)
+
+    // Execute tasks with concurrency control
+    return await this._executeFetchTasks(fetchTasks)
+  }
+
+  /**
+   * Create individual fetch tasks
+   */
+  _createFetchTasks(orgs, objects, outputDir) {
+    const tasks = []
+
+    for (const org of orgs) {
+      for (const [objectName, objectConfig] of Object.entries(objects)) {
+        tasks.push({
+          id: `${org}-${objectName}`,
+          org: org,
+          objectName: objectName,
+          objectConfig: objectConfig,
+          outputDir: path.join(outputDir, this._sanitizeOrgName(org)),
+          priority: objectConfig.priority || 1
+        })
+      }
     }
-    return result;
-}
 
-function isBufferDirEmpty(bufferDir) {
-    if (!fs.existsSync(bufferDir)) return true;
-    const files = fs.readdirSync(bufferDir);
-    return files.filter(f => f.endsWith('.jsonl') || f.endsWith('.lock')).length === 0;
-}
+    // Sort by priority (higher priority first)
+    tasks.sort((a, b) => b.priority - a.priority)
+    
+    return tasks
+  }
 
-function waitForBuffersToClear(bufferDir, timeout = 30000, interval = 500) {
+  /**
+   * Execute fetch tasks with concurrency control
+   */
+  async _executeFetchTasks(tasks) {
     return new Promise((resolve, reject) => {
-        const start = Date.now();
-        const check = () => {
-            if (isBufferDirEmpty(bufferDir)) return resolve();
-            if (Date.now() - start > timeout) {
-                return reject(new Error('Timeout waiting for buffers to clear'));
+      this.fetchQueue = [...tasks]
+      let completedTasks = 0
+      let totalTasks = tasks.length
+      let hasErrors = false
+
+      const processNext = () => {
+        // Start new fetchers if queue has tasks and we have capacity
+        while (this.fetchQueue.length > 0 && this.activeFetchers.size < this.maxConcurrentFetchers) {
+          const task = this.fetchQueue.shift()
+          this._startFetcher(task, (error, result) => {
+            completedTasks++
+            
+            if (error) {
+              hasErrors = true
+              this.errors.set(task.id, error)
+              logger.error(`Fetch failed for ${task.id}`, { error: error.message })
+            } else {
+              this.results.set(task.id, result)
+              logger.info(`Fetch completed for ${task.id}`, { 
+                records: result.recordCount,
+                duration: result.duration 
+              })
             }
-            setTimeout(check, interval);
-        };
-        check();
-    });
-}
 
-async function spawnFetchers(config, comparisonId, inputNumberOfProcesses) {
-    const numberOfOrgs = config.orgs.length;
-    const numberOfFetchers = inputNumberOfProcesses || numberOfOrgs;
-    const processPerOrg = Math.floor(numberOfFetchers / numberOfOrgs);
-    const objectEntries = Object.entries(config.objects);
-    const fetcherScript = path.resolve(__dirname, './fetcher.js');
-    const appendWriterScript = path.resolve(__dirname, './appendWriter.js');
-    const bufferDir = path.resolve(__dirname, `../data-extract/${comparisonId}/.buffers`);
+            // Update progress
+            if (this.progressCallback) {
+              this.progressCallback({
+                completed: completedTasks,
+                total: totalTasks,
+                currentTask: task.id,
+                errors: this.errors.size
+              })
+            }
 
-    const fetcherPromises = [];
+            // Process next task
+            processNext()
 
-    // 🌀 Start appendWriter first
-    const appendWriterProcess = fork(appendWriterScript, [], {
-        stdio: 'inherit',
-        env: { COMPARISON_ID: comparisonId }
-    });
-    logger.info('📂 AppendWriter started in parallel');
-
-    for (const org of config.orgs) {
-        const username = org.username;
-
-        const chunks = processPerOrg >= 1
-            ? splitArrayIntoChunks(objectEntries, processPerOrg)
-            : [objectEntries]; // all in one
-
-        chunks.forEach((chunk, index) => {
-            const payload = {
-                orgUsername: username,
-                comparisonId,
-                objects: chunk.map(([name, config]) => ({ name, config }))
-            };
-
-            fetcherPromises.push(
-                new Promise((resolve, reject) => {
-                    const child = fork(fetcherScript, [], {
-                        stdio: 'inherit',
-                        env: { FETCHER_PAYLOAD: JSON.stringify(payload) }
-                    });
-
-                    child.on('exit', (code) => {
-                        if (code === 0) resolve();
-                        else reject(new Error(`Fetcher exited with code ${code}`));
-                    });
+            // Check if all tasks completed
+            if (completedTasks === totalTasks) {
+              if (hasErrors && this.errors.size === totalTasks) {
+                reject(new Error(`All fetch tasks failed. First error: ${Array.from(this.errors.values())[0].message}`))
+              } else {
+                resolve({
+                  completed: completedTasks,
+                  successful: this.results.size,
+                  failed: this.errors.size,
+                  results: Object.fromEntries(this.results),
+                  errors: Object.fromEntries(this.errors)
                 })
-            );
+              }
+            }
+          })
+        }
+      }
 
-            logger.info('Spawned fetcher', {
-                org: username,
-                index,
-                objectCount: chunk.length
-            });
-        });
+      // Start initial batch
+      processNext()
+
+      // Handle case where no tasks to process
+      if (totalTasks === 0) {
+        resolve({
+          completed: 0,
+          successful: 0,
+          failed: 0,
+          results: {},
+          errors: {}
+        })
+      }
+    })
+  }
+
+  /**
+   * Start a single fetcher worker process
+   */
+  _startFetcher(task, callback) {
+    const fetcherPath = this.pathResolver.getWorkerPath('data-comparison', 'fetcher.js')
+    
+    logger.debug(`Starting fetcher for ${task.id}`, { 
+      org: task.org,
+      object: task.objectName 
+    })
+
+    // Ensure output directory exists
+    if (!fs.existsSync(task.outputDir)) {
+      fs.mkdirSync(task.outputDir, { recursive: true })
     }
 
-    await Promise.all(fetcherPromises);
-    logger.info('✅ All fetchers completed');
+    const fetcher = fork(fetcherPath, {
+      stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
+      cwd: this.pathResolver.extensionRoot,
+      env: {
+        ...process.env,
+        EXTENSION_ROOT: this.pathResolver.extensionRoot,
+        CPQ_BUNDLED: this.pathResolver.isBundled ? 'true' : 'false'
+      }
+    })
 
-    // Wait for appendWriter to finish remaining buffers
-    logger.info('⏳ Waiting for .buffers/ to clear...');
-    await waitForBuffersToClear(bufferDir);
-    logger.info('✅ All buffers processed');
+    const startTime = Date.now()
+    let completed = false
 
-    appendWriterProcess.kill(); // graceful shutdown (you can send SIGINT too)
-    logger.info('🏁 All fetchers and appendWriter completed');
+    // Store fetcher reference
+    this.activeFetchers.set(task.id, fetcher)
+
+    // Send task to fetcher
+    fetcher.send({
+      type: 'FETCH_TASK',
+      task: task
+    })
+
+    // Handle fetcher messages
+    fetcher.on('message', (message) => {
+      if (message.type === 'FETCH_COMPLETE' && !completed) {
+        completed = true
+        this.activeFetchers.delete(task.id)
+        
+        const duration = Date.now() - startTime
+        callback(null, {
+          ...message.result,
+          duration: duration
+        })
+        
+        fetcher.kill()
+      } else if (message.type === 'FETCH_ERROR' && !completed) {
+        completed = true
+        this.activeFetchers.delete(task.id)
+        
+        callback(new Error(message.error))
+        fetcher.kill()
+      } else if (message.type === 'FETCH_PROGRESS') {
+        // Forward progress updates
+        logger.debug(`Fetch progress for ${task.id}: ${message.progress}%`)
+      }
+    })
+
+    // Handle fetcher errors
+    fetcher.on('error', (error) => {
+      if (!completed) {
+        completed = true
+        this.activeFetchers.delete(task.id)
+        callback(error)
+      }
+    })
+
+    // Handle fetcher exit
+    fetcher.on('exit', (code, signal) => {
+      if (!completed) {
+        completed = true
+        this.activeFetchers.delete(task.id)
+        
+        const errorMsg = signal 
+          ? `Fetcher killed with signal ${signal}`
+          : `Fetcher exited with code ${code}`
+        
+        callback(new Error(errorMsg))
+      }
+    })
+
+    // Set timeout
+    setTimeout(() => {
+      if (!completed) {
+        completed = true
+        this.activeFetchers.delete(task.id)
+        
+        fetcher.kill('SIGKILL')
+        callback(new Error(`Fetch timeout for ${task.id}`))
+      }
+    }, this.timeout)
+  }
+
+  /**
+   * Sanitize org name for use as directory name
+   */
+  _sanitizeOrgName(orgName) {
+    return orgName.replace(/[@.]/g, '_')
+  }
+
+  /**
+   * Ensure output directory structure exists
+   */
+  _ensureOutputDirectory(outputDir) {
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true })
+      logger.info(`Created output directory: ${outputDir}`)
+    }
+  }
+
+  /**
+   * Cancel all active fetchers
+   */
+  cancelAll() {
+    logger.info(`Cancelling ${this.activeFetchers.size} active fetchers`)
+    
+    for (const [taskId, fetcher] of this.activeFetchers) {
+      try {
+        fetcher.kill('SIGTERM')
+        logger.debug(`Cancelled fetcher for ${taskId}`)
+      } catch (error) {
+        logger.warn(`Failed to cancel fetcher for ${taskId}`, { error: error.message })
+      }
+    }
+    
+    this.activeFetchers.clear()
+    this.fetchQueue = []
+  }
+
+  /**
+   * Get current status
+   */
+  getStatus() {
+    return {
+      activeFetchers: this.activeFetchers.size,
+      queuedTasks: this.fetchQueue.length,
+      completedResults: this.results.size,
+      errors: this.errors.size
+    }
+  }
+
+  /**
+   * Generate summary report
+   */
+  generateSummaryReport(outputDir) {
+    const summary = {
+      timestamp: new Date().toISOString(),
+      totalTasks: this.results.size + this.errors.size,
+      successful: this.results.size,
+      failed: this.errors.size,
+      successRate: this.results.size / (this.results.size + this.errors.size),
+      results: Object.fromEntries(this.results),
+      errors: Object.fromEntries(Array.from(this.errors.entries()).map(([key, error]) => [
+        key, 
+        { message: error.message, stack: error.stack }
+      ]))
+    }
+
+    const summaryPath = path.join(outputDir, 'fetch_summary.json')
+    fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2))
+    
+    logger.info(`Fetch summary written to: ${summaryPath}`)
+    return summary
+  }
 }
 
-module.exports = { spawnFetchers };
+module.exports = { FetchCoordinator }

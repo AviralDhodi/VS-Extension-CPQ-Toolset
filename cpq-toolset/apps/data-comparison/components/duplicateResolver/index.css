@@ -1,0 +1,216 @@
+/* Duplicate Resolver Component - SLDS 2.0 Dark Theme */
+.slds-scope {
+    min-height: 100vh;
+    background: var(--slds-g-color-neutral-base-1, #111827);
+}
+
+/* Card Styling */
+.duplicate-group {
+    transition: all 0.3s ease;
+}
+
+.duplicate-group:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.duplicate-group.expanded .expand-btn svg {
+    transform: rotate(180deg);
+}
+
+/* Resolution Options */
+.slds-radio_button-group {
+    display: inline-flex;
+}
+
+.slds-radio_button {
+    background: var(--slds-g-color-neutral-base-3, #1f2937);
+    border: 1px solid var(--slds-g-color-neutral-base-4, #374151);
+}
+
+.slds-radio_button:hover {
+    background: var(--slds-g-color-neutral-base-4, #374151);
+}
+
+.slds-radio_button input:checked + .slds-radio_button__label {
+    background: var(--slds-g-color-brand-base-50, #3b82f6);
+    border-color: var(--slds-g-color-brand-base-50, #3b82f6);
+}
+
+/* Records Table */
+.records-table-container {
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.slds-table_striped tbody tr:nth-of-type(even) {
+    background-color: var(--slds-g-color-neutral-base-2, #1f2937);
+}
+
+.slds-table_striped tbody tr:hover {
+    background-color: var(--slds-g-color-neutral-base-3, #374151);
+}
+
+.slds-table tbody tr.selected-record {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid var(--slds-g-color-brand-base-50, #3b82f6);
+}
+
+/* Differences Highlighting */
+.field-difference {
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    background: rgba(59, 130, 246, 0.05);
+    border: 1px solid var(--slds-g-color-brand-base-30, #60a5fa);
+    margin: 0.125rem 0;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.field-name {
+    font-weight: 600;
+    color: var(--slds-g-color-neutral-base-100, #f3f4f6);
+}
+
+.field-value {
+    color: var(--slds-g-color-neutral-base-80, #d1d5db);
+    background: var(--slds-g-color-neutral-base-3, #1f2937);
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+}
+
+.field-value.slds-text-color_warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--slds-g-color-warning-base-70, #fbbf24);
+}
+
+/* Summary Box */
+.slds-box {
+    background: var(--slds-g-color-neutral-base-2, #1f2937);
+    border: 1px solid var(--slds-g-color-neutral-base-4, #374151);
+}
+
+.slds-text-heading_large {
+    color: var(--slds-g-color-brand-base-50, #3b82f6);
+    font-weight: 700;
+}
+
+/* Alert Banner */
+.slds-notify_alert {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid var(--slds-g-color-warning-base-50, #f59e0b);
+}
+
+.slds-notify_alert h2 {
+    color: var(--slds-g-color-warning-base-70, #fbbf24);
+}
+
+/* Button States */
+#apply-resolution-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Loading States */
+.duplicate-group.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Record Selection Radio */
+.record-radio {
+    cursor: pointer;
+}
+
+.record-radio:checked {
+    accent-color: var(--slds-g-color-brand-base-50, #3b82f6);
+}
+
+/* Docked Footer */
+.slds-docked-form-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--slds-g-color-neutral-base-2, #1f2937);
+    border-top: 1px solid var(--slds-g-color-neutral-base-4, #374151);
+    padding: 1rem;
+    text-align: right;
+    z-index: 1000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .slds-grid.slds-gutters {
+        flex-direction: column;
+    }
+    
+    .slds-docked-form-footer {
+        text-align: center;
+    }
+    
+    .slds-docked-form-footer button {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}
+
+/* Key Fields Display */
+.key-fields-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.key-fields-list li {
+    padding: 0.125rem 0;
+    font-size: 0.875rem;
+}
+
+/* Skip Badge */
+.skip-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--slds-g-color-neutral-base-4, #374151);
+    color: var(--slds-g-color-neutral-base-100, #f3f4f6);
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Resolution State Indicators */
+.resolution-indicator {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.resolution-indicator.resolved {
+    background: var(--slds-g-color-success-base-50, #10b981);
+}
+
+.resolution-indicator.pending {
+    background: var(--slds-g-color-warning-base-50, #f59e0b);
+}
+
+/* Animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.duplicate-group {
+    animation: slideIn 0.3s ease-out;
+}

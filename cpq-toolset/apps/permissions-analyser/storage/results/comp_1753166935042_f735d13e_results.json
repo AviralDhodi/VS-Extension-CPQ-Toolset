@@ -1,0 +1,33 @@
+{
+  "comparison_id": "comp_1753166935042_f735d13e",
+  "timestamp": "2025-07-22T12:18:55.765603",
+  "summary": {
+    "organizations": [
+      "aviraldhodi1@gmail.com",
+      "aviraldhodi@brave-goat-hsejmn.com"
+    ],
+    "organization_count": 2,
+    "comparison_stats": {}
+  },
+  "details": {},
+  "configuration": {
+    "version": "3.0.0",
+    "createdAt": "2025-07-22T06:48:49.920Z",
+    "orgs": [
+      "aviraldhodi1@gmail.com",
+      "aviraldhodi@brave-goat-hsejmn.com"
+    ],
+    "permissions": {
+      "Profile": [
+        "Admin"
+      ]
+    },
+    "permissionTypes": [
+      "PermissionSet",
+      "PermissionSetGroup",
+      "Profile",
+      "MutingPermissionSet"
+    ],
+    "id": "perm_1753166929920"
+  }
+}

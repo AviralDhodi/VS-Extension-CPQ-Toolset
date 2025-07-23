@@ -1,0 +1,666 @@
+/* ========================================
+   V1-STYLE FUNCTIONAL LAYOUT - NO SCROLLING
+   ======================================== */
+
+:root {
+    /* Theme Variables */
+    --app-bg-primary: #ffffff;
+    --app-bg-secondary: #f8fafc;
+    --app-bg-tertiary: #f1f5f9;
+    --app-text-primary: #1e293b;
+    --app-text-secondary: #64748b;
+    --app-text-tertiary: #94a3b8;
+    --app-border: #e2e8f0;
+    --app-border-hover: #cbd5e1;
+    --app-accent: #3b82f6;
+    --app-accent-hover: #2563eb;
+    --app-success: #10b981;
+    --app-warning: #f59e0b;
+    --app-error: #ef4444;
+    --app-transition: all 0.3s ease;
+    --app-border-radius: 8px;
+    --app-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --app-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] {
+    --app-bg-primary: #0f172a;
+    --app-bg-secondary: #1e293b;
+    --app-bg-tertiary: #334155;
+    --app-text-primary: #f8fafc;
+    --app-text-secondary: #cbd5e1;
+    --app-text-tertiary: #94a3b8;
+    --app-border: #334155;
+    --app-border-hover: #475569;
+    --app-accent: #60a5fa;
+    --app-accent-hover: #3b82f6;
+    --app-success: #34d399;
+    --app-warning: #fbbf24;
+    --app-error: #f87171;
+    --app-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --app-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   BASE LAYOUT - FULL HEIGHT, NO SCROLL
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden; /* Critical: no scrolling */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: var(--app-bg-primary);
+    color: var(--app-text-primary);
+    line-height: 1.6;
+    transition: var(--app-transition);
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden;
+}
+
+/* ========================================
+   HEADER - FIXED HEIGHT
+   ======================================== */
+
+.app-header {
+    height: 60px; /* Fixed header height */
+    background: var(--app-bg-secondary);
+    border-bottom: 1px solid var(--app-border);
+    flex-shrink: 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 1.5rem;
+}
+
+.header-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--app-text-primary);
+}
+
+.config-info {
+    font-size: 0.875rem;
+    color: var(--app-text-secondary);
+    padding: 0.25rem 0.75rem;
+    background: var(--app-bg-primary);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+}
+
+/* ========================================
+   MAIN CONTENT - FLEXIBLE HEIGHT
+   ======================================== */
+
+.app-main {
+    flex: 1; /* Take remaining height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ========================================
+   SETUP STATES - SINGLE SCREEN WORKFLOW
+   ======================================== */
+
+.setup-states {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.state-panel {
+    width: 100%;
+    max-width: 800px;
+    background: var(--app-bg-secondary);
+    border-radius: var(--app-border-radius);
+    box-shadow: var(--app-shadow);
+    overflow: hidden;
+}
+
+.state-header {
+    padding: 2rem 2rem 1rem;
+    text-align: center;
+    background: var(--app-bg-primary);
+    border-bottom: 1px solid var(--app-border);
+}
+
+.state-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--app-text-primary);
+}
+
+.state-header p {
+    color: var(--app-text-secondary);
+    font-size: 0.875rem;
+}
+
+.state-content {
+    padding: 2rem;
+    max-height: 60vh; /* Limit height, allow internal scrolling if needed */
+    overflow-y: auto;
+}
+
+/* ========================================
+   THREE-PANEL LAYOUT - V1 STYLE
+   ======================================== */
+
+.three-panel-layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 300px 1fr 320px; /* Fixed-Flex-Fixed */
+    gap: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--app-bg-primary);
+    border-right: 1px solid var(--app-border);
+    overflow: hidden;
+}
+
+.panel:last-child {
+    border-right: none;
+}
+
+.panel-header {
+    flex-shrink: 0;
+    padding: 1rem;
+    background: var(--app-bg-secondary);
+    border-bottom: 1px solid var(--app-border);
+}
+
+.panel-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--app-text-primary);
+}
+
+.panel-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+}
+
+.search-box .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--app-text-tertiary);
+    width: 1rem;
+    height: 1rem;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 2.25rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    background: var(--app-bg-primary);
+    color: var(--app-text-primary);
+    font-size: 0.875rem;
+    transition: var(--app-transition);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--app-accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.count-badge {
+    font-size: 0.75rem;
+    color: var(--app-text-secondary);
+    background: var(--app-bg-tertiary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.panel-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ========================================
+   LISTS - VIRTUALIZED SCROLLING
+   ======================================== */
+
+.objects-list,
+.fields-list,
+.orgs-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.object-item,
+.field-item,
+.org-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--app-border);
+    cursor: pointer;
+    transition: var(--app-transition);
+}
+
+.object-item:hover,
+.field-item:hover,
+.org-item:hover {
+    background: var(--app-bg-secondary);
+}
+
+.object-item.selected,
+.field-item.selected,
+.org-item.selected {
+    background: var(--app-accent);
+    color: white;
+}
+
+.object-item.configured {
+    border-left: 4px solid var(--app-success);
+}
+
+.object-item.volatile {
+    border-left: 4px solid var(--app-warning);
+}
+
+/* ========================================
+   FIELD CONTROLS - COMPACT
+   ======================================== */
+
+.field-controls {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--app-border);
+    background: var(--app-bg-secondary);
+    flex-shrink: 0;
+}
+
+.field-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+}
+
+.field-checkbox {
+    flex-shrink: 0;
+}
+
+.field-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.field-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.125rem;
+}
+
+.field-label {
+    font-size: 0.75rem;
+    color: var(--app-text-secondary);
+    margin-bottom: 0.125rem;
+}
+
+.field-type {
+    font-size: 0.75rem;
+    color: var(--app-text-tertiary);
+    max-width: 6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.field-actions {
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
+}
+
+.star-btn,
+.expand-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    background: var(--app-bg-primary);
+    color: var(--app-text-secondary);
+    cursor: pointer;
+    transition: var(--app-transition);
+    font-size: 0.75rem;
+}
+
+.star-btn:hover {
+    border-color: var(--app-warning);
+    color: var(--app-warning);
+}
+
+.star-btn.active {
+    border-color: var(--app-warning);
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--app-warning);
+}
+
+.expand-btn:hover {
+    border-color: var(--app-accent);
+    color: var(--app-accent);
+}
+
+/* ========================================
+   CONFIGURATION SUMMARY - COMPACT
+   ======================================== */
+
+.config-section {
+    margin-bottom: 1.5rem;
+}
+
+.config-section h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--app-text-primary);
+}
+
+.config-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--app-accent);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--app-text-secondary);
+    margin-top: 0.25rem;
+}
+
+.config-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.configured-objects-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.configured-object {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    background: var(--app-bg-secondary);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* ========================================
+   BUTTONS - CONSISTENT STYLING
+   ======================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-border-radius);
+    background: var(--app-bg-primary);
+    color: var(--app-text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--app-transition);
+}
+
+.btn:hover:not(:disabled) {
+    background: var(--app-bg-secondary);
+    border-color: var(--app-border-hover);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: var(--app-accent);
+    border-color: var(--app-accent);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--app-accent-hover);
+    border-color: var(--app-accent-hover);
+}
+
+.btn-secondary {
+    background: var(--app-bg-secondary);
+    border-color: var(--app-border);
+    color: var(--app-text-primary);
+}
+
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.btn-link {
+    border: none;
+    background: transparent;
+    color: var(--app-accent);
+    padding: 0.25rem 0.5rem;
+}
+
+.btn-link:hover {
+    background: transparent;
+    color: var(--app-accent-hover);
+    text-decoration: underline;
+}
+
+/* ========================================
+   STATES - LOADING, ERROR, EMPTY
+   ======================================== */
+
+.loading-state,
+.error-state,
+.no-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--app-text-secondary);
+}
+
+.loading-icon,
+.error-icon,
+.no-selection-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.loading-icon .spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE COLLAPSE
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .three-panel-layout {
+        grid-template-columns: 250px 1fr 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .three-panel-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+    
+    .panel {
+        border-right: none;
+        border-bottom: 1px solid var(--app-border);
+    }
+    
+    .panel:last-child {
+        border-bottom: none;
+    }
+}
+
+/* ========================================
+   MODAL - REFERENCE FIELD SELECTION
+   ======================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-container {
+    background: var(--app-bg-primary);
+    border-radius: var(--app-border-radius);
+    box-shadow: var(--app-shadow-lg);
+    max-width: 600px;
+    width: 90vw;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from { 
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--app-border);
+}
+
+.modal-content {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid var(--app-border);
+}
+
+.reference-field-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--app-border);
+    cursor: pointer;
+    transition: var(--app-transition);
+}
+
+.reference-field-item:hover {
+    background: var(--app-bg-secondary);
+}
+
+.reference-field-item.selected {
+    background: var(--app-accent);
+    color: white;
+}

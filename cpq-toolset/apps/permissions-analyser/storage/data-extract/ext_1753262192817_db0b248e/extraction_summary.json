@@ -1,0 +1,59 @@
+{
+  "extractionId": "ext_1753262192817_db0b248e",
+  "timestamp": "2025-07-23T09:16:50.182Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "processedOrgs": 2,
+  "status": "completed",
+  "config": {
+    "version": "3.0.0",
+    "createdAt": "2025-07-23T09:16:32.810Z",
+    "orgs": [
+      "aviraldhodi1@gmail.com",
+      "aviraldhodi@brave-goat-hsejmn.com"
+    ],
+    "permissions": {
+      "PermissionSet": [
+        "sfdcInternalInt__sfdc_scrt2"
+      ],
+      "PermissionSetGroup": [
+        "SBQQ__CPQIntegrationUserPermSetGroup"
+      ],
+      "Profile": [
+        "Admin"
+      ]
+    },
+    "selectedPermissionOptions": {
+      "PermissionSet": {
+        "apexClasses": true,
+        "visualforcePages": true,
+        "customPermissions": true,
+        "tabSettings": true,
+        "applicationVisibilities": true,
+        "recordTypeVisibilities": true
+      }
+    },
+    "objectSelection": "COMMON",
+    "specificObjects": [],
+    "apexClassSelection": "COMMON",
+    "specificApexClasses": [],
+    "pageSelection": "COMMON",
+    "specificPages": [],
+    "permissionTypes": [
+      "PermissionSet",
+      "PermissionSetGroup",
+      "Profile",
+      "MutingPermissionSet"
+    ],
+    "id": "perm_1753262188620"
+  },
+  "commonObjects": null,
+  "nonCommonMetadata": {
+    "profiles": 0,
+    "permissionSets": 0,
+    "permissionSetGroups": 0,
+    "mutingPermissionSets": 0
+  }
+}

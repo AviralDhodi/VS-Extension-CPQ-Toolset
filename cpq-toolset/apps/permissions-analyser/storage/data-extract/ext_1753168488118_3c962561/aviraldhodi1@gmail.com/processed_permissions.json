@@ -1,0 +1,20 @@
+{
+  "org": "aviraldhodi1@gmail.com",
+  "profiles": {
+    "Admin": {
+      "objectPermissions": [],
+      "fieldPermissions": [],
+      "apexClassAccesses": [],
+      "pageAccesses": [],
+      "userPermissions": []
+    }
+  },
+  "permissionSets": {},
+  "permissionSetGroups": {},
+  "mutingPermissionSets": {},
+  "objectPermissions": {},
+  "apexClassAccess": {},
+  "pageAccess": {},
+  "systemPermissions": {},
+  "userPermissions": {}
+}

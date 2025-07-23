@@ -1,0 +1,23 @@
+/* SLDS Proper Implementation - Minimal overrides only where absolutely necessary */
+
+/* ========================================
+   SLDS THEME FIXES - Only what's broken
+   ======================================== */
+
+/* Fix path component incomplete state visibility */
+.slds-path__item.slds-is-incomplete .slds-path__link,
+.slds-path__item.slds-is-incomplete .slds-path__title {
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
+}
+
+/* Fix card spacing in grids */
+.slds-col {
+    margin-bottom: var(--slds-c-spacing-medium, 1rem);
+}
+
+/* Remove margin from last row */
+.slds-grid:last-child .slds-col:last-child {
+    margin-bottom: 0;
+}
+
+/* That's it - SLDS should handle everything else properly */

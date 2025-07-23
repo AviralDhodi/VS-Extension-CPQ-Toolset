@@ -1,0 +1,47 @@
+<div class="comparison-viewer-container">
+    <div class="viewer-header">
+        <h2>Git-like Comparison Viewer</h2>
+        <div class="viewer-controls">
+            <select id="object-filter" class="object-filter">
+                <option value="">All Objects</option>
+            </select>
+            <div class="control-buttons">
+                <button id="export-current" class="btn btn-secondary">Export Current View</button>
+                <button id="back-to-status" class="btn btn-outline">Back to Status</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="diff-stats">
+        <div class="stat-card additions">
+            <span class="stat-icon">+</span>
+            <span class="stat-label">Additions</span>
+            <span id="additions-count" class="stat-value">0</span>
+        </div>
+        <div class="stat-card deletions">
+            <span class="stat-icon">-</span>
+            <span class="stat-label">Deletions</span>
+            <span id="deletions-count" class="stat-value">0</span>
+        </div>
+        <div class="stat-card modifications">
+            <span class="stat-icon">~</span>
+            <span class="stat-label">Modifications</span>
+            <span id="modifications-count" class="stat-value">0</span>
+        </div>
+    </div>
+    
+    <div class="diff-container">
+        <div id="diff-content" class="diff-content">
+            <div class="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Loading comparison results...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="error-section" class="error-section" style="display: none;">
+        <h3>Error Loading Results</h3>
+        <div id="error-message" class="error-message"></div>
+        <button id="retry-load" class="btn btn-primary">Retry</button>
+    </div>
+</div>

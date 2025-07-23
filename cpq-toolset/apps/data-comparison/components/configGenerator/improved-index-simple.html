@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Generator - CPQ Toolset</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        /* Minimal custom styles */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page-container {
+            padding: 1rem;
+        }
+        
+        .org-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .org-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .org-card.selected {
+            border-color: #0176d3;
+            box-shadow: 0 0 0 2px #0176d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="slds-scope slds-theme_default">
+        <!-- Simple Header -->
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-settings">
+                                <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#settings"></use>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <h1 class="slds-page-header__title slds-truncate">Configuration Generator</h1>
+                            <p class="slds-page-header__name-meta">Create comparison configuration</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="page-container">
+            <!-- Loading State -->
+            <div id="orgs-loading" class="slds-align_absolute-center slds-p-around_large">
+                <div class="slds-spinner_container">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">Loading organizations...</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="orgs-error" class="slds-hide slds-text-align_center slds-p-around_large">
+                <h3 class="slds-text-heading_medium">Failed to load organizations</h3>
+                <p id="orgs-error-message" class="slds-text-body_regular slds-m-top_small"></p>
+                <button id="retry-orgs-btn" class="slds-button slds-button_brand slds-m-top_medium">Retry</button>
+            </div>
+
+            <!-- Content -->
+            <div id="orgs-content" class="slds-hide">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Select Organizations</h2>
+                <p class="slds-text-body_regular slds-m-bottom_large">Choose 2 or more organizations to compare</p>
+                
+                <div class="slds-m-bottom_medium">
+                    <span id="selection-count">0 selected</span>
+                    <span class="slds-text-color_weak slds-m-left_x-small">(minimum 2 required)</span>
+                </div>
+                
+                <div id="orgs-list" class="slds-grid slds-wrap slds-gutters">
+                    <!-- Org cards will be rendered here -->
+                </div>
+                
+                <div class="slds-m-top_large">
+                    <button id="validate-orgs-btn" class="slds-button slds-button_brand" disabled>
+                        Validate & Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple test script
+        console.log('Config Generator Simple Loaded');
+        
+        // Test org loading
+        async function loadOrganizations() {
+            console.log('Loading organizations...');
+            const loading = document.getElementById('orgs-loading');
+            const error = document.getElementById('orgs-error');
+            const content = document.getElementById('orgs-content');
+            
+            // Show loading
+            loading.classList.remove('slds-hide');
+            error.classList.add('slds-hide');
+            content.classList.add('slds-hide');
+            
+            try {
+                const response = await fetch('/data-comparison/api/data-comparison/orgs');
+                const data = await response.json();
+                
+                console.log('Organizations loaded:', data);
+                
+                // Show content
+                loading.classList.add('slds-hide');
+                content.classList.remove('slds-hide');
+                
+                // Render orgs
+                const orgsList = document.getElementById('orgs-list');
+                orgsList.innerHTML = data.orgs.map(org => `
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <article class="slds-card org-card" data-org-alias="${org.alias}">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                    <div class="slds-media__body">
+                                        <h2 class="slds-card__header-title">
+                                            <span class="slds-text-heading_small">${org.alias}</span>
+                                        </h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body slds-card__body_inner">
+                                <p class="slds-text-body_small">${org.username}</p>
+                                <p class="slds-text-body_small slds-text-color_weak">${org.instanceUrl}</p>
+                            </div>
+                        </article>
+                    </div>
+                `).join('');
+                
+                // Add click handlers
+                document.querySelectorAll('.org-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        this.classList.toggle('selected');
+                        updateSelectionCount();
+                    });
+                });
+                
+            } catch (err) {
+                console.error('Failed to load organizations:', err);
+                loading.classList.add('slds-hide');
+                error.classList.remove('slds-hide');
+                document.getElementById('orgs-error-message').textContent = err.message;
+            }
+        }
+        
+        function updateSelectionCount() {
+            const selected = document.querySelectorAll('.org-card.selected').length;
+            document.getElementById('selection-count').textContent = selected + ' selected';
+            document.getElementById('validate-orgs-btn').disabled = selected < 2;
+        }
+        
+        // Initialize
+        loadOrganizations();
+    </script>
+</body>
+</html>

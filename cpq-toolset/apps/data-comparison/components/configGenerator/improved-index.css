@@ -1,0 +1,648 @@
+/* Enhanced SLDS Dark Theme Styling for Config Generator */
+
+/* Ensure proper SLDS scope */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Dark theme enhancements */
+body.slds-theme_dark {
+    background-color: #0c1014;
+}
+
+/* Fix container width and centering */
+.slds-scope {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Path component container fix */
+.slds-path {
+    margin-bottom: 1rem;
+    overflow-x: auto;
+}
+
+/* Page container adjustments */
+.page-container {
+    min-height: 400px;
+    width: 100%;
+}
+
+/* Fix container fluid padding on large screens */
+.slds-container_fluid {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+/* Ensure proper page header width */
+.slds-page-header {
+    margin-bottom: 1rem;
+}
+
+/* Fix page visibility */
+.page-container.slds-show {
+    display: block !important;
+}
+
+.page-container.slds-hide {
+    display: none !important;
+}
+
+/* Path component dark theme adjustments */
+.slds-theme_dark .slds-path__item {
+    background-color: #1e2329;
+    border-color: #2e3338;
+}
+
+.slds-theme_dark .slds-path__item.slds-is-current,
+.slds-theme_dark .slds-path__item.slds-is-active {
+    background-color: #0176d3;
+    border-color: #0176d3;
+}
+
+.slds-theme_dark .slds-path__item.slds-is-complete {
+    background-color: #2e3338;
+    border-color: #2e3338;
+}
+
+.slds-theme_dark .slds-path__title {
+    color: #e5e5e5;
+}
+
+/* Card enhancements for dark theme */
+.slds-theme_dark .slds-card {
+    background-color: #1e2329;
+    border-color: #2e3338;
+    border-radius: 0.25rem;
+    border: 1px solid #2e3338;
+    margin: 0;
+}
+
+.slds-theme_dark .slds-card__header {
+    background-color: #16191f;
+    border-bottom-color: #2e3338;
+}
+
+/* Organization cards */
+.org-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 100%;
+}
+
+.org-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.org-card.selected {
+    border-color: #0176d3;
+    background-color: #16191f;
+    box-shadow: 0 0 0 2px #0176d3;
+}
+
+/* SLDS checkbox in card header */
+.org-card .slds-card__header .slds-checkbox {
+    margin-right: 0.5rem;
+}
+
+/* Ensure description list formatting */
+.org-card .slds-list_horizontal > dt {
+    width: 30%;
+}
+
+.org-card .slds-list_horizontal > dd {
+    width: 70%;
+}
+
+/* Panel content states */
+.panel-content {
+    min-height: 300px;
+    position: relative;
+}
+
+/* Fix SLDS gutters spacing */
+.slds-gutters > .slds-col {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+}
+
+.slds-gutters {
+    margin-right: -0.75rem;
+    margin-left: -0.75rem;
+}
+
+/* Panel layout fixes for proper 3-column display */
+#objects-fields-page .slds-grid {
+    display: flex !important;
+    flex-wrap: nowrap;
+}
+
+#objects-fields-page .slds-col.slds-size_1-of-3 {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+    min-width: 300px;
+}
+
+/* Ensure panels stay side by side */
+@media (min-width: 1024px) {
+    #objects-fields-page .slds-grid {
+        gap: 1rem;
+    }
+    
+    #objects-fields-page .slds-col {
+        flex: 1 1 0;
+    }
+}
+
+/* Ensure cards fill their containers */
+.slds-col > .slds-card {
+    height: 100%;
+}
+
+.panel-content .loading-state,
+.panel-content .error-state,
+.panel-content .empty-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+.panel-content .content-area {
+    height: 100%;
+}
+
+/* Object and field lists */
+.object-item,
+.field-item,
+.lookup-item {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+    position: relative;
+    margin-bottom: 0.25rem;
+    border: 1px solid transparent;
+}
+
+.object-item:hover,
+.field-item:hover,
+.lookup-item:hover {
+    background-color: #2e3338;
+}
+
+.object-item.selected,
+.field-item.selected,
+.lookup-item.selected {
+    background-color: #16191f;
+    border-left: 3px solid #0176d3;
+}
+
+/* Object item specific styles */
+.object-item .object-name {
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+}
+
+.object-item .object-details {
+    font-size: 0.75rem;
+    color: #8b9097;
+}
+
+.object-item .object-package {
+    margin-left: 0.5rem;
+    padding: 0.125rem 0.5rem;
+    background: #2e3338;
+    border-radius: 2px;
+    font-size: 0.625rem;
+}
+
+.object-item .object-status {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+.object-item.validated {
+    border-color: #4bca81;
+    border-left-width: 3px;
+}
+
+.object-item.volatile {
+    border-color: #ff9a3c;
+    border-left-width: 3px;
+}
+
+/* Configured objects list */
+.configured-object-item {
+    background-color: #16191f;
+    border: 1px solid #2e3338;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.configured-object-item .object-name {
+    font-weight: 600;
+    color: #0176d3;
+}
+
+/* Modal dark theme enhancements */
+.slds-theme_dark .slds-modal__container {
+    background-color: #1e2329;
+    border-color: #2e3338;
+}
+
+.slds-theme_dark .slds-modal__header {
+    background-color: #16191f;
+    border-bottom-color: #2e3338;
+}
+
+.slds-theme_dark .slds-modal__footer {
+    background-color: #16191f;
+    border-top-color: #2e3338;
+}
+
+/* Form elements in dark theme */
+.slds-theme_dark .slds-input,
+.slds-theme_dark .slds-textarea,
+.slds-theme_dark .slds-select {
+    background-color: #16191f;
+    border-color: #2e3338;
+    color: #e5e5e5;
+}
+
+.slds-theme_dark .slds-input:focus,
+.slds-theme_dark .slds-textarea:focus,
+.slds-theme_dark .slds-select:focus {
+    border-color: #0176d3;
+    box-shadow: 0 0 3px #0176d3;
+}
+
+/* Tabs enhancement */
+.slds-theme_dark .slds-tabs_default__nav {
+    background-color: #16191f;
+    border-bottom-color: #2e3338;
+}
+
+.slds-theme_dark .slds-tabs_default__link {
+    color: #e5e5e5;
+}
+
+.slds-theme_dark .slds-tabs_default__item.slds-is-active .slds-tabs_default__link {
+    color: #0176d3;
+    border-bottom-color: #0176d3;
+}
+
+/* Box theme adjustments */
+.slds-theme_dark .slds-box.slds-theme_shade {
+    background-color: #16191f;
+    border-color: #2e3338;
+}
+
+.slds-theme_dark .slds-box.slds-theme_info {
+    background-color: #16334c;
+    border-color: #0176d3;
+    color: #b0d6ff;
+}
+
+/* Spinner adjustments */
+.slds-theme_dark .slds-spinner:before,
+.slds-theme_dark .slds-spinner:after,
+.slds-theme_dark .slds-spinner__dot-a:before,
+.slds-theme_dark .slds-spinner__dot-b:before,
+.slds-theme_dark .slds-spinner__dot-a:after,
+.slds-theme_dark .slds-spinner__dot-b:after {
+    background-color: #0176d3;
+}
+
+/* Foreign key radio buttons */
+.foreign-key-option {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.25rem;
+    cursor: pointer;
+}
+
+.foreign-key-option:hover {
+    background-color: #2e3338;
+}
+
+.foreign-key-option input[type="radio"]:checked + label {
+    color: #0176d3;
+    font-weight: 600;
+}
+
+/* Condition configuration grid */
+.org-condition-card {
+    background-color: #16191f;
+    border: 1px solid #2e3338;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.org-condition-card h4 {
+    color: #0176d3;
+    margin-bottom: 0.75rem;
+}
+
+/* Summary objects */
+.summary-object-item {
+    background-color: #16191f;
+    border: 1px solid #2e3338;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.summary-object-item h5 {
+    color: #0176d3;
+    margin-bottom: 0.5rem;
+}
+
+/* Hide/show utilities */
+.slds-hide {
+    display: none !important;
+}
+
+.slds-show {
+    display: block !important;
+}
+
+/* Tab content visibility */
+.tab-content {
+    display: none;
+}
+
+.tab-content.slds-show {
+    display: block;
+}
+
+/* Scrollbar styling for dark theme */
+.slds-theme_dark .slds-scrollable_y::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slds-theme_dark .slds-scrollable_y::-webkit-scrollbar-track {
+    background: #16191f;
+}
+
+.slds-theme_dark .slds-scrollable_y::-webkit-scrollbar-thumb {
+    background: #2e3338;
+    border-radius: 4px;
+}
+
+.slds-theme_dark .slds-scrollable_y::-webkit-scrollbar-thumb:hover {
+    background: #3e4348;
+}
+
+/* Backdrop for modals */
+.slds-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 8000;
+}
+
+.slds-backdrop.slds-backdrop_open {
+    display: block;
+}
+
+/* Animation for modal */
+.slds-modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.slds-modal.slds-fade-in-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Field type badges */
+.field-type-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    background-color: #2e3338;
+    color: #e5e5e5;
+    margin-left: 0.5rem;
+}
+
+.field-type-badge.type-lookup {
+    background-color: #16334c;
+    color: #b0d6ff;
+}
+
+.field-type-badge.type-required {
+    background-color: #4c1616;
+    color: #ffb0b0;
+}
+
+/* Package grouping */
+.package-group {
+    margin-bottom: 1rem;
+}
+
+.package-group-header {
+    background-color: #16191f;
+    padding: 0.5rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #0176d3;
+}
+
+/* Search highlighting */
+.search-highlight {
+    background-color: #4c4c16;
+    color: #ffff99;
+    padding: 0 0.125rem;
+    border-radius: 0.125rem;
+}
+
+/* Panel state management */
+.panel-content {
+    position: relative;
+}
+
+/* Hide all states by default */
+.panel-content .loading-state,
+.panel-content .error-state,
+.panel-content .empty-state,
+.panel-content .content-area {
+    display: none;
+}
+
+/* Show only the active state */
+.panel-content[data-state="loading"] .loading-state {
+    display: block;
+}
+
+.panel-content[data-state="error"] .error-state {
+    display: block;
+}
+
+.panel-content[data-state="empty"] .empty-state {
+    display: block;
+}
+
+.panel-content[data-state="loaded"] .content-area {
+    display: block;
+}
+
+/* Org card styles for dark theme */
+.org-card article {
+    height: 100%;
+}
+
+/* Condition configuration card for SLDS */
+.condition-object-card {
+    background-color: #16191f;
+    border: 1px solid #2e3338;
+    margin-bottom: 1rem;
+}
+
+/* Summary page adjustments */
+.summary-detail {
+    background-color: #16191f;
+    border: 1px solid #2e3338;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Per-org condition form styling */
+.org-condition-form {
+    background-color: #16191f;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #2e3338;
+}
+
+/* Additional utilities for SLDS integration */
+.slds-theme_dark .condition-badge {
+    background-color: #16334c;
+    color: #b0d6ff;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+}
+
+/* Loading state for panels */
+.panel-state-indicator {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2e3338;
+}
+
+.panel-state-indicator.loading {
+    background-color: #0176d3;
+    animation: pulse 1.5s infinite;
+}
+
+.panel-state-indicator.error {
+    background-color: #c23934;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Fix for modal backdrop z-index */
+.slds-backdrop {
+    z-index: 8000;
+}
+
+.slds-modal {
+    z-index: 9000;
+}
+
+/* Override SLDS grid issues - remove these, let SLDS handle it */
+/* Grid layout is handled by SLDS classes */
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .slds-size_1-of-3 {
+        width: 100%;
+        flex: 0 0 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Custom checkbox styles for org selection */
+.slds-checkbox_custom {
+    background-color: #16191f;
+    border-color: #2e3338;
+}
+
+.slds-checkbox_custom:checked {
+    background-color: #0176d3;
+    border-color: #0176d3;
+}
+
+/* Debug styles - remove after fixing */
+.debug-border-red {
+    border: 2px solid red !important;
+}
+
+.debug-border-blue {
+    border: 2px solid blue !important;
+}
+
+.debug-border-green {
+    border: 2px solid green !important;
+}
+
+/* Ensure SLDS classes are applied */
+.slds-theme_dark .slds-container_fluid {
+    background-color: transparent;
+}
+
+/* Fix potential z-index issues */
+.slds-page-header {
+    position: relative;
+    z-index: 1;
+}
+
+.slds-path {
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure proper box model */
+* {
+    box-sizing: border-box;
+}
+
+/* Fix potential overflow issues */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}

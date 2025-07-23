@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Comparison - Welcome</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+</head>
+<body>
+    <div class="slds-scope">
+        <!-- Page Header -->
+        <header class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-data-mapping">
+                                <svg class="slds-icon slds-page-header__icon">
+                                    <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#data_mapping"></use>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate">Data Comparison Tool</h1>
+                            <p class="slds-page-header__info">Compare Salesforce CPQ data across multiple organizations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="slds-p-around_medium">
+            <div class="slds-text-align_center slds-m-bottom_large">
+                <h2 class="slds-text-heading_large slds-m-bottom_small">Welcome to Data Comparison</h2>
+                <p class="slds-text-body_regular">Choose how you'd like to configure your comparison</p>
+            </div>
+
+            <!-- Action Cards -->
+            <div class="slds-grid slds-gutters slds-grid_align-center">
+                <!-- Upload Configuration Card -->
+                <div class="slds-col slds-size_1-of-2 slds-medium-size_5-of-12">
+                    <article class="slds-card slds-card_boundary">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-file">
+                                        <svg class="slds-icon slds-icon_small">
+                                            <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#file"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Upload Configuration</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-m-bottom_medium">Upload an existing configuration file to quickly start your comparison</p>
+                            <ul class="slds-list_dotted">
+                                <li>JSON configuration files</li>
+                                <li>CSV mapping files</li>
+                                <li>Excel templates</li>
+                            </ul>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_brand slds-button_stretch" id="upload-config-btn">
+                                <svg class="slds-button__icon slds-button__icon_left">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#upload"></use>
+                                </svg>
+                                Upload Configuration
+                            </button>
+                            <input type="file" id="config-file-input" accept=".json,.csv,.xlsx,.xls" style="display: none;">
+                        </footer>
+                    </article>
+                </div>
+
+                <!-- Create Configuration Card -->
+                <div class="slds-col slds-size_1-of-2 slds-medium-size_5-of-12">
+                    <article class="slds-card slds-card_boundary">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-custom">
+                                        <svg class="slds-icon slds-icon_small">
+                                            <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#custom"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Create Configuration</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-m-bottom_medium">Build a new configuration using our step-by-step wizard</p>
+                            <ul class="slds-list_dotted">
+                                <li>Select organizations</li>
+                                <li>Choose objects & fields</li>
+                                <li>Configure filters</li>
+                            </ul>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_brand slds-button_stretch" id="create-config-btn">
+                                <svg class="slds-button__icon slds-button__icon_left">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                </svg>
+                                Start Configuration
+                            </button>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="slds-m-top_xx-large">
+                <h3 class="slds-text-heading_medium slds-m-bottom_medium">Key Features</h3>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-3">
+                        <div class="slds-box slds-theme_shade">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-database">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-default">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#database"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h4 class="slds-text-heading_small">Multi-Org Support</h4>
+                                    <p class="slds-text-body_small">Compare data across unlimited Salesforce organizations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <div class="slds-box slds-theme_shade">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-filter">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-default">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#filter"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h4 class="slds-text-heading_small">Advanced Filtering</h4>
+                                    <p class="slds-text-body_small">Configure per-org filters with date ranges and conditions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <div class="slds-box slds-theme_shade">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-chart">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-default">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#chart"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h4 class="slds-text-heading_small">Detailed Reports</h4>
+                                    <p class="slds-text-body_small">Generate comprehensive comparison reports with field-level differences</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="slds-modal" role="dialog" aria-hidden="true">
+        <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-text-align_center">
+                    <div class="slds-spinner_container">
+                        <div role="status" class="slds-spinner slds-spinner_medium">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                    <p class="slds-text-heading_small slds-m-top_medium" id="loadingText">Processing...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loadingBackdrop" class="slds-backdrop"></div>
+
+    <script src="/data-comparison/components/welcome/index.js"></script>
+</body>
+</html>

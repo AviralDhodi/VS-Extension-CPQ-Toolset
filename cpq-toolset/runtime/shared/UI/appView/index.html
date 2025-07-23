@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPQ Toolset v3 - Shell View</title>
+    <link rel="stylesheet" href="/shared/styles/slds-dark.css">
+    <link rel="stylesheet" href="/shared/appView/index.css">
+</head>
+<body data-theme="light">
+    <!-- Shell Header -->
+    <header class="shell-header">
+        <div class="header-content">
+            <!-- App Branding -->
+            <div class="app-brand">
+                <div class="app-icon">
+                    <svg class="slds-icon slds-icon_large" viewBox="0 0 24 24">
+                        <path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/>
+                    </svg>
+                </div>
+                <div class="app-info">
+                    <h1 class="app-title" id="app-title">CPQ Toolset v3</h1>
+                    <p class="app-subtitle" id="app-subtitle">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Shell Controls -->
+            <div class="shell-controls">
+                <!-- Theme Toggle -->
+                <button class="control-btn theme-toggle" id="theme-toggle" title="Toggle dark mode">
+                    <svg class="slds-icon slds-icon_small" viewBox="0 0 24 24">
+                        <path d="M9 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm6 0c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.29.02-.58.05-.86 2.36-1.05 4.23-2.98 5.21-5.37C11.07 8.33 14.05 10 17.42 10c.78 0 1.53-.09 2.25-.26.21.71.33 1.47.33 2.26 0 4.41-3.59 8-8 8z"/>
+                    </svg>
+                </button>
+                
+                <!-- Logging Toggle -->
+                <button class="control-btn logging-toggle" id="logging-toggle" title="Toggle log panel">
+                    <svg class="slds-icon slds-icon_small" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zm-2-1h-6v-2h6v2zm-8.5-2l-3.15-3.15.7-.7L9.2 13.3l3.15-3.15.7.7L9.91 14z"/>
+                    </svg>
+                </button>
+                
+                <!-- Home Button -->
+                <button class="control-btn home-btn" id="home-btn" title="Back to Extension Home">
+                    <svg class="slds-icon slds-icon_small" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-text" id="progress-text">Loading...</div>
+        </div>
+    </header>
+
+    <!-- Shell Content Area -->
+    <main class="shell-main">
+        <!-- App Content (iframe) -->
+        <div class="app-content" id="app-content">
+            <iframe 
+                id="app-iframe" 
+                class="app-iframe" 
+                src="/data-comparison/component-view" 
+                frameborder="0"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+                title="Application Content">
+            </iframe>
+        </div>
+
+        <!-- Logging Panel -->
+        <div class="logging-panel" id="logging-panel">
+            <div class="logging-header">
+                <div class="logging-title">
+                    <svg class="slds-icon slds-icon_small" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zm-2-1h-6v-2h6v2zm-8.5-2l-3.15-3.15.7-.7L9.2 13.3l3.15-3.15.7.7L9.91 14z"/>
+                    </svg>
+                    <span>Application Logs</span>
+                </div>
+                <div class="logging-controls">
+                    <select id="log-level-filter" class="log-filter">
+                        <option value="all">All Levels</option>
+                        <option value="error">Errors Only</option>
+                        <option value="warn">Warnings+</option>
+                        <option value="info">Info+</option>
+                        <option value="debug">Debug+</option>
+                    </select>
+                    <button class="control-btn clear-logs" id="clear-logs" title="Clear logs">
+                        <svg class="slds-icon slds-icon_small" viewBox="0 0 24 24">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="logging-content" id="logging-content">
+                <!-- Logs will be populated here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Loader Overlay -->
+    <div class="global-loader" id="global-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text" id="loader-text">Loading...</div>
+            <div class="loader-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="loader-progress-fill"></div>
+                </div>
+                <div class="progress-text" id="loader-progress-text">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Toast -->
+    <div class="status-toast" id="status-toast">
+        <div class="toast-content">
+            <i class="toast-icon" id="toast-icon"></i>
+            <span class="toast-message" id="toast-message"></span>
+        </div>
+    </div>
+
+    <script src="/shared/appView/shell.js"></script>
+</body>
+</html>

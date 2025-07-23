@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPQ Toolset v2 - Extension Dashboard</title>
+    <link rel="stylesheet" href="/shared/welcomePage/index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="extension-container">
+        <!-- Extension Header -->
+        <header class="extension-header">
+            <div class="header-content">
+                <div class="extension-brand">
+                    <div class="extension-icon">
+                        <i data-lucide="zap" class="brand-icon"></i>
+                    </div>
+                    <div class="extension-info">
+                        <h1 class="extension-title">CPQ Toolset v2</h1>
+                        <p class="extension-subtitle">Salesforce CPQ Development & Analysis Platform</p>
+                    </div>
+                </div>
+                <div class="extension-status">
+                    <div class="status-indicator ready">
+                        <i data-lucide="check-circle" class="status-icon"></i>
+                        <span class="status-text">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="extension-main">
+            <div class="welcome-section">
+                <div class="welcome-header">
+                    <h2 class="welcome-title">Available Applications</h2>
+                    <p class="welcome-description">
+                        Choose an application to begin your CPQ development workflow.
+                    </p>
+                </div>
+
+                <div class="apps-container">
+                    <!-- Data Comparison App -->
+                    <div class="app-card" data-app="data-comparison">
+                        <div class="app-icon data-comparison-icon">
+                            <i data-lucide="git-compare" class="icon"></i>
+                        </div>
+                        <div class="app-content">
+                            <h3 class="app-title">Data Comparison</h3>
+                            <p class="app-description">
+                                Compare Salesforce CPQ configurations across multiple orgs with advanced filtering and analysis.
+                            </p>
+                            <div class="app-features">
+                                <div class="feature-item">
+                                    <i data-lucide="database" class="feature-icon"></i>
+                                    <span>Multi-org data extraction</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="search" class="feature-icon"></i>
+                                    <span>Advanced filtering options</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="file-text" class="feature-icon"></i>
+                                    <span>Detailed comparison reports</span>
+                                </div>
+                            </div>
+                            <div class="app-status">
+                                <span class="status-badge production">Production Ready</span>
+                            </div>
+                        </div>
+                        <button class="app-button data-comparison-btn">
+                            <i data-lucide="arrow-right" class="button-icon"></i>
+                            Launch Data Comparison
+                        </button>
+                    </div>
+
+                    <!-- Permissions Analyser App -->
+                    <div class="app-card" data-app="permissions-analyser">
+                        <div class="app-icon permissions-icon">
+                            <i data-lucide="shield-check" class="icon"></i>
+                        </div>
+                        <div class="app-content">
+                            <h3 class="app-title">Permissions Analyser</h3>
+                            <p class="app-description">
+                                Analyze and compare permission sets, profiles, and security configurations across organizations.
+                            </p>
+                            <div class="app-features">
+                                <div class="feature-item">
+                                    <i data-lucide="users" class="feature-icon"></i>
+                                    <span>Profile & permission analysis</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="lock" class="feature-icon"></i>
+                                    <span>Security configuration audit</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="shield" class="feature-icon"></i>
+                                    <span>Cross-org permission comparison</span>
+                                </div>
+                            </div>
+                            <div class="app-status">
+                                <span class="status-badge development">In Development</span>
+                            </div>
+                        </div>
+                        <button class="app-button permissions-btn">
+                            <i data-lucide="arrow-right" class="button-icon"></i>
+                            Launch Permissions Analyser
+                        </button>
+                    </div>
+                </div>
+
+                <!-- System Information -->
+                <div class="system-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i data-lucide="info" class="icon"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4 class="info-title">Extension Information</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Version:</span>
+                                    <span class="info-value">2.0.0</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Server:</span>
+                                    <span class="info-value" id="server-url">http://localhost:3030</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Status:</span>
+                                    <span class="info-value connection-status" id="connection-status">Connected</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">SFDX CLI:</span>
+                                    <span class="info-value" id="sfdx-status">Checking...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Extension Footer -->
+        <footer class="extension-footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <span class="extension-version">CPQ Toolset v2.0.0</span>
+                    <span class="separator">•</span>
+                    <span class="extension-mode">Extension Mode</span>
+                </div>
+                <div class="footer-right">
+                    <div class="footer-actions">
+                        <button class="footer-btn" id="health-check-btn">
+                            <i data-lucide="activity" class="btn-icon"></i>
+                            Health Check
+                        </button>
+                        <button class="footer-btn" id="refresh-btn">
+                            <i data-lucide="refresh-cw" class="btn-icon"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/shared/welcomePage/index.js"></script>
+</body>
+</html>

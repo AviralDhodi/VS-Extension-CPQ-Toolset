@@ -1,343 +1,418 @@
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-const parquet = require('parquets');
-const { createLogger } = require('../../../shared/logging/logger');
+// CPQ Toolset v3 - JSONL to Parquet Converter
+const { spawn } = require('child_process')
+const fs = require('fs')
+const path = require('path')
 
-const logger = createLogger({ appName: 'ParquetWriter' });
-
-function inferParquetType(value) {
-  logger.debug('🔍 Inferring Parquet type', { value, valueType: typeof value, isNull: value === null });
-  
-  // Handle null values - default to UTF8 and make optional
-  if (value === null || value === undefined) {
-    logger.debug('🔍 Null value detected, defaulting to optional UTF8', { value });
-    return { type: 'UTF8', optional: true };
+class ParquetConverter {
+  constructor(options = {}) {
+    this.pythonPath = options.pythonPath || 'python3'
+    this.timeout = options.timeout || 300000 // 5 minutes
+    this.tempDir = options.tempDir || path.join(process.cwd(), 'temp')
   }
-  
-  if (typeof value === 'string') return { type: 'UTF8' };
-  if (typeof value === 'number') return Number.isInteger(value) ? { type: 'INT64' } : { type: 'DOUBLE' };
-  if (typeof value === 'boolean') return { type: 'BOOLEAN' };
-  return { type: 'UTF8' };
-}
 
-function sanitizeKeys(record) {
-  const originalKeys = Object.keys(record);
-  logger.debug('🧹 Sanitizing record keys', { originalKeys });
-  
-  const clean = {};
-  for (const [key, value] of Object.entries(record)) {
-    const cleanKey = key.replace(/\./g, '_');
-    clean[cleanKey] = value;
-    
-    if (key !== cleanKey) {
-      logger.debug('🧹 Key sanitized', { originalKey: key, cleanKey });
+  /**
+   * Convert JSONL file to Parquet format
+   */
+  async convertJSONLToParquet(jsonlPath, parquetPath = null) {
+    if (!fs.existsSync(jsonlPath)) {
+      throw new Error(`JSONL file does not exist: ${jsonlPath}`)
     }
+
+    // Default parquet path
+    if (!parquetPath) {
+      parquetPath = jsonlPath.replace('.jsonl', '.parquet')
+    }
+
+    console.log(`Converting ${jsonlPath} to ${parquetPath}`)
+
+    // Create conversion script
+    const scriptPath = await this.createConversionScript()
+
+    return new Promise((resolve, reject) => {
+      const python = spawn(this.pythonPath, [scriptPath, jsonlPath, parquetPath], {
+        stdio: ['pipe', 'pipe', 'pipe'],
+        cwd: process.cwd()
+      })
+
+      let stdout = ''
+      let stderr = ''
+
+      python.stdout.on('data', (data) => {
+        stdout += data.toString()
+      })
+
+      python.stderr.on('data', (data) => {
+        stderr += data.toString()
+      })
+
+      python.on('close', (code) => {
+        // Cleanup script
+        this.cleanupScript(scriptPath)
+
+        if (code === 0) {
+          // Verify parquet file was created
+          if (fs.existsSync(parquetPath)) {
+            const stats = fs.statSync(parquetPath)
+            
+            resolve({
+              success: true,
+              inputPath: jsonlPath,
+              outputPath: parquetPath,
+              outputSize: stats.size,
+              conversionLog: stdout
+            })
+          } else {
+            reject(new Error('Parquet file was not created'))
+          }
+        } else {
+          reject(new Error(`Conversion failed with code ${code}: ${stderr}`))
+        }
+      })
+
+      python.on('error', (error) => {
+        this.cleanupScript(scriptPath)
+        reject(new Error(`Failed to spawn Python process: ${error.message}`))
+      })
+
+      // Set timeout
+      setTimeout(() => {
+        python.kill('SIGKILL')
+        this.cleanupScript(scriptPath)
+        reject(new Error('Conversion timeout'))
+      }, this.timeout)
+    })
   }
-  
-  const cleanKeys = Object.keys(clean);
-  logger.debug('🧹 Sanitization complete', { 
-    originalCount: originalKeys.length, 
-    cleanCount: cleanKeys.length,
-    cleanKeys: cleanKeys.slice(0, 10) // Show first 10 for debugging
-  });
-  
-  return clean;
-}
 
-async function convertJsonlToParquet(extractedPath) {
-  logger.info('🚀 Starting JSONL to Parquet conversion', { extractedPath });
-  
-  // extractedPath is expected to be a specific comparison directory like:
-  // 'c:\\Extension\\cpq-toolset\\apps\\data-comparison\\data-extract\\comp_1750089363031'
-  const comparisonId = path.basename(extractedPath);
-  logger.info('📁 Processing comparison directory', { comparisonId, fullPath: extractedPath });
-  
-  const stat = fs.statSync(extractedPath);
-  if (!stat.isDirectory()) {
-    logger.error('❌ Extracted path is not a directory', { extractedPath });
-    return;
-  }
+  /**
+   * Convert multiple JSONL files to Parquet
+   */
+  async convertMultiple(jsonlPaths, options = {}) {
+    const results = []
+    const parallel = options.parallel || false
+    const maxConcurrent = options.maxConcurrent || 3
 
-  const orgDirs = fs.readdirSync(extractedPath).filter(f => f !== '.buffers');
-  logger.info('🏢 Found organization directories', { comparisonId, orgDirs, count: orgDirs.length });
-
-  await Promise.all(
-    orgDirs.map(async orgId => {
-      logger.info('🏢 Processing organization directory', { comparisonId, orgId });
-      
-      const orgPath = path.join(extractedPath, orgId);
-      const orgStat = fs.statSync(orgPath);
-      
-      logger.debug('🔍 Checking org path type', { 
-        comparisonId, 
-        orgId, 
-        orgPath, 
-        isDirectory: orgStat.isDirectory(),
-        isFile: orgStat.isFile()
-      });
-      
-      if (!orgStat.isDirectory()) {
-        logger.debug('⏭️ Skipping non-directory org (this is likely a .jsonl file)', { 
-          orgId, 
-          isFile: orgStat.isFile() 
-        });
-        return;
-      }
-
-      const files = fs.readdirSync(orgPath).filter(f => f.endsWith('.jsonl'));
-      logger.info('📄 Found JSONL files in org', { comparisonId, orgId, files, count: files.length });
-
-      for (const jsonlFile of files) {
-        logger.info('📄 Starting conversion of file', { comparisonId, orgId, jsonlFile });
-        
-        const jsonlPath = path.join(orgPath, jsonlFile);
-        const parquetPath = jsonlPath.replace('.jsonl', '.parquet');
-        
-        logger.debug('📂 File paths determined', { 
-          comparisonId, 
-          orgId, 
-          jsonlFile, 
-          jsonlPath, 
-          parquetPath 
-        });
-
+    if (parallel) {
+      return await this.convertParallel(jsonlPaths, maxConcurrent)
+    } else {
+      // Sequential conversion
+      for (const jsonlPath of jsonlPaths) {
         try {
-          logger.debug('📖 Creating readline interface', { jsonlPath });
-          const rl = readline.createInterface({
-            input: fs.createReadStream(jsonlPath),
-            crlfDelay: Infinity
-          });
-
-          const rows = [];
-          let lineCount = 0;
-          logger.debug('📖 Starting to read lines', { jsonlPath });
-          
-          for await (const line of rl) {
-            lineCount++;
-            if (!line.trim()) {
-              logger.debug('⏭️ Skipping empty line', { jsonlPath, lineNumber: lineCount });
-              continue;
-            }
-            
-            logger.debug('📝 Parsing line', { jsonlPath, lineNumber: lineCount, linePreview: line.substring(0, 100) });
-            const parsed = sanitizeKeys(JSON.parse(line));
-            rows.push(parsed);
-          }
-
-          logger.info('📖 Finished reading file', { 
-            comparisonId, 
-            orgId, 
-            jsonlFile, 
-            totalLines: lineCount, 
-            validRows: rows.length 
-          });
-
-          if (rows.length === 0) {
-            logger.warn('⚠️ Skipping empty file', { jsonlFile, orgId, comparisonId });
-            continue;
-          }
-
-          logger.debug('🔍 Analyzing all records for complete schema', { 
-            jsonlFile, 
-            totalRecords: rows.length
-          });
-
-          // Collect all unique field names across ALL records
-          const allFieldNames = new Set();
-          const fieldPresenceCount = new Map();
-          const fieldNullCount = new Map();
-          
-          rows.forEach((row, index) => {
-            Object.keys(row).forEach(fieldName => {
-              allFieldNames.add(fieldName);
-              fieldPresenceCount.set(fieldName, (fieldPresenceCount.get(fieldName) || 0) + 1);
-              
-              if (row[fieldName] === null || row[fieldName] === undefined) {
-                fieldNullCount.set(fieldName, (fieldNullCount.get(fieldName) || 0) + 1);
-              }
-            });
-          });
-
-          logger.debug('🔍 Field analysis complete', { 
-            jsonlFile, 
-            totalUniqueFields: allFieldNames.size,
-            fieldPresenceCount: Object.fromEntries(fieldPresenceCount),
-            fieldNullCount: Object.fromEntries(fieldNullCount),
-            sampleFieldNames: Array.from(allFieldNames).slice(0, 10)
-          });
-
-          // Create schema with proper null handling
-          const schemaEntries = Array.from(allFieldNames).map(fieldName => {
-            // Find first non-null value for type inference
-            let sampleValue = null;
-            let hasNonNullValue = false;
-            
-            for (const row of rows) {
-              if (row[fieldName] !== null && row[fieldName] !== undefined) {
-                sampleValue = row[fieldName];
-                hasNonNullValue = true;
-                break;
-              }
-            }
-            
-            // If all values are null, default to optional UTF8
-            let fieldConfig;
-            if (!hasNonNullValue) {
-              logger.debug('🔍 All values null for field, using optional UTF8', { fieldName });
-              fieldConfig = { type: 'UTF8', optional: true };
-            } else {
-              const typeConfig = inferParquetType(sampleValue);
-              fieldConfig = { ...typeConfig };
-              
-              // Mark as optional if not present in all records or has any null values
-              const nullCount = fieldNullCount.get(fieldName) || 0;
-              const isOptional = fieldPresenceCount.get(fieldName) < rows.length || nullCount > 0;
-              
-              if (isOptional) {
-                fieldConfig.optional = true;
-              }
-            }
-            
-            logger.debug('🔍 Schema field configured', { 
-              fieldName,
-              sampleValue,
-              hasNonNullValue,
-              inferredConfig: fieldConfig,
-              presentInRecords: fieldPresenceCount.get(fieldName),
-              nullCount: fieldNullCount.get(fieldName) || 0,
-              totalRecords: rows.length,
-              isOptional: fieldConfig.optional || false
-            });
-            
-            return [fieldName, fieldConfig];
-          });
-
-          logger.debug('📋 Creating Parquet schema with optional fields', { 
-            jsonlFile, 
-            totalFields: schemaEntries.length,
-            optionalFields: schemaEntries.filter(([, config]) => config.optional).length,
-            requiredFields: schemaEntries.filter(([, config]) => !config.optional).length
-          });
-
-          const schema = new parquet.ParquetSchema(
-            Object.fromEntries(schemaEntries)
-          );
-
-          logger.debug('📝 Opening Parquet writer', { parquetPath });
-          const writer = await parquet.ParquetWriter.openFile(schema, parquetPath);
-          
-          // Optional: Set row group size for better performance
-          writer.setRowGroupSize(4096);
-          logger.debug('📝 Set row group size to 4096', { jsonlFile });
-          
-          let processedRows = 0;
-          const totalRows = rows.length;
-          
-          logger.debug('📝 Starting row-by-row writing with field normalization', { 
-            jsonlFile, 
-            totalRows,
-            note: 'Ensuring all schema fields are present in each row'
-          });
-          
-          // For parquets@0.10.10, use appendRow for individual rows
-          for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-            const originalRow = rows[rowIndex];
-            try {
-              // Normalize row to include all schema fields
-              const normalizedRow = {};
-              
-              logger.debug('🔍 Processing row', {
-                jsonlFile,
-                rowIndex,
-                originalKeys: Object.keys(originalRow),
-                schemaFields: Array.from(allFieldNames)
-              });
-              
-              // Add all schema fields, using null for missing optional fields
-              for (const fieldName of allFieldNames) {
-                if (originalRow.hasOwnProperty(fieldName)) {
-                  normalizedRow[fieldName] = originalRow[fieldName];
-                } else {
-                  // Field is missing - set to null for optional fields
-                  normalizedRow[fieldName] = null;
-                  logger.debug('🔍 Added missing field as null', {
-                    jsonlFile,
-                    rowIndex,
-                    fieldName
-                  });
-                }
-              }
-              
-              logger.debug('🔍 Row normalized', {
-                jsonlFile,
-                rowIndex,
-                normalizedKeys: Object.keys(normalizedRow),
-                normalizedSample: Object.keys(normalizedRow).slice(0, 5).reduce((obj, key) => {
-                  obj[key] = normalizedRow[key];
-                  return obj;
-                }, {})
-              });
-              
-              await writer.appendRow(normalizedRow);
-              processedRows++;
-              
-              // Log progress every 500 rows
-              if (processedRows % 500 === 0 || processedRows === totalRows) {
-                logger.debug('📝 Writing progress to Parquet', { 
-                  jsonlFile, 
-                  processedRows,
-                  totalRows,
-                  progress: `${Math.round(processedRows / totalRows * 100)}%`,
-                  remaining: totalRows - processedRows
-                });
-              }
-            } catch (rowError) {
-              logger.error('❌ Failed to write row to Parquet', {
-                jsonlFile,
-                rowIndex,
-                originalRowKeys: Object.keys(originalRow),
-                originalRowSample: JSON.stringify(originalRow).substring(0, 200),
-                schemaFields: Array.from(allFieldNames),
-                error: rowError.message,
-                stack: rowError.stack
-              });
-              throw rowError;
-            }
-          }
-          
-          logger.info('📝 Finished writing all rows, closing Parquet file', {
-            jsonlFile,
-            totalRowsWritten: processedRows,
-            totalRows
-          });
-
-          logger.debug('📝 Closing Parquet writer', { jsonlFile });
-          await writer.close();
-
-          logger.info(`✅ Converted ${jsonlFile} to Parquet`, { 
-            orgId, 
-            comparisonId, 
-            parquetPath, 
-            totalRowsWritten: processedRows,
-            totalRows
-          });
-        } catch (err) {
-          logger.error('❌ Failed Parquet conversion', {
-            file: jsonlFile,
-            orgId,
-            comparisonId,
-            jsonlPath,
-            parquetPath,
-            error: err.message,
-            errorStack: err.stack
-          });
+          const result = await this.convertJSONLToParquet(jsonlPath)
+          results.push(result)
+        } catch (error) {
+          results.push({
+            success: false,
+            inputPath: jsonlPath,
+            error: error.message
+          })
         }
       }
+    }
+
+    return results
+  }
+
+  /**
+   * Convert files in parallel with concurrency control
+   */
+  async convertParallel(jsonlPaths, maxConcurrent) {
+    const results = []
+    const activeConversions = new Map()
+    const queue = [...jsonlPaths]
+
+    return new Promise((resolve, reject) => {
+      const processNext = () => {
+        while (queue.length > 0 && activeConversions.size < maxConcurrent) {
+          const jsonlPath = queue.shift()
+          
+          const conversionPromise = this.convertJSONLToParquet(jsonlPath)
+            .then(result => {
+              results.push(result)
+              activeConversions.delete(jsonlPath)
+              processNext()
+            })
+            .catch(error => {
+              results.push({
+                success: false,
+                inputPath: jsonlPath,
+                error: error.message
+              })
+              activeConversions.delete(jsonlPath)
+              processNext()
+            })
+
+          activeConversions.set(jsonlPath, conversionPromise)
+        }
+
+        // Check if all conversions completed
+        if (queue.length === 0 && activeConversions.size === 0) {
+          resolve(results)
+        }
+      }
+
+      processNext()
     })
-  );
-  
-  logger.info('🏁 Completed JSONL to Parquet conversion', { comparisonId, extractedPath });
+  }
+
+  /**
+   * Create Python conversion script
+   */
+  async createConversionScript() {
+    const scriptContent = `#!/usr/bin/env python3
+"""
+JSONL to Parquet Converter Script
+Converts JSONL files to Parquet format for optimized storage and processing
+"""
+
+import sys
+import json
+import pandas as pd
+import pyarrow as pa
+import pyarrow.parquet as pq
+from pathlib import Path
+
+def convert_jsonl_to_parquet(jsonl_path, parquet_path):
+    """Convert JSONL file to Parquet format"""
+    print(f"Converting {jsonl_path} to {parquet_path}")
+    
+    try:
+        # Read JSONL file
+        records = []
+        with open(jsonl_path, 'r', encoding='utf-8') as f:
+            for line_num, line in enumerate(f, 1):
+                line = line.strip()
+                if line:
+                    try:
+                        record = json.loads(line)
+                        records.append(record)
+                    except json.JSONDecodeError as e:
+                        print(f"Warning: Failed to parse line {line_num}: {e}")
+                        continue
+        
+        if not records:
+            raise ValueError("No valid records found in JSONL file")
+        
+        print(f"Loaded {len(records)} records from JSONL")
+        
+        # Convert to DataFrame
+        df = pd.DataFrame(records)
+        
+        # Optimize data types
+        df = optimize_dataframe_types(df)
+        
+        print(f"DataFrame shape: {df.shape}")
+        print(f"Columns: {list(df.columns)}")
+        
+        # Write to Parquet
+        df.to_parquet(parquet_path, index=False, compression='snappy')
+        
+        # Verify file was created
+        if Path(parquet_path).exists():
+            file_size = Path(parquet_path).stat().st_size
+            print(f"Successfully created Parquet file: {parquet_path} ({file_size} bytes)")
+            return True
+        else:
+            raise RuntimeError("Parquet file was not created")
+            
+    except Exception as e:
+        print(f"Conversion failed: {e}")
+        raise
+
+def optimize_dataframe_types(df):
+    """Optimize DataFrame column types for better Parquet compression"""
+    
+    for column in df.columns:
+        # Skip metadata columns
+        if column.startswith('_'):
+            continue
+            
+        # Convert string columns that look like categories
+        if df[column].dtype == 'object':
+            unique_ratio = df[column].nunique() / len(df)
+            if unique_ratio < 0.5:  # Less than 50% unique values
+                try:
+                    df[column] = df[column].astype('category')
+                except:
+                    pass
+        
+        # Convert float columns with no decimals to int
+        elif df[column].dtype == 'float64':
+            if df[column].notna().all() and (df[column] % 1 == 0).all():
+                try:
+                    df[column] = df[column].astype('int64')
+                except:
+                    pass
+    
+    return df
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: python convert_parquet.py <input_jsonl> <output_parquet>")
+        sys.exit(1)
+    
+    jsonl_path = sys.argv[1]
+    parquet_path = sys.argv[2]
+    
+    try:
+        convert_jsonl_to_parquet(jsonl_path, parquet_path)
+        print("Conversion completed successfully")
+    except Exception as e:
+        print(f"Conversion failed: {e}")
+        sys.exit(1)
+`
+
+    // Ensure temp directory exists
+    if (!fs.existsSync(this.tempDir)) {
+      fs.mkdirSync(this.tempDir, { recursive: true })
+    }
+
+    const scriptPath = path.join(this.tempDir, `convert_parquet_${Date.now()}.py`)
+    fs.writeFileSync(scriptPath, scriptContent)
+    
+    return scriptPath
+  }
+
+  /**
+   * Cleanup temporary script
+   */
+  cleanupScript(scriptPath) {
+    try {
+      if (fs.existsSync(scriptPath)) {
+        fs.unlinkSync(scriptPath)
+      }
+    } catch (error) {
+      console.warn(`Failed to cleanup script ${scriptPath}:`, error.message)
+    }
+  }
+
+  /**
+   * Check if Parquet file exists and is newer than JSONL
+   */
+  isParquetUpToDate(jsonlPath, parquetPath = null) {
+    if (!parquetPath) {
+      parquetPath = jsonlPath.replace('.jsonl', '.parquet')
+    }
+
+    if (!fs.existsSync(jsonlPath) || !fs.existsSync(parquetPath)) {
+      return false
+    }
+
+    const jsonlStats = fs.statSync(jsonlPath)
+    const parquetStats = fs.statSync(parquetPath)
+
+    return parquetStats.mtime >= jsonlStats.mtime
+  }
+
+  /**
+   * Auto-convert JSONL files to Parquet if needed
+   */
+  async autoConvert(directory, options = {}) {
+    const recursive = options.recursive || false
+    const force = options.force || false
+
+    console.log(`Auto-converting JSONL files in ${directory}`)
+
+    // Find JSONL files
+    const jsonlFiles = this.findJSONLFiles(directory, recursive)
+    console.log(`Found ${jsonlFiles.length} JSONL files`)
+
+    const conversionsNeeded = []
+
+    for (const jsonlPath of jsonlFiles) {
+      const parquetPath = jsonlPath.replace('.jsonl', '.parquet')
+      
+      if (force || !this.isParquetUpToDate(jsonlPath, parquetPath)) {
+        conversionsNeeded.push(jsonlPath)
+      }
+    }
+
+    console.log(`${conversionsNeeded.length} files need conversion`)
+
+    if (conversionsNeeded.length === 0) {
+      return { converted: 0, upToDate: jsonlFiles.length }
+    }
+
+    // Convert files
+    const results = await this.convertMultiple(conversionsNeeded, {
+      parallel: true,
+      maxConcurrent: 3
+    })
+
+    const successful = results.filter(r => r.success).length
+    const failed = results.filter(r => !r.success).length
+
+    return {
+      converted: successful,
+      failed: failed,
+      upToDate: jsonlFiles.length - conversionsNeeded.length,
+      results: results
+    }
+  }
+
+  /**
+   * Find JSONL files in directory
+   */
+  findJSONLFiles(directory, recursive = false) {
+    const jsonlFiles = []
+
+    const scanDirectory = (dir) => {
+      if (!fs.existsSync(dir)) return
+
+      const items = fs.readdirSync(dir)
+
+      for (const item of items) {
+        const fullPath = path.join(dir, item)
+        const stats = fs.statSync(fullPath)
+
+        if (stats.isFile() && item.endsWith('.jsonl')) {
+          jsonlFiles.push(fullPath)
+        } else if (stats.isDirectory() && recursive) {
+          scanDirectory(fullPath)
+        }
+      }
+    }
+
+    scanDirectory(directory)
+    return jsonlFiles
+  }
+
+  /**
+   * Get conversion statistics
+   */
+  async getConversionStats(directory) {
+    const jsonlFiles = this.findJSONLFiles(directory, true)
+    const stats = {
+      totalJSONL: jsonlFiles.length,
+      hasParquet: 0,
+      upToDate: 0,
+      needsConversion: 0,
+      totalSizeJSONL: 0,
+      totalSizeParquet: 0
+    }
+
+    for (const jsonlPath of jsonlFiles) {
+      const parquetPath = jsonlPath.replace('.jsonl', '.parquet')
+      const jsonlStats = fs.statSync(jsonlPath)
+      
+      stats.totalSizeJSONL += jsonlStats.size
+
+      if (fs.existsSync(parquetPath)) {
+        stats.hasParquet++
+        const parquetStats = fs.statSync(parquetPath)
+        stats.totalSizeParquet += parquetStats.size
+
+        if (this.isParquetUpToDate(jsonlPath, parquetPath)) {
+          stats.upToDate++
+        } else {
+          stats.needsConversion++
+        }
+      } else {
+        stats.needsConversion++
+      }
+    }
+
+    return stats
+  }
 }
 
-module.exports = { convertJsonlToParquet };
+module.exports = { ParquetConverter }

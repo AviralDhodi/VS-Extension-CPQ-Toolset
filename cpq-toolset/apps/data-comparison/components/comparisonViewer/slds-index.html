@@ -1,0 +1,189 @@
+<div class="slds-scope slds-theme_default">
+        <div class="comparison-viewer-container slds-p-horizontal_x-large slds-p-vertical_large">
+            <!-- Header -->
+            <div class="slds-page-header slds-m-bottom_large">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-data-integration-hub">
+                                    <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                        <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#data_integration_hub"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                            <span class="slds-page-header__title slds-truncate">Comparison Results</span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-page-header__col-actions">
+                        <div class="slds-page-header__controls">
+                            <div class="slds-page-header__control">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label slds-assistive-text" for="object-filter">Filter by Object</label>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-select_container">
+                                            <select id="object-filter" class="slds-select">
+                                                <option value="">All Objects</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-page-header__control">
+                                <button id="export-current" class="slds-button slds-button_neutral">
+                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+                                    </svg>
+                                    Export View
+                                </button>
+                            </div>
+                            <div class="slds-page-header__control">
+                                <button id="back-to-status" class="slds-button slds-button_outline-brand">
+                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#back"></use>
+                                    </svg>
+                                    Back to Status
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_large">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <article class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-add slds-icon-utility-add_circle">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-success" aria-hidden="true">
+                                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Additions</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <div class="slds-text-heading_large slds-text-align_center">
+                                <span id="additions-count">0</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <article class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-error" aria-hidden="true">
+                                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#dash"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Deletions</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <div class="slds-text-heading_large slds-text-align_center">
+                                <span id="deletions-count">0</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <article class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-warning" aria-hidden="true">
+                                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Modifications</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <div class="slds-text-heading_large slds-text-align_center">
+                                <span id="modifications-count">0</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Diff Container -->
+            <article class="slds-card">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-card__header-title">
+                                <span class="slds-text-heading_small">Comparison Details</span>
+                            </h2>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body">
+                    <div id="diff-content" class="diff-content">
+                        <!-- Loading State -->
+                        <div class="loading-state slds-align_absolute-center slds-p-around_xx-large">
+                            <div class="slds-spinner_container">
+                                <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                                    <span class="slds-assistive-text">Loading</span>
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>
+                            </div>
+                            <div class="slds-text-body_regular slds-text-color_weak slds-m-top_medium">
+                                Loading comparison results...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Error Section -->
+            <div id="error-section" class="slds-m-top_large slds-hide">
+                <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                    <span class="slds-assistive-text">error</span>
+                    <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="Error">
+                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+                        </svg>
+                    </span>
+                    <h2>Error Loading Results</h2>
+                    <div class="slds-notify__content">
+                        <p id="error-message"></p>
+                    </div>
+                    <div class="slds-notify__footer slds-m-top_small">
+                        <button id="retry-load" class="slds-button slds-button_brand">Retry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
