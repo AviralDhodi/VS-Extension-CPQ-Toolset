@@ -8,7 +8,17 @@ const { getInstance: getPathResolver } = require('../../../shared/utils/pathReso
 class FetchCoordinator {
   constructor(options = {}) {
     this.pathResolver = getPathResolver()
-    this.maxConcurrentFetchers = options.maxConcurrentFetchers || 3
+    
+    // Check VS Code setting for max concurrent workers
+    let maxWorkers = 3 // default
+    try {
+      const vscode = require('vscode')
+      maxWorkers = vscode.workspace.getConfiguration('cpq-toolset').get('maxConcurrentWorkers') || 3
+    } catch (error) {
+      // Not running in VS Code context or setting not available
+    }
+    
+    this.maxConcurrentFetchers = options.maxConcurrentFetchers || maxWorkers
     this.timeout = options.timeout || 300000 // 5 minutes
     this.activeFetchers = new Map()
     this.fetchQueue = []

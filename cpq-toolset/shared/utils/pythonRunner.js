@@ -12,22 +12,40 @@ class PythonRunner {
   }
 
   /**
-   * Detect Python installation - check embedded Python first, then system Python
+   * Detect Python installation - check VS Code setting first, then embedded Python, then system Python
    */
   detectPython() {
     const os = require('os');
     const platform = os.platform();
     
+    // Check VS Code setting first
+    try {
+      const vscode = require('vscode');
+      const configuredPath = vscode.workspace.getConfiguration('cpq-toolset').get('pythonPath');
+      if (configuredPath && fs.existsSync(configuredPath)) {
+        const { execSync } = require('child_process');
+        const version = execSync(`"${configuredPath}" --version`, { encoding: 'utf8' }).trim();
+        logger.info(`Using configured Python: ${configuredPath} (${version})`);
+        return configuredPath;
+      }
+    } catch (error) {
+      // Not running in VS Code context or setting not available
+    }
+    
     // Check for embedded Python on Windows first
     if (platform === 'win32') {
       try {
-        // Look for embedded Python in the py directory
-        const embeddedPythonPath = path.join(__dirname, '..', '..', '..', 'py', 'python.exe');
+        // Look for embedded Python in the py directory relative to extension root
+        const embeddedPythonPath = path.join(this.pathResolver.extensionRoot, 'py', 'python.exe');
+        logger.info(`Checking for embedded Python at: ${embeddedPythonPath}`);
+        
         if (fs.existsSync(embeddedPythonPath)) {
           const { execSync } = require('child_process');
           const version = execSync(`"${embeddedPythonPath}" --version`, { encoding: 'utf8' }).trim();
           logger.info(`Found embedded Python: ${embeddedPythonPath} (${version})`);
           return embeddedPythonPath;
+        } else {
+          logger.warn(`Embedded Python not found at: ${embeddedPythonPath}`);
         }
       } catch (error) {
         logger.warn('Failed to check embedded Python:', error.message);
@@ -88,7 +106,7 @@ class PythonRunner {
    * Check if required Python packages are installed
    */
   async checkDependencies() {
-    const requiredPackages = ['pandas', 'numpy', 'pyarrow'];
+    const requiredPackages = ['pandas', 'numpy', 'pyarrow', 'openpyxl', 'dask', 'lxml'];
     const missingPackages = [];
 
     for (const pkg of requiredPackages) {
@@ -117,6 +135,22 @@ class PythonRunner {
   async installDependencies() {
     logger.info('Installing Python dependencies...');
     
+    // First check if pip is available
+    try {
+      await this.runCommand(['-m', 'pip', '--version']);
+    } catch (error) {
+      logger.error('Pip is not installed!');
+      
+      // For embedded Python on Windows, provide instructions
+      if (this.pythonPath.includes('py\\python.exe') || this.pythonPath.includes('py/python.exe')) {
+        throw new Error(
+          'Pip is not installed in embedded Python.\n' +
+          'Please run install-dependencies.bat from the py directory to install pip and required packages.'
+        );
+      }
+      throw new Error('Pip is required but not found. Please install pip first.');
+    }
+    
     const requirementsPath = this.pathResolver.getSharedModule('python', 'requirements.txt');
     
     if (fs.existsSync(requirementsPath)) {
@@ -124,7 +158,7 @@ class PythonRunner {
       await this.runCommand(['-m', 'pip', 'install', '-r', requirementsPath]);
     } else {
       // Install essential packages
-      const packages = ['pandas>=1.5.0', 'numpy>=1.21.0', 'pyarrow>=10.0.0', 'openpyxl>=3.0.0'];
+      const packages = ['pandas>=1.5.0', 'numpy>=1.21.0', 'pyarrow>=10.0.0', 'openpyxl>=3.0.0', 'dask>=2023.1.0', 'lxml>=4.9.0'];
       await this.runCommand(['-m', 'pip', 'install', ...packages]);
     }
     

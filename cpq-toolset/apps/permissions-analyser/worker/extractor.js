@@ -616,17 +616,16 @@ async function processOrgMetadata(orgDir, orgAlias, permissions) {
         
         for (const profilesDir of possibleDirs) {
             try {
-                if (await fs.pathExists(profilesDir)) {
-                    const profileFiles = await fs.readdir(profilesDir);
-                    for (const file of profileFiles) {
-                        if (file.endsWith('.profile-meta.xml') || file.endsWith('.profile')) {
-                            const profileName = file.replace('.profile-meta.xml', '').replace('.profile', '');
-                            const content = await fs.readFile(path.join(profilesDir, file), 'utf8');
-                            processedData.profiles[profileName] = parseProfileMetadata(content);
-                        }
+                await fs.access(profilesDir);
+                const profileFiles = await fs.readdir(profilesDir);
+                for (const file of profileFiles) {
+                    if (file.endsWith('.profile-meta.xml') || file.endsWith('.profile')) {
+                        const profileName = file.replace('.profile-meta.xml', '').replace('.profile', '');
+                        const content = await fs.readFile(path.join(profilesDir, file), 'utf8');
+                        processedData.profiles[profileName] = parseProfileMetadata(content);
                     }
-                    break; // Found profiles, no need to check other dirs
                 }
+                break; // Found profiles, no need to check other dirs
             } catch (error) {
                 // Continue to next possible directory
             }
@@ -647,9 +646,9 @@ async function processOrgMetadata(orgDir, orgAlias, permissions) {
         
         for (const permSetsDir of possibleDirs) {
             try {
-                if (await fs.pathExists(permSetsDir)) {
-                    const permSetFiles = await fs.readdir(permSetsDir);
-                    for (const file of permSetFiles) {
+                await fs.access(permSetsDir);
+                const permSetFiles = await fs.readdir(permSetsDir);
+                for (const file of permSetFiles) {
                         if (file.endsWith('.permissionset-meta.xml') || file.endsWith('.permissionset')) {
                             const permSetName = file.replace('.permissionset-meta.xml', '').replace('.permissionset', '');
                             const content = await fs.readFile(path.join(permSetsDir, file), 'utf8');
@@ -678,9 +677,9 @@ async function processOrgMetadata(orgDir, orgAlias, permissions) {
         
         for (const psgDir of possibleDirs) {
             try {
-                if (await fs.pathExists(psgDir)) {
-                    const psgFiles = await fs.readdir(psgDir);
-                    for (const file of psgFiles) {
+                await fs.access(psgDir);
+                const psgFiles = await fs.readdir(psgDir);
+                for (const file of psgFiles) {
                         if (file.endsWith('.permissionsetgroup-meta.xml') || file.endsWith('.permissionsetgroup')) {
                             const psgName = file.replace('.permissionsetgroup-meta.xml', '').replace('.permissionsetgroup', '');
                             const content = await fs.readFile(path.join(psgDir, file), 'utf8');
@@ -709,9 +708,9 @@ async function processOrgMetadata(orgDir, orgAlias, permissions) {
         
         for (const mpsDir of possibleDirs) {
             try {
-                if (await fs.pathExists(mpsDir)) {
-                    const mpsFiles = await fs.readdir(mpsDir);
-                    for (const file of mpsFiles) {
+                await fs.access(mpsDir);
+                const mpsFiles = await fs.readdir(mpsDir);
+                for (const file of mpsFiles) {
                         if (file.endsWith('.mutingpermissionset-meta.xml') || file.endsWith('.mutingpermissionset')) {
                             const mpsName = file.replace('.mutingpermissionset-meta.xml', '').replace('.mutingpermissionset', '');
                             const content = await fs.readFile(path.join(mpsDir, file), 'utf8');

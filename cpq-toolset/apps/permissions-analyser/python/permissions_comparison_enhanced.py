@@ -88,7 +88,7 @@ class EnhancedPermissionsComparison:
         }
     
     def load_org_data(self) -> None:
-        """Load metadata XML files for all organizations"""
+        """Load processed permissions data for all organizations"""
         logger.info(f"Loading data from {self.data_path}")
         
         # Find all org directories
@@ -98,12 +98,26 @@ class EnhancedPermissionsComparison:
             org_name = org_dir.name
             logger.info(f"Loading metadata for {org_name}")
             
-            self.org_data[org_name] = {
-                'profiles': self._load_profiles(org_dir),
-                'permissionSets': self._load_permission_sets(org_dir),
-                'permissionSetGroups': self._load_permission_set_groups(org_dir),
-                'mutingPermissionSets': self._load_muting_permission_sets(org_dir)
-            }
+            # Look for processed_permissions.json file
+            processed_file = org_dir / 'processed_permissions.json'
+            if processed_file.exists():
+                with open(processed_file, 'r') as f:
+                    data = json.load(f)
+                    self.org_data[org_name] = {
+                        'profiles': data.get('profiles', {}),
+                        'permissionSets': data.get('permissionSets', {}),
+                        'permissionSetGroups': data.get('permissionSetGroups', {}),
+                        'mutingPermissionSets': data.get('mutingPermissionSets', {})
+                    }
+            else:
+                logger.warning(f"No processed_permissions.json found for {org_name}, trying to load from XML...")
+                # Fallback to XML parsing
+                self.org_data[org_name] = {
+                    'profiles': self._load_profiles(org_dir),
+                    'permissionSets': self._load_permission_sets(org_dir),
+                    'permissionSetGroups': self._load_permission_set_groups(org_dir),
+                    'mutingPermissionSets': self._load_muting_permission_sets(org_dir)
+                }
             
             logger.info(f"Loaded {len(self.org_data[org_name]['profiles'])} profiles, "
                        f"{len(self.org_data[org_name]['permissionSets'])} permission sets, "
