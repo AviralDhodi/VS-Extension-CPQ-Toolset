@@ -1,0 +1,17 @@
+================================================================================
+PERMISSIONS COMPARISON SUMMARY
+Comparison ID: comp_1753262213242_7ed1a64b
+Generated: 2025-07-23T14:46:56.070718
+================================================================================
+
+Organizations Compared: aviraldhodi1@gmail.com, aviraldhodi@brave-goat-hsejmn.com
+Total Organizations: 2
+
+
+PERMISSIONSETS:
+  Total: 0
+  Common across all orgs: 0
+  With differences: 0
+
+================================================================================
+For detailed differences, see the JSON results file.

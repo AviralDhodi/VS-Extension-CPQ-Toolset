@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Standalone Config Generator</title>
+    <!-- SLDS CSS -->
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <!-- Component CSS -->
+    <link rel="stylesheet" href="/data-comparison/components/configGenerator/improved-index.css">
+    <style>
+        /* Inline debug styles */
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body class="slds-theme_dark">
+    <div class="debug-info">
+        <div>SLDS Loaded: <span id="slds-check">Checking...</span></div>
+        <div>Component CSS: <span id="css-check">Checking...</span></div>
+        <div>DOM Ready: <span id="dom-check">Not Ready</span></div>
+    </div>
+    
+    <div class="slds-scope">
+        <!-- Simple SLDS components to test -->
+        <div class="slds-box slds-theme_shade slds-m-around_medium">
+            <h2 class="slds-text-heading_medium">SLDS Test Box</h2>
+            <p>This should have dark theme styling</p>
+            <button class="slds-button slds-button_brand">Test Button</button>
+        </div>
+        
+        <!-- Test grid -->
+        <div class="slds-container slds-container_fluid slds-p-around_medium">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <h2 class="slds-text-heading_small">Card 1</h2>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            Content 1
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <h2 class="slds-text-heading_small">Card 2</h2>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            Content 2
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <h2 class="slds-text-heading_small">Card 3</h2>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            Content 3
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check if SLDS is loaded
+        function checkSLDS() {
+            const testEl = document.createElement('div');
+            testEl.className = 'slds-button';
+            document.body.appendChild(testEl);
+            const styles = window.getComputedStyle(testEl);
+            const hasSLDS = styles.display === 'inline-flex'; // SLDS buttons have inline-flex
+            document.body.removeChild(testEl);
+            return hasSLDS;
+        }
+        
+        // Check if component CSS is loaded
+        function checkComponentCSS() {
+            const testEl = document.createElement('div');
+            testEl.className = 'slds-theme_dark';
+            document.body.appendChild(testEl);
+            const styles = window.getComputedStyle(testEl);
+            const hasCSS = styles.backgroundColor === 'rgb(12, 16, 20)'; // #0c1014
+            document.body.removeChild(testEl);
+            return hasCSS;
+        }
+        
+        // Update debug info
+        window.addEventListener('load', () => {
+            document.getElementById('slds-check').textContent = checkSLDS() ? 'Yes' : 'No';
+            document.getElementById('css-check').textContent = checkComponentCSS() ? 'Yes' : 'No';
+            document.getElementById('dom-check').textContent = 'Ready';
+            
+            // Log computed styles for debugging
+            const card = document.querySelector('.slds-card');
+            if (card) {
+                const cardStyles = window.getComputedStyle(card);
+                console.log('Card styles:', {
+                    backgroundColor: cardStyles.backgroundColor,
+                    borderColor: cardStyles.borderColor,
+                    display: cardStyles.display
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+/* SLDS Layout Fixes for Config Generator */
+
+/* Reset and base styles */
+html {
+    font-size: 100%;
+    line-height: 1.5;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+/* Fix SLDS scope issues */
+.slds-scope {
+    /* Ensure SLDS styles are contained */
+    font-size: 0.875rem;
+}
+
+/* Fix grid layout for proper spacing */
+.slds-grid.slds-gutters {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+}
+
+.slds-grid.slds-gutters > .slds-col {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+/* Ensure proper column widths */
+@media (min-width: 768px) {
+    .slds-size_1-of-3 {
+        width: 33.3333%;
+        flex: none;
+    }
+}
+
+/* Fix container widths */
+.slds-container_fluid {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Fix card heights in grid */
+.slds-col > .slds-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.slds-card__body {
+    flex: 1;
+}
+
+/* Fix path component overflow */
+.slds-path {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.slds-path__scroller {
+    display: inline-block;
+    min-width: 100%;
+}
+
+/* Dark theme specific fixes */
+.slds-theme_dark {
+    background-color: #0c1014;
+    color: #e5e5e5;
+}
+
+/* Fix modal z-index issues */
+.slds-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9001;
+}
+
+.slds-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9000;
+}
+
+/* Ensure hide/show utilities work */
+.slds-hide {
+    display: none !important;
+}
+
+.slds-show {
+    display: block !important;
+}
+
+/* Fix spinner positioning */
+.slds-spinner_container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Page container fixes */
+.page-container {
+    min-height: 400px;
+    padding: 0;
+}
+
+/* Fix potential flexbox issues */
+.slds-grid {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.slds-col {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Ensure proper button styling */
+.slds-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1rem;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    line-height: 1.875rem;
+    text-decoration: none;
+    color: #0176d3;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Fix input styling in dark theme */
+.slds-theme_dark .slds-input,
+.slds-theme_dark .slds-textarea,
+.slds-theme_dark .slds-select {
+    background-color: #16191f;
+    border: 1px solid #2e3338;
+    color: #e5e5e5;
+}
+
+/* Fix scrollbar for dark theme */
+.slds-theme_dark ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.slds-theme_dark ::-webkit-scrollbar-track {
+    background: #16191f;
+}
+
+.slds-theme_dark ::-webkit-scrollbar-thumb {
+    background: #2e3338;
+    border-radius: 4px;
+}
+
+.slds-theme_dark ::-webkit-scrollbar-thumb:hover {
+    background: #3e4348;
+}
+
+/* Panel content state management */
+/* Hide all states by default */
+.panel-content .loading-state,
+.panel-content .error-state,
+.panel-content .empty-state,
+.panel-content .content-area {
+    display: none;
+}
+
+/* Show only the active state */
+.panel-content[data-state="loading"] .loading-state {
+    display: block;
+}
+
+.panel-content[data-state="error"] .error-state {
+    display: block;
+}
+
+.panel-content[data-state="empty"] .empty-state {
+    display: block;
+}
+
+.panel-content[data-state="loaded"] .content-area {
+    display: block;
+}

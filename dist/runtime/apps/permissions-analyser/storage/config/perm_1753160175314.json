@@ -1,0 +1,34 @@
+{
+  "version": "3.0.0",
+  "createdAt": "2025-07-22T04:56:15.314Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "permissions": {
+    "profiles": [
+      "Admin",
+      "Chatter External User"
+    ],
+    "permissionSets": [
+      "sfdcInternalInt__sfdc_scrt2"
+    ],
+    "mutingPermissionSets": [],
+    "permissionSetGroups": []
+  },
+  "permissionTypes": {
+    "objectPermissions": true,
+    "fieldPermissions": true,
+    "systemPermissions": true,
+    "userPermissions": true,
+    "setupEntityAccess": true,
+    "appPermissions": true,
+    "apexClassAccess": true,
+    "vfPageAccess": true,
+    "customPermissions": true,
+    "tabVisibility": true,
+    "recordTypeAssignments": true,
+    "layoutAssignments": true
+  },
+  "id": "perm_1753160175314"
+}

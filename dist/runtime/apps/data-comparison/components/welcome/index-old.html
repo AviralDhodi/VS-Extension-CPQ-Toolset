@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Comparison - Welcome</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <link rel="stylesheet" href="/shared/assets/css/slds-fixes.css">
+    <link rel="stylesheet" href="/data-comparison/components/welcome/index.css">
+</head>
+<body class="slds-theme_dark">
+    <div class="slds-scope slds-theme_dark">
+        <div class="slds-container slds-container_fluid slds-p-around_large">
+            <!-- Page Header -->
+            <div class="slds-page-header slds-page-header_joined slds-m-bottom_x-large">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-data-mapping" title="Data Comparison">
+                                    <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#data_mapping"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                            <span class="slds-page-header__title slds-truncate" title="Data Comparison">Data Comparison</span>
+                                        </h1>
+                                    </div>
+                                </div>
+                                <p class="slds-page-header__name-meta">Compare Salesforce CPQ configurations across multiple organizations</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-page-header__col-actions">
+                        <div class="slds-page-header__controls">
+                            <div class="slds-page-header__control">
+                                <span class="slds-badge slds-badge_success">
+                                    <span class="slds-badge__icon slds-badge__icon_left">
+                                        <span class="slds-icon_container slds-icon-utility-check slds-current-color">
+                                            <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    System Ready
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Cards -->
+            <div class="slds-grid slds-wrap slds-gutters_large slds-m-bottom_xx-large">
+                <!-- Upload Configuration Card -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                    <article class="slds-card slds-card_boundary slds-theme_shade">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-file" title="Upload Configuration">
+                                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#file"></use>
+                                        </svg>
+                                        <span class="slds-assistive-text">Upload Configuration</span>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Upload Configuration</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-text-body_regular">Upload an existing configuration file (JSON, CSV, or Excel) to start comparing your organizations quickly.</p>
+                            <div class="slds-m-top_medium">
+                                <span class="slds-icon_container slds-icon-utility-upload slds-current-color">
+                                    <svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#upload"></use>
+                                    </svg>
+                                </span>
+                                <span class="slds-m-left_x-small slds-text-body_small">Supports JSON, CSV, and Excel formats</span>
+                            </div>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_brand slds-button_stretch" id="uploadConfigBtn">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#upload"></use>
+                                </svg>
+                                Choose File
+                            </button>
+                            <input type="file" id="configFileInput" accept=".json,.csv,.xlsx" style="display: none;">
+                        </footer>
+                    </article>
+                </div>
+
+                <!-- Create Configuration Card -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                    <article class="slds-card slds-card_boundary slds-theme_shade">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-custom" title="Create Configuration">
+                                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#custom"></use>
+                                        </svg>
+                                        <span class="slds-assistive-text">Create Configuration</span>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Create Configuration</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-text-body_regular">Build a new configuration from scratch by selecting organizations, objects, and comparison criteria.</p>
+                            <div class="slds-m-top_medium">
+                                <span class="slds-icon_container slds-icon-utility-builder slds-current-color">
+                                    <svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#builder"></use>
+                                    </svg>
+                                </span>
+                                <span class="slds-m-left_x-small slds-text-body_small">Step-by-step configuration wizard</span>
+                            </div>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_brand slds-button_stretch" id="createConfigBtn">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                </svg>
+                                Start Configuration
+                            </button>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="slds-m-bottom_x-large">
+                <div class="slds-text-heading_medium slds-m-bottom_medium">Key Features</div>
+                
+                <div class="slds-grid slds-wrap slds-gutters_medium">
+                    <!-- Multi-Org Support -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-theme_shade">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-groups slds-current-color">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#groups"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Multi-Org Support</h3>
+                                    <p class="slds-text-body_regular">Compare data across unlimited Salesforce organizations simultaneously</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Filtering -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-theme_shade">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-filterList slds-current-color">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#filterList"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Advanced Filtering</h3>
+                                    <p class="slds-text-body_regular">Apply per-organization filters, date ranges, and custom conditions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- High Performance -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-theme_shade">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-trending slds-current-color">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#trending"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">High Performance</h3>
+                                    <p class="slds-text-body_regular">Optimized set-based comparison engine for large datasets</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Progress -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-theme_shade">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-refresh slds-current-color">
+                                        <svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Real-time Progress</h3>
+                                    <p class="slds-text-body_regular">Monitor comparison progress with live status updates</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="slds-m-top_x-large">
+                <div class="slds-box slds-box_x-small slds-theme_shade">
+                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                        <div class="slds-col">
+                            <span class="slds-badge slds-badge_success status-indicator">
+                                <span class="slds-badge__icon slds-badge__icon_left">
+                                    <span class="slds-icon_container slds-icon-utility-check slds-current-color">
+                                        <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                        </svg>
+                                    </span>
+                                </span>
+                                <span class="status-text">System Ready</span>
+                            </span>
+                        </div>
+                        <div class="slds-col slds-text-align_right">
+                            <a href="/health" class="slds-button slds-button_text-destructive slds-m-right_x-small">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#heart"></use>
+                                </svg>
+                                Health Check
+                            </a>
+                            <a href="/debug" class="slds-button slds-button_text-destructive">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#info"></use>
+                                </svg>
+                                Debug Info
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Loading Modal -->
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" id="loadingOverlay" style="display: none;" aria-labelledby="loading-heading" aria-describedby="loading-content">
+            <div class="slds-modal__container">
+                <div class="slds-modal__content slds-p-around_large slds-text-align_center" id="loading-content">
+                    <div class="slds-spinner_container">
+                        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                    <h2 id="loading-heading" class="slds-text-heading_medium slds-m-top_medium loading-text">Processing...</h2>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" id="loadingBackdrop" style="display: none;"></div>
+        
+        <!-- Upload Status Toast -->
+        <div class="slds-notify_container slds-is-fixed" style="display: none;" id="uploadStatusContainer">
+            <div class="slds-notify slds-notify_toast" role="status" id="uploadStatus">
+                <span class="slds-assistive-text">info</span>
+                <span class="slds-icon_container slds-m-right_small slds-no-flex slds-align-top">
+                    <svg class="slds-icon slds-icon_small" id="uploadStatusIcon" aria-hidden="true">
+                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#info"></use>
+                    </svg>
+                </span>
+                <div class="slds-notify__content">
+                    <h2 class="slds-text-heading_small" id="uploadStatusText"></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include JavaScript -->
+    <script src="index.js"></script>
+</body>
+</html>

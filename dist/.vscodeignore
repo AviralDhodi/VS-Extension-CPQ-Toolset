@@ -1,0 +1,27 @@
+# Source files
+apps/**
+shared/**
+scripts/**
+node_modules/**
+!runtime/**
+
+# Development files
+.git/**
+.gitignore
+*.log
+logs/**
+.DS_Store
+*.map
+
+# Build files
+src/**
+tsconfig.json
+webpack.config.js
+.eslintrc*
+
+# Keep only necessary files
+!server-bundle.js
+!extension.js
+!runtime/**
+!bin/**
+!py/**

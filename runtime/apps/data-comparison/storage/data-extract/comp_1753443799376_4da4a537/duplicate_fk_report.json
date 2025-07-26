@@ -1,0 +1,170 @@
+{
+  "summary": {
+    "total_orgs_with_duplicates": 2,
+    "total_objects_with_duplicates": 2,
+    "total_duplicate_fks": 2,
+    "requires_resolution": true
+  },
+  "duplicates": {
+    "ad1": {
+      "org_name": "ad1",
+      "objects_with_duplicates": 1,
+      "objects": {
+        "SBQQ__PriceRule__c": {
+          "object_name": "SBQQ__PriceRule__c",
+          "foreign_key_field": "Price_Rule_Foreign_Key__c",
+          "duplicate_count": 1,
+          "duplicates": {
+            "Rule_050": {
+              "foreign_key": "Rule_050",
+              "record_count": 2,
+              "records": [
+                {
+                  "line_number": 50,
+                  "record_id": "Unknown",
+                  "record_data": {
+                    "Name": "Rule_050",
+                    "SBQQ__Active__c": true,
+                    "SBQQ__AdvancedCondition__c": "Condition text 50",
+                    "SBQQ__ConditionsMet__c": "All",
+                    "SBQQ__ConfiguratorEvaluationEvent__c": "Save",
+                    "SBQQ__EvaluationEvent__c": "On Initialization",
+                    "SBQQ__EvaluationOrder__c": 50,
+                    "SBQQ__LookupObject__c": "SBQQ__LookupData__c",
+                    "SBQQ__TargetObject__c": "Configurator",
+                    "Price_Rule_Foreign_Key__c": "Rule_050",
+                    "_primaryKey": "Rule_050",
+                    "_sourceOrg": "ad1",
+                    "_objectName": "SBQQ__PriceRule__c",
+                    "_fetchTimestamp": "2025-07-25T11:43:22.448Z",
+                    "_recordIndex": 49
+                  }
+                },
+                {
+                  "line_number": 51,
+                  "record_id": "Unknown",
+                  "record_data": {
+                    "Name": "Rule_050",
+                    "SBQQ__Active__c": true,
+                    "SBQQ__AdvancedCondition__c": "Condition text 50Dupe",
+                    "SBQQ__ConditionsMet__c": "All",
+                    "SBQQ__ConfiguratorEvaluationEvent__c": "Save",
+                    "SBQQ__EvaluationEvent__c": "On Initialization",
+                    "SBQQ__EvaluationOrder__c": 50,
+                    "SBQQ__LookupObject__c": "SBQQ__LookupData__c",
+                    "SBQQ__TargetObject__c": "Configurator",
+                    "Price_Rule_Foreign_Key__c": "Rule_050",
+                    "_primaryKey": "Rule_050",
+                    "_sourceOrg": "ad1",
+                    "_objectName": "SBQQ__PriceRule__c",
+                    "_fetchTimestamp": "2025-07-25T11:43:22.448Z",
+                    "_recordIndex": 50
+                  }
+                }
+              ],
+              "differences": [
+                {
+                  "base_record_line": 50,
+                  "compare_record_line": 51,
+                  "different_fields": {
+                    "SBQQ__AdvancedCondition__c": {
+                      "base_value": "Condition text 50",
+                      "compare_value": "Condition text 50Dupe"
+                    },
+                    "_recordIndex": {
+                      "base_value": 49,
+                      "compare_value": 50
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "brave": {
+      "org_name": "brave",
+      "objects_with_duplicates": 1,
+      "objects": {
+        "SBQQ__PriceAction__c": {
+          "object_name": "SBQQ__PriceAction__c",
+          "foreign_key_field": "Price_Action_Foreign_Key__c",
+          "duplicate_count": 1,
+          "duplicates": {
+            "Act_015": {
+              "foreign_key": "Act_015",
+              "record_count": 2,
+              "records": [
+                {
+                  "line_number": 15,
+                  "record_id": "Unknown",
+                  "record_data": {
+                    "SBQQ__Field__c": "Unit Price",
+                    "SBQQ__Formula__c": "ActionFormula 15",
+                    "SBQQ__Order__c": 15,
+                    "SBQQ__ParentRuleIsActive__c": true,
+                    "SBQQ__RuleLookupObject__c": "SBQQ__LookupData__c",
+                    "SBQQ__RuleTargetsCalculator__c": false,
+                    "SBQQ__SourceLookupField__c": "SBQQ__Value__c",
+                    "SBQQ__TargetObject__c": "Quote",
+                    "SBQQ__Value__c": "Value_015",
+                    "SBQQ__ValueField__c": "Field_015",
+                    "Price_Action_Foreign_Key__c": "Act_015",
+                    "_primaryKey": "Act_015",
+                    "_sourceOrg": "brave",
+                    "_objectName": "SBQQ__PriceAction__c",
+                    "_fetchTimestamp": "2025-07-25T11:43:25.313Z",
+                    "_recordIndex": 14
+                  }
+                },
+                {
+                  "line_number": 16,
+                  "record_id": "Unknown",
+                  "record_data": {
+                    "SBQQ__Field__c": "Unit Price",
+                    "SBQQ__Formula__c": "ActionFormula 15",
+                    "SBQQ__Order__c": 15,
+                    "SBQQ__ParentRuleIsActive__c": true,
+                    "SBQQ__RuleLookupObject__c": "SBQQ__LookupData__c",
+                    "SBQQ__RuleTargetsCalculator__c": false,
+                    "SBQQ__SourceLookupField__c": "SBQQ__Value__c",
+                    "SBQQ__TargetObject__c": "Quote",
+                    "SBQQ__Value__c": "Value_015Dupe",
+                    "SBQQ__ValueField__c": "Field_015Dupe",
+                    "Price_Action_Foreign_Key__c": "Act_015",
+                    "_primaryKey": "Act_015",
+                    "_sourceOrg": "brave",
+                    "_objectName": "SBQQ__PriceAction__c",
+                    "_fetchTimestamp": "2025-07-25T11:43:25.313Z",
+                    "_recordIndex": 15
+                  }
+                }
+              ],
+              "differences": [
+                {
+                  "base_record_line": 15,
+                  "compare_record_line": 16,
+                  "different_fields": {
+                    "SBQQ__Value__c": {
+                      "base_value": "Value_015",
+                      "compare_value": "Value_015Dupe"
+                    },
+                    "_recordIndex": {
+                      "base_value": 14,
+                      "compare_value": 15
+                    },
+                    "SBQQ__ValueField__c": {
+                      "base_value": "Field_015",
+                      "compare_value": "Field_015Dupe"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

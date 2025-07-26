@@ -1,0 +1,298 @@
+/* SLDS 2.0 Comparison Viewer Styles */
+
+/* Component Container */
+.comparison-viewer-container {
+    min-height: 100vh;
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+}
+
+/* Diff Content Container */
+.diff-content {
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Loading State */
+.loading-state {
+    min-height: 300px;
+}
+
+/* Diff Object Groups */
+.diff-object {
+    margin-bottom: var(--slds-c-spacing-large, 1.5rem);
+}
+
+.diff-object-header {
+    background-color: var(--slds-g-color-neutral-base-80, #e5e5e5);
+    padding: var(--slds-c-spacing-small, 0.75rem) var(--slds-c-spacing-medium, 1rem);
+    border-radius: var(--slds-c-border-radius-medium, 0.25rem) var(--slds-c-border-radius-medium, 0.25rem) 0 0;
+    border-left: 4px solid var(--slds-g-color-brand-base-50, #0176d3);
+}
+
+.diff-object-title {
+    font-weight: 600;
+    color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+/* Diff Lines Container */
+.diff-lines {
+    background-color: var(--slds-g-color-neutral-base-100, #ffffff);
+    border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+    border-top: none;
+    border-radius: 0 0 var(--slds-c-border-radius-medium, 0.25rem) var(--slds-c-border-radius-medium, 0.25rem);
+}
+
+/* Individual Diff Line */
+.diff-line {
+    display: grid;
+    grid-template-columns: 150px 250px 1fr;
+    gap: var(--slds-c-spacing-medium, 1rem);
+    padding: var(--slds-c-spacing-small, 0.75rem) var(--slds-c-spacing-medium, 1rem);
+    border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+    transition: background-color 0.2s ease;
+    align-items: start;
+}
+
+.diff-line:last-child {
+    border-bottom: none;
+}
+
+.diff-line:hover {
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+}
+
+.diff-line.missing {
+    border-left: 4px solid var(--slds-g-color-error, #ea001e);
+    background-color: rgba(234, 0, 30, 0.03);
+}
+
+.diff-line.modified {
+    border-left: 4px solid var(--slds-g-color-warning, #ff9a3c);
+    background-color: rgba(255, 154, 60, 0.03);
+}
+
+/* Line Number (Record ID) */
+.line-number {
+    color: var(--slds-g-color-neutral-base-30, #514f4d);
+    font-family: var(--slds-c-font-family-monospace, 'Consolas', 'Menlo', 'Monaco', monospace);
+    font-size: var(--slds-c-font-size-2, 0.8125rem);
+    padding: var(--slds-c-spacing-xxx-small, 0.25rem) var(--slds-c-spacing-x-small, 0.5rem);
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-radius: var(--slds-c-border-radius-small, 0.125rem);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Field Name */
+.field-name {
+    font-weight: 600;
+    color: var(--slds-g-color-neutral-base-10, #181818);
+    word-break: break-word;
+}
+
+/* Diff Values Container */
+.diff-values {
+    display: flex;
+    flex-direction: column;
+    gap: var(--slds-c-spacing-x-small, 0.5rem);
+}
+
+/* Git-like Diff Styling */
+.diff-line-header {
+    font-family: var(--slds-c-font-family-monospace, 'Consolas', 'Menlo', 'Monaco', monospace);
+    font-size: var(--slds-c-font-size-1, 0.75rem);
+    color: var(--slds-g-color-neutral-base-30, #514f4d);
+    margin-bottom: var(--slds-c-spacing-xxx-small, 0.25rem);
+}
+
+.old-value-diff,
+.new-value-diff,
+.added-content,
+.deleted-content,
+.unchanged-content {
+    font-family: var(--slds-c-font-family-monospace, 'Consolas', 'Menlo', 'Monaco', monospace);
+    font-size: var(--slds-c-font-size-2, 0.8125rem);
+    padding: var(--slds-c-spacing-x-small, 0.5rem);
+    border-radius: var(--slds-c-border-radius-small, 0.125rem);
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.old-value-diff {
+    background-color: rgba(234, 0, 30, 0.1);
+    border-left: 4px solid var(--slds-g-color-error, #ea001e);
+}
+
+.new-value-diff {
+    background-color: rgba(45, 176, 95, 0.1);
+    border-left: 4px solid var(--slds-g-color-success, #2db05f);
+}
+
+.diff-line-addition {
+    padding: var(--slds-c-spacing-x-small, 0.5rem);
+    background-color: rgba(45, 176, 95, 0.1);
+    border-left: 4px solid var(--slds-g-color-success, #2db05f);
+    border-radius: var(--slds-c-border-radius-small, 0.125rem);
+}
+
+.diff-line-deletion {
+    padding: var(--slds-c-spacing-x-small, 0.5rem);
+    background-color: rgba(234, 0, 30, 0.1);
+    border-left: 4px solid var(--slds-g-color-error, #ea001e);
+    border-radius: var(--slds-c-border-radius-small, 0.125rem);
+}
+
+.diff-line-unchanged {
+    padding: var(--slds-c-spacing-x-small, 0.5rem);
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-left: 4px solid var(--slds-g-color-border-base-1, #e5e5e5);
+    border-radius: var(--slds-c-border-radius-small, 0.125rem);
+}
+
+.diff-line-both-missing {
+    padding: var(--slds-c-spacing-x-small, 0.5rem);
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-left: 4px solid var(--slds-g-color-neutral-base-50, #747474);
+    border-radius: var(--slds-c-border-radius-small, 0.125rem);
+    font-style: italic;
+    color: var(--slds-g-color-neutral-base-30, #514f4d);
+}
+
+/* Character-level Diff */
+.char-unchanged {
+    color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+.char-deleted {
+    background-color: rgba(234, 0, 30, 0.3);
+    color: var(--slds-g-color-error, #ea001e);
+    font-weight: 600;
+}
+
+.char-added {
+    background-color: rgba(45, 176, 95, 0.3);
+    color: var(--slds-g-color-success, #2db05f);
+    font-weight: 600;
+}
+
+.added-content {
+    color: var(--slds-g-color-success, #2db05f);
+}
+
+.deleted-content {
+    color: var(--slds-g-color-error, #ea001e);
+}
+
+.unchanged-content {
+    color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--slds-c-spacing-xx-large, 3rem) var(--slds-c-spacing-large, 1.5rem);
+    color: var(--slds-g-color-neutral-base-30, #514f4d);
+}
+
+.empty-state h3 {
+    margin: 0 0 var(--slds-c-spacing-medium, 1rem) 0;
+    color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+/* Statistics Cards Enhancements */
+.slds-card__body_inner .slds-text-heading_large {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+/* Scrollbar Styling */
+.diff-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.diff-content::-webkit-scrollbar-track {
+    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-radius: 4px;
+}
+
+.diff-content::-webkit-scrollbar-thumb {
+    background: var(--slds-g-color-neutral-base-50, #747474);
+    border-radius: 4px;
+}
+
+.diff-content::-webkit-scrollbar-thumb:hover {
+    background: var(--slds-g-color-neutral-base-30, #514f4d);
+}
+
+/* Dark Theme Support */
+.slds-theme_inverse .comparison-viewer-container {
+    background-color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+.slds-theme_inverse .diff-object-header {
+    background-color: var(--slds-g-color-neutral-base-20, #2e2e2e);
+}
+
+.slds-theme_inverse .diff-lines {
+    background-color: var(--slds-g-color-neutral-base-5, #0d0d0d);
+    border-color: var(--slds-g-color-border-base-inverse-1, #444444);
+}
+
+.slds-theme_inverse .diff-line:hover {
+    background-color: var(--slds-g-color-neutral-base-15, #1f1f1f);
+}
+
+.slds-theme_inverse .line-number {
+    background-color: var(--slds-g-color-neutral-base-20, #2e2e2e);
+    color: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
+
+.slds-theme_inverse .field-name {
+    color: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .diff-line {
+        grid-template-columns: 1fr;
+        gap: var(--slds-c-spacing-x-small, 0.5rem);
+    }
+    
+    .line-number {
+        width: fit-content;
+        margin-bottom: var(--slds-c-spacing-x-small, 0.5rem);
+    }
+    
+    .field-name {
+        margin-bottom: var(--slds-c-spacing-x-small, 0.5rem);
+    }
+}
+
+@media (max-width: 1024px) {
+    .diff-line {
+        grid-template-columns: 120px 200px 1fr;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .slds-page-header__col-actions,
+    .slds-card:has(.slds-text-heading_large) {
+        display: none;
+    }
+    
+    .diff-content {
+        max-height: none;
+        overflow: visible;
+    }
+    
+    .diff-line {
+        break-inside: avoid;
+    }
+}

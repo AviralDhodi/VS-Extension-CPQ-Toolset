@@ -1,0 +1,72 @@
+{
+  "comparison_id": "comp_1753262213242_7ed1a64b",
+  "timestamp": "2025-07-23T14:46:56.070718",
+  "summary": {
+    "organizations": [
+      "aviraldhodi1@gmail.com",
+      "aviraldhodi@brave-goat-hsejmn.com"
+    ],
+    "organization_count": 2,
+    "comparison_stats": {
+      "permissionSets": {
+        "total": 0,
+        "common": 0,
+        "with_differences": 0
+      }
+    }
+  },
+  "details": {
+    "permissionSets": {
+      "all_permission_sets": [],
+      "org_permission_sets": {
+        "aviraldhodi1@gmail.com": [],
+        "aviraldhodi@brave-goat-hsejmn.com": []
+      },
+      "common_permission_sets": [],
+      "unique_permission_sets": {},
+      "permission_set_differences": {}
+    }
+  },
+  "configuration": {
+    "version": "3.0.0",
+    "createdAt": "2025-07-23T09:16:32.810Z",
+    "orgs": [
+      "aviraldhodi1@gmail.com",
+      "aviraldhodi@brave-goat-hsejmn.com"
+    ],
+    "permissions": {
+      "PermissionSet": [
+        "sfdcInternalInt__sfdc_scrt2"
+      ],
+      "PermissionSetGroup": [
+        "SBQQ__CPQIntegrationUserPermSetGroup"
+      ],
+      "Profile": [
+        "Admin"
+      ]
+    },
+    "selectedPermissionOptions": {
+      "PermissionSet": {
+        "apexClasses": true,
+        "visualforcePages": true,
+        "customPermissions": true,
+        "tabSettings": true,
+        "applicationVisibilities": true,
+        "recordTypeVisibilities": true
+      }
+    },
+    "objectSelection": "COMMON",
+    "specificObjects": [],
+    "apexClassSelection": "COMMON",
+    "specificApexClasses": [],
+    "pageSelection": "COMMON",
+    "specificPages": [],
+    "permissionTypes": [
+      "PermissionSet",
+      "PermissionSetGroup",
+      "Profile",
+      "MutingPermissionSet"
+    ],
+    "id": "perm_1753262188620"
+  }
+}

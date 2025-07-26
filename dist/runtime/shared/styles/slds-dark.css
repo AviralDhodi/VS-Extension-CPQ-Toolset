@@ -1,0 +1,735 @@
+/* Salesforce Lightning Design System - Dark Theme for CPQ Toolset */
+
+/* SLDS Color Variables - Dark Theme */
+:root {
+  /* Neutral Colors */
+  --slds-g-color-neutral-base-10: #001639;
+  --slds-g-color-neutral-base-20: #001B3A;
+  --slds-g-color-neutral-base-30: #001E3E;
+  --slds-g-color-neutral-base-40: #002248;
+  --slds-g-color-neutral-base-50: #032D60;
+  --slds-g-color-neutral-base-60: #013A75;
+  --slds-g-color-neutral-base-70: #014486;
+  --slds-g-color-neutral-base-80: #0854A1;
+  --slds-g-color-neutral-base-90: #0B5CAB;
+  --slds-g-color-neutral-base-95: #03234D;
+  --slds-g-color-neutral-base-100: #001639;
+  
+  /* Brand Colors */
+  --slds-g-color-brand-base-10: #001C3A;
+  --slds-g-color-brand-base-20: #032D60;
+  --slds-g-color-brand-base-30: #014486;
+  --slds-g-color-brand-base-40: #0B5CAB;
+  --slds-g-color-brand-base-50: #1B96FF;
+  --slds-g-color-brand-base-60: #57A3FD;
+  --slds-g-color-brand-base-70: #78B0FD;
+  --slds-g-color-brand-base-80: #AACBFF;
+  --slds-g-color-brand-base-90: #D8E6FE;
+  
+  /* Semantic Colors */
+  --slds-g-color-success: #2E844A;
+  --slds-g-color-success-base-40: #194E31;
+  --slds-g-color-success-base-50: #2E844A;
+  --slds-g-color-success-base-60: #45A65E;
+  
+  --slds-g-color-error: #EA001E;
+  --slds-g-color-error-base-40: #8E0000;
+  --slds-g-color-error-base-50: #EA001E;
+  --slds-g-color-error-base-60: #FE5C4C;
+  
+  --slds-g-color-warning: #FE9339;
+  --slds-g-color-warning-base-40: #A86403;
+  --slds-g-color-warning-base-50: #FE9339;
+  --slds-g-color-warning-base-60: #FFBA59;
+  
+  /* Text Colors */
+  --slds-g-color-neutral-10: #F3F3F3;
+  --slds-g-color-neutral-20: #D8D8D8;
+  --slds-g-color-neutral-30: #B9B9B9;
+  --slds-g-color-neutral-40: #969696;
+  --slds-g-color-neutral-50: #747474;
+  --slds-g-color-neutral-60: #5F5F5F;
+  --slds-g-color-neutral-70: #3E3E3C;
+  --slds-g-color-neutral-80: #2E2E2E;
+  --slds-g-color-neutral-90: #201E1C;
+  --slds-g-color-neutral-100: #181818;
+  
+  /* Border Colors */
+  --slds-g-color-border-base-1: #243047;
+  --slds-g-color-border-base-2: #2E3A50;
+  --slds-g-color-border-base-3: #39455C;
+  --slds-g-color-border-base-4: #5C6C84;
+  
+  /* Shadows */
+  --slds-g-shadow-card: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  --slds-g-shadow-dropdown: 0 4px 8px 0 rgba(0, 0, 0, 0.6);
+  --slds-g-shadow-button-focus: 0 0 3px #0B5CAB;
+  
+  /* Spacing */
+  --slds-g-spacing-xx-small: 0.25rem;
+  --slds-g-spacing-x-small: 0.5rem;
+  --slds-g-spacing-small: 0.75rem;
+  --slds-g-spacing-medium: 1rem;
+  --slds-g-spacing-large: 1.5rem;
+  --slds-g-spacing-x-large: 2rem;
+  --slds-g-spacing-xx-large: 3rem;
+  
+  /* Border Radius */
+  --slds-g-radius-border-1: 0.125rem;
+  --slds-g-radius-border-2: 0.25rem;
+  --slds-g-radius-border-3: 0.5rem;
+  --slds-g-radius-border-4: 1rem;
+  --slds-g-radius-border-circle: 50%;
+  
+  /* Font Sizes */
+  --slds-g-font-size-1: 0.625rem;
+  --slds-g-font-size-2: 0.75rem;
+  --slds-g-font-size-3: 0.8125rem;
+  --slds-g-font-size-4: 0.875rem;
+  --slds-g-font-size-5: 1rem;
+  --slds-g-font-size-6: 1.125rem;
+  --slds-g-font-size-7: 1.25rem;
+  --slds-g-font-size-8: 1.5rem;
+  --slds-g-font-size-9: 1.75rem;
+  --slds-g-font-size-10: 2rem;
+  
+  /* Font Weights */
+  --slds-g-font-weight-light: 300;
+  --slds-g-font-weight-regular: 400;
+  --slds-g-font-weight-medium: 500;
+  --slds-g-font-weight-semibold: 600;
+  --slds-g-font-weight-bold: 700;
+  
+  /* Line Heights */
+  --slds-g-line-height-text: 1.5;
+  --slds-g-line-height-heading: 1.25;
+  --slds-g-line-height-button: 1.875;
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: var(--slds-g-font-size-4);
+  font-weight: var(--slds-g-font-weight-regular);
+  line-height: var(--slds-g-line-height-text);
+  color: var(--slds-g-color-neutral-10);
+  background-color: var(--slds-g-color-neutral-base-10);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--slds-g-font-weight-light);
+  line-height: var(--slds-g-line-height-heading);
+  color: var(--slds-g-color-neutral-10);
+  margin-bottom: var(--slds-g-spacing-small);
+}
+
+h1 { font-size: var(--slds-g-font-size-10); }
+h2 { font-size: var(--slds-g-font-size-9); }
+h3 { font-size: var(--slds-g-font-size-8); }
+h4 { font-size: var(--slds-g-font-size-7); }
+h5 { font-size: var(--slds-g-font-size-6); }
+h6 { font-size: var(--slds-g-font-size-5); }
+
+p {
+  margin-bottom: var(--slds-g-spacing-medium);
+  color: var(--slds-g-color-neutral-20);
+}
+
+a {
+  color: var(--slds-g-color-brand-base-60);
+  text-decoration: none;
+  transition: color 0.15s ease-in-out;
+}
+
+a:hover, a:focus {
+  color: var(--slds-g-color-brand-base-70);
+  text-decoration: underline;
+}
+
+/* Layout Components */
+.slds-scope {
+  width: 100%;
+}
+
+.slds-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--slds-g-spacing-large);
+}
+
+.slds-container_fluid {
+  max-width: 100%;
+  width: 100%;
+}
+
+.slds-grid {
+  display: grid;
+  gap: var(--slds-g-spacing-large);
+}
+
+.slds-gutters {
+  gap: var(--slds-g-spacing-medium);
+}
+
+.slds-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.slds-col {
+  flex: 1 1 auto;
+}
+
+.slds-size_1-of-1 {
+  width: 100%;
+}
+
+.slds-medium-size_1-of-2 {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .slds-medium-size_1-of-2 {
+    width: 50%;
+  }
+}
+
+.slds-grid_columns {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.slds-grid_align-spread {
+  justify-content: space-between;
+}
+
+.slds-grid_vertical-align-center {
+  align-items: center;
+}
+
+/* Page Header */
+.slds-page-header {
+  background: var(--slds-g-color-neutral-base-30);
+  padding: var(--slds-g-spacing-large) var(--slds-g-spacing-x-large);
+  border-radius: var(--slds-g-radius-border-3);
+  margin-bottom: var(--slds-g-spacing-x-large);
+  box-shadow: var(--slds-g-shadow-card);
+  border: 1px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-page-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.slds-page-header__col-title {
+  flex: 1;
+}
+
+.slds-page-header__col-actions {
+  flex-shrink: 0;
+}
+
+.slds-page-header__title {
+  font-size: var(--slds-g-font-size-10);
+  font-weight: var(--slds-g-font-weight-light);
+  margin-bottom: var(--slds-g-spacing-x-small);
+}
+
+.slds-page-header__text {
+  color: var(--slds-g-color-neutral-30);
+  font-size: var(--slds-g-font-size-5);
+}
+
+/* Media Object */
+.slds-media {
+  display: flex;
+  align-items: flex-start;
+}
+
+.slds-media__body {
+  flex: 1;
+}
+
+/* Cards */
+.slds-card {
+  background: var(--slds-g-color-neutral-base-30);
+  border: 1px solid var(--slds-g-color-border-base-1);
+  border-radius: var(--slds-g-radius-border-3);
+  box-shadow: var(--slds-g-shadow-card);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.slds-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(27, 150, 255, 0.2);
+  border-color: var(--slds-g-color-brand-base-50);
+}
+
+.slds-card__header {
+  padding: var(--slds-g-spacing-medium) var(--slds-g-spacing-large);
+  border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-card__header-title {
+  font-size: var(--slds-g-font-size-6);
+  font-weight: var(--slds-g-font-weight-medium);
+  display: flex;
+  align-items: center;
+}
+
+.slds-card__body {
+  padding: var(--slds-g-spacing-large);
+}
+
+.slds-card__body_inner {
+  color: var(--slds-g-color-neutral-30);
+}
+
+.slds-card__footer {
+  padding: var(--slds-g-spacing-medium) var(--slds-g-spacing-large);
+  border-top: 1px solid var(--slds-g-color-border-base-1);
+  background: var(--slds-g-color-neutral-base-20);
+}
+
+/* Box */
+.slds-box {
+  background: var(--slds-g-color-neutral-base-30);
+  border: 1px solid var(--slds-g-color-border-base-1);
+  border-radius: var(--slds-g-radius-border-2);
+  padding: var(--slds-g-spacing-medium);
+}
+
+.slds-box.slds-theme_shade {
+  background: var(--slds-g-color-neutral-base-40);
+  border-color: var(--slds-g-color-border-base-2);
+}
+
+/* Buttons */
+.slds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--slds-g-spacing-medium);
+  height: 2rem;
+  background: var(--slds-g-color-brand-base-50);
+  color: white;
+  border: 1px solid transparent;
+  border-radius: var(--slds-g-radius-border-2);
+  font-size: var(--slds-g-font-size-3);
+  font-weight: var(--slds-g-font-weight-regular);
+  line-height: var(--slds-g-line-height-button);
+  text-transform: uppercase;
+  letter-spacing: 0.025rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.slds-button:hover {
+  background: var(--slds-g-color-brand-base-60);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(27, 150, 255, 0.3);
+}
+
+.slds-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.slds-button:focus {
+  outline: none;
+  box-shadow: var(--slds-g-shadow-button-focus);
+}
+
+.slds-button_neutral {
+  background: var(--slds-g-color-neutral-base-50);
+  color: var(--slds-g-color-neutral-10);
+}
+
+.slds-button_neutral:hover {
+  background: var(--slds-g-color-neutral-base-60);
+}
+
+.slds-button_success {
+  background: var(--slds-g-color-success);
+}
+
+.slds-button_success:hover {
+  background: var(--slds-g-color-success-base-60);
+}
+
+.slds-button_destructive {
+  background: var(--slds-g-color-error);
+}
+
+.slds-button_destructive:hover {
+  background: var(--slds-g-color-error-base-60);
+}
+
+.slds-button_brand {
+  background: var(--slds-g-color-brand-base-50);
+  color: white;
+}
+
+.slds-button_brand:hover {
+  background: var(--slds-g-color-brand-base-60);
+}
+
+/* Forms */
+.slds-form-element {
+  margin-bottom: var(--slds-g-spacing-medium);
+}
+
+.slds-form-element__label {
+  display: block;
+  font-size: var(--slds-g-font-size-3);
+  font-weight: var(--slds-g-font-weight-medium);
+  color: var(--slds-g-color-neutral-20);
+  margin-bottom: var(--slds-g-spacing-xx-small);
+}
+
+.slds-form-element__control {
+  position: relative;
+}
+
+.slds-input {
+  width: 100%;
+  padding: 0 var(--slds-g-spacing-small);
+  height: 2rem;
+  background: var(--slds-g-color-neutral-base-95);
+  border: 1px solid var(--slds-g-color-border-base-2);
+  border-radius: var(--slds-g-radius-border-2);
+  color: var(--slds-g-color-neutral-10);
+  font-size: var(--slds-g-font-size-4);
+  transition: all 0.15s ease-in-out;
+}
+
+.slds-input:focus {
+  outline: none;
+  border-color: var(--slds-g-color-brand-base-50);
+  box-shadow: 0 0 3px var(--slds-g-color-brand-base-50);
+}
+
+.slds-select {
+  width: 100%;
+  padding: 0 var(--slds-g-spacing-small);
+  padding-right: var(--slds-g-spacing-x-large);
+  height: 2rem;
+  background: var(--slds-g-color-neutral-base-95);
+  border: 1px solid var(--slds-g-color-border-base-2);
+  border-radius: var(--slds-g-radius-border-2);
+  color: var(--slds-g-color-neutral-10);
+  font-size: var(--slds-g-font-size-4);
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%227%22%20viewBox%3D%220%200%2012%207%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0.469%200.469L6%206l5.531-5.531L11.063%200.938%206%206%200.938%200.938z%22%20fill%3D%22%23B0B5B9%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right var(--slds-g-spacing-small) center;
+  background-size: 12px;
+  cursor: pointer;
+}
+
+/* Tables */
+.slds-table {
+  width: 100%;
+  background: var(--slds-g-color-neutral-base-30);
+  border: 1px solid var(--slds-g-color-border-base-1);
+  border-radius: var(--slds-g-radius-border-3);
+  overflow: hidden;
+}
+
+.slds-table thead {
+  background: var(--slds-g-color-neutral-base-50);
+}
+
+.slds-table th {
+  padding: var(--slds-g-spacing-small) var(--slds-g-spacing-medium);
+  font-size: var(--slds-g-font-size-2);
+  font-weight: var(--slds-g-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: var(--slds-g-color-neutral-10);
+  text-align: left;
+  border-bottom: 1px solid var(--slds-g-color-border-base-2);
+}
+
+.slds-table td {
+  padding: var(--slds-g-spacing-small) var(--slds-g-spacing-medium);
+  color: var(--slds-g-color-neutral-20);
+  border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-table tbody tr:hover {
+  background: var(--slds-g-color-neutral-base-40);
+}
+
+/* Badges */
+.slds-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--slds-g-spacing-xx-small) var(--slds-g-spacing-small);
+  background: var(--slds-g-color-neutral-base-70);
+  color: white;
+  border-radius: var(--slds-g-radius-border-4);
+  font-size: var(--slds-g-font-size-2);
+  font-weight: var(--slds-g-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.0625rem;
+}
+
+.slds-badge_success, .slds-theme_success {
+  background: var(--slds-g-color-success);
+}
+
+.slds-badge_warning, .slds-theme_warning {
+  background: var(--slds-g-color-warning);
+}
+
+.slds-badge_error, .slds-theme_error {
+  background: var(--slds-g-color-error);
+}
+
+/* Icons */
+.slds-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+.slds-icon_x-small {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.slds-icon_small {
+  width: 1rem;
+  height: 1rem;
+}
+
+.slds-icon_medium {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.slds-icon_large {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Utilities */
+.slds-m-top_small { margin-top: var(--slds-g-spacing-small); }
+.slds-m-top_medium { margin-top: var(--slds-g-spacing-medium); }
+.slds-m-top_large { margin-top: var(--slds-g-spacing-large); }
+
+.slds-m-bottom_small { margin-bottom: var(--slds-g-spacing-small); }
+.slds-m-bottom_medium { margin-bottom: var(--slds-g-spacing-medium); }
+.slds-m-bottom_large { margin-bottom: var(--slds-g-spacing-large); }
+
+.slds-m-right_small { margin-right: var(--slds-g-spacing-small); }
+.slds-m-right_x-small { margin-right: var(--slds-g-spacing-x-small); }
+
+.slds-p_small { padding: var(--slds-g-spacing-small); }
+.slds-p_medium { padding: var(--slds-g-spacing-medium); }
+.slds-p_large { padding: var(--slds-g-spacing-large); }
+
+.slds-p-horizontal_small { padding-left: var(--slds-g-spacing-small); padding-right: var(--slds-g-spacing-small); }
+.slds-p-horizontal_medium { padding-left: var(--slds-g-spacing-medium); padding-right: var(--slds-g-spacing-medium); }
+
+.slds-text-align_center { text-align: center; }
+.slds-text-align_right { text-align: right; }
+.slds-text-align_left { text-align: left; }
+
+.slds-text-heading_small { font-size: var(--slds-g-font-size-6); }
+.slds-text-heading_medium { font-size: var(--slds-g-font-size-7); }
+.slds-text-heading_large { font-size: var(--slds-g-font-size-8); }
+
+.slds-text-body_regular { font-size: var(--slds-g-font-size-4); }
+
+/* Loading Spinner */
+.slds-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2rem;
+  height: 2rem;
+}
+
+.slds-spinner__dot-a,
+.slds-spinner__dot-b {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slds-spinner__dot-a:after,
+.slds-spinner__dot-b:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 45%;
+  width: 10%;
+  height: 10%;
+  background: var(--slds-g-color-brand-base-50);
+  border-radius: 50%;
+  animation: slds-spinner 1s ease-in-out infinite;
+}
+
+.slds-spinner__dot-b {
+  transform: rotate(90deg);
+}
+
+.slds-spinner__dot-b:after {
+  animation-delay: -0.5s;
+}
+
+@keyframes slds-spinner {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Modals */
+.slds-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+}
+
+.slds-modal__backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.slds-modal__container {
+  position: relative;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  background: var(--slds-g-color-neutral-base-30);
+  border-radius: var(--slds-g-radius-border-3);
+  box-shadow: var(--slds-g-shadow-dropdown);
+  overflow: hidden;
+}
+
+.slds-modal__header {
+  padding: var(--slds-g-spacing-large);
+  background: var(--slds-g-color-neutral-base-50);
+  border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-modal__content {
+  padding: var(--slds-g-spacing-large);
+  overflow-y: auto;
+  max-height: calc(90vh - 200px);
+}
+
+.slds-modal__footer {
+  padding: var(--slds-g-spacing-medium) var(--slds-g-spacing-large);
+  background: var(--slds-g-color-neutral-base-40);
+  border-top: 1px solid var(--slds-g-color-border-base-1);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--slds-g-spacing-small);
+}
+
+/* Apply dark theme to body and html */
+html, body {
+  background-color: var(--slds-g-color-neutral-base-10);
+  color: var(--slds-g-color-neutral-10);
+  font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Ensure SLDS scope has dark background */
+.slds-scope {
+  background-color: var(--slds-g-color-neutral-base-10);
+  color: var(--slds-g-color-neutral-10);
+  min-height: 100vh;
+}
+
+/* Upload Status */
+.upload-status {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  max-width: 400px;
+  padding: var(--slds-g-spacing-medium);
+  border-radius: var(--slds-g-radius-border-3);
+  font-weight: var(--slds-g-font-weight-medium);
+  box-shadow: var(--slds-g-shadow-dropdown);
+  z-index: 1000;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.upload-status.processing {
+  background: var(--slds-g-color-brand-base-50);
+  color: white;
+}
+
+.upload-status.success {
+  background: var(--slds-g-color-success);
+  color: white;
+}
+
+.upload-status.error {
+  background: var(--slds-g-color-error);
+  color: white;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Spinner Sizes */
+.slds-spinner_small {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.slds-spinner_medium {
+  width: 2rem;
+  height: 2rem;
+}
+
+.slds-spinner_large {
+  width: 3rem;
+  height: 3rem;
+}

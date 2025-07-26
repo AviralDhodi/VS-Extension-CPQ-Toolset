@@ -1,0 +1,28 @@
+[2025-07-26T06:11:47.998Z] [INFO] [CPQ-Toolset-v3:server] Starting CPQ Toolset v3... {"nodeVersion":"v20.11.1","platform":"darwin","isBundled":false,"extensionRoot":"/Users/aviraldhodi/Downloads/Extension 2","runtimeDir":"/Users/aviraldhodi/Downloads/Extension 2"}
+[2025-07-26T06:11:48.000Z] [INFO] [CPQ-Toolset-v3:server] Loaded shared routes
+[2025-07-26T06:11:48.001Z] [INFO] [CPQ-Toolset-v3:server] Loading routes for 2 apps: data-comparison, permissions-analyser
+[2025-07-26T06:11:48.001Z] [INFO] [CPQ-Toolset-v3:server] Checking routes for data-comparison: {"appPath":"/Users/aviraldhodi/Downloads/Extension 2/apps/data-comparison","routesPath":"/Users/aviraldhodi/Downloads/Extension 2/apps/data-comparison/routes/index.js","exists":true}
+[2025-07-26T06:11:48.195Z] [INFO] [CPQ-Toolset-v3:server] Found system Python: python3 (Python 3.13.5)
+[2025-07-26T06:11:48.196Z] [INFO] [CPQ-Toolset-v3:server] Successfully loaded routes for app: data-comparison
+[2025-07-26T06:11:48.196Z] [INFO] [CPQ-Toolset-v3:server] Checking routes for permissions-analyser: {"appPath":"/Users/aviraldhodi/Downloads/Extension 2/apps/permissions-analyser","routesPath":"/Users/aviraldhodi/Downloads/Extension 2/apps/permissions-analyser/routes/index.js","exists":true}
+[2025-07-26T06:11:48.199Z] [INFO] [CPQ-Toolset-v3:server] Successfully loaded routes for app: permissions-analyser
+[2025-07-26T06:11:48.200Z] [INFO] [CPQ-Toolset-v3:server] CPQ Toolset v3 running on http://localhost:3030
+[2025-07-26T06:11:48.201Z] [INFO] [CPQ-Toolset-v3:server] Extension root: /Users/aviraldhodi/Downloads/Extension 2
+[2025-07-26T06:11:48.201Z] [INFO] [CPQ-Toolset-v3:server] Runtime directory: /Users/aviraldhodi/Downloads/Extension 2
+[2025-07-26T06:11:48.201Z] [INFO] [CPQ-Toolset-v3:server] Bundled mode: false
+[2025-07-26T06:13:53.554Z] [INFO] [CPQ-Toolset-v3:server] GET /health 200 - 0ms {"method":"GET","url":"/health","statusCode":200,"duration":0,"ip":"::1","responseSize":176}
+[2025-07-26T06:13:58.344Z] [INFO] [CPQ-Toolset-v3:server] GET /utils/get-apps 200 - 2ms {"method":"GET","url":"/utils/get-apps","statusCode":200,"duration":2,"ip":"::1","responseSize":353}
+[2025-07-26T06:14:02.721Z] [WARN] [CPQ-Toolset-v3:server] 404 Not Found: /data-comparison/api/orgs
+[2025-07-26T06:14:02.721Z] [ERROR] [CPQ-Toolset-v3:server] GET /data-comparison/api/orgs 404 - 1ms {"method":"GET","url":"/data-comparison/api/orgs","statusCode":404,"duration":1,"ip":"::1","responseSize":155}
+[2025-07-26T06:14:08.033Z] [WARN] [CPQ-Toolset-v3:server] 404 Not Found: /debug/routes
+[2025-07-26T06:14:08.033Z] [ERROR] [CPQ-Toolset-v3:server] GET /debug/routes 404 - 0ms {"method":"GET","url":"/debug/routes","statusCode":404,"duration":0,"ip":"::1","responseSize":143}
+[2025-07-26T06:14:13.091Z] [WARN] [CPQ-Toolset-v3:server] 404 Not Found: /debug/routes
+[2025-07-26T06:14:13.092Z] [ERROR] [CPQ-Toolset-v3:server] GET /debug/routes 404 - 1ms {"method":"GET","url":"/debug/routes","statusCode":404,"duration":1,"ip":"::1","responseSize":143}
+[2025-07-26T06:14:18.178Z] [INFO] [CPQ-Toolset-v3:server] Component welcome: hasExternalScript=false, jsLength=12345
+[2025-07-26T06:14:18.179Z] [INFO] [CPQ-Toolset-v3:server] HEAD /data-comparison/ 200 - 2ms {"method":"HEAD","url":"/data-comparison/","statusCode":200,"duration":2,"ip":"::1","responseSize":26985}
+[2025-07-26T06:14:23.814Z] [INFO] [CPQ-Toolset-v3:server] Permissions Analyser: HEAD /
+[2025-07-26T06:14:23.815Z] [INFO] [CPQ-Toolset-v3:server] HEAD /permissions-analyser/ 200 - 1ms {"method":"HEAD","url":"/permissions-analyser/","statusCode":200,"duration":1,"ip":"::1","responseSize":17117}
+[2025-07-26T06:14:28.468Z] [INFO] [CPQ-Toolset-v3:server] GET / 200 - 0ms {"method":"GET","url":"/","statusCode":200,"duration":0,"ip":"::1","responseSize":5733}
+[2025-07-26T06:14:34.070Z] [INFO] [CPQ-Toolset-v3:server] HEAD /shared/assets/spinner-fix.css 200 - 1ms {"method":"HEAD","url":"/shared/assets/spinner-fix.css","statusCode":200,"duration":1,"ip":"::1","responseSize":1167}
+[2025-07-26T06:14:39.259Z] [INFO] [CPQ-Toolset-v3:server] SIGTERM received, starting graceful shutdown...
+[2025-07-26T06:14:39.260Z] [INFO] [CPQ-Toolset-v3:server] HTTP server closed

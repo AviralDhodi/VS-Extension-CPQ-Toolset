@@ -1,0 +1,126 @@
+{
+  "name": "cpq-toolset-v3",
+  "version": "3.1.0",
+  "displayName": "Salesforce Comparison Toolset",
+  "description": "Compare Salesforce data and permissions across multiple orgs",
+  "main": "extension.js",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "node scripts/build.js",
+    "build:extension": "node scripts/build-extension.js",
+    "build:all": "npm run build && npm run build:extension",
+    "build:vscode": "node scripts/build-vscode-extension.js",
+    "clean": "node scripts/clean.js",
+    "lint": "eslint . --ext .js,.json",
+    "lint:fix": "eslint . --ext .js,.json --fix",
+    "test": "npm run lint && node tests/run.js",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "setup": "node scripts/postinstall.js",
+    "download:slds": "node scripts/download-slds-icons.js"
+  },
+  "engines": {
+    "vscode": "^1.74.0",
+    "node": ">=16.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:cpq-toolset.launch",
+    "onCommand:cpq-toolset.stop",
+    "onCommand:cpq-toolset.restart",
+    "onCommand:cpq-toolset.showOutput"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "cpq-toolset.launch",
+        "title": "Launch Salesforce Comparison Toolset",
+        "category": "Salesforce"
+      },
+      {
+        "command": "cpq-toolset.stop",
+        "title": "Stop Comparison Server",
+        "category": "Salesforce"
+      },
+      {
+        "command": "cpq-toolset.restart",
+        "title": "Restart Comparison Server",
+        "category": "Salesforce"
+      },
+      {
+        "command": "cpq-toolset.showOutput",
+        "title": "Show Comparison Output",
+        "category": "Salesforce"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "cpq-toolset.launch",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c"
+      }
+    ],
+    "configuration": {
+      "title": "Salesforce Comparison Toolset",
+      "properties": {
+        "cpq-toolset.salesforceCliPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Salesforce CLI (sf or sfdx)"
+        },
+        "cpq-toolset.enableDebugLogging": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable debug logging"
+        },
+        "cpq-toolset.defaultTimeout": {
+          "type": "number",
+          "default": 30000,
+          "description": "Default timeout for SFDX commands (ms)"
+        },
+        "cpq-toolset.pythonPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Python executable (leave empty to auto-detect)"
+        },
+        "cpq-toolset.maxConcurrentWorkers": {
+          "type": "number",
+          "default": 3,
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Maximum number of concurrent data fetcher processes"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.3",
+    "express": "^4.18.2",
+    "glob": "^8.1.0",
+    "multer": "^1.4.5-lts.1",
+    "proper-lockfile": "^4.1.2",
+    "python-shell": "^5.0.0",
+    "uuid": "^9.0.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.19.11",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "fs-extra": "^11.2.0",
+    "mocha": "^11.7.1"
+  },
+  "publisher": "aviraldhodi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AviralDhodi/VS-Extension-CPQ-Toolset.git"
+  }
+}

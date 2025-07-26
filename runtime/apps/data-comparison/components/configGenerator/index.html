@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Generator - V1 Style</title>
+    <link rel="stylesheet" href="/data-comparison/configGenerator/index.css">
+    <!-- Lucide icons will be included inline -->
+    <script>
+    // Minimal Lucide icon implementation for offline use
+    window.lucide = {
+        createIcons: function() {
+            // Icons are already SVG in the HTML, no need to replace
+        }
+    };
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="header-title">CPQ Configuration Generator</h1>
+                <div class="header-status">
+                    <span id="active-config-info" class="config-info">No active configuration</span>
+                </div>
+            </div>
+            
+            <!-- Hidden step elements for compatibility -->
+            <div id="step-orgs" class="hidden"></div>
+            <div id="step-config" class="hidden"></div>
+            <div id="step-objects" class="hidden"></div>
+            <div id="step-filters" class="hidden"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Initial Setup States -->
+            <div id="setup-states" class="setup-states">
+                <!-- Org Selection State -->
+                <div id="org-selection-state" class="state-panel">
+                    <div class="state-header">
+                        <h2>Select Organizations</h2>
+                        <p>Choose 2 or more Salesforce organizations to compare</p>
+                    </div>
+                    
+                    <div class="state-content">
+                        <!-- Org Loading -->
+                        <div id="orgs-loading" class="loading-state">
+                            <div class="loading-icon">
+                                <i data-lucide="loader" class="spin"></i>
+                            </div>
+                            <p>Loading authenticated organizations...</p>
+                        </div>
+                        
+                        <!-- Org Error -->
+                        <div id="orgs-error" class="error-state hidden">
+                            <div class="error-icon">
+                                <i data-lucide="alert-circle"></i>
+                            </div>
+                            <p id="orgs-error-message">Failed to load organizations</p>
+                            <button id="retry-orgs-btn" class="btn btn-primary">Retry</button>
+                        </div>
+                        
+                        <!-- Org Content -->
+                        <div id="orgs-content" class="orgs-content hidden">
+                            <div class="orgs-controls">
+                                <div class="selection-info">
+                                    <span id="selection-count">0 selected</span>
+                                    <span class="minimum-note">(minimum 2 required)</span>
+                                </div>
+                                <div class="selection-actions">
+                                    <button id="select-all-orgs" class="btn btn-link">Select All</button>
+                                    <button id="clear-orgs" class="btn btn-link">Clear</button>
+                                </div>
+                            </div>
+                            
+                            <div id="orgs-list" class="orgs-list"></div>
+                            
+                            <div class="orgs-actions">
+                                <button id="validate-orgs-btn" class="btn btn-primary" disabled>
+                                    <i data-lucide="check-circle"></i>
+                                    Validate Organizations
+                                </button>
+                                <button id="proceed-config-btn" class="btn btn-secondary" disabled>
+                                    <i data-lucide="arrow-right"></i>
+                                    Proceed to Config
+                                </button>
+                            </div>
+                            
+                            <div id="validation-results" class="validation-results hidden">
+                                <h3>Validation Results</h3>
+                                <div id="validation-list" class="validation-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Config Creation State -->
+                <div id="config-creation-state" class="state-panel hidden">
+                    <div class="state-header">
+                        <h2>Generate Configuration</h2>
+                        <p>Creating configuration file...</p>
+                    </div>
+                    
+                    <div class="state-content">
+                        <div class="progress-section">
+                            <div class="progress-header">
+                                <h3 id="config-progress-title">Initializing...</h3>
+                                <p id="config-progress-details">Starting configuration generation</p>
+                            </div>
+                            
+                            <div class="progress-bar">
+                                <div id="config-progress-fill" class="progress-fill" style="width: 0%"></div>
+                                <span id="config-progress-percentage" class="progress-percentage">0%</span>
+                            </div>
+                            
+                            <!-- SFDX Log Elements -->
+                            <div id="config-progress-commands" class="config-progress-commands hidden"></div>
+                            <button id="toggle-sfdx-log" class="btn btn-link hidden">Show SFDX Log</button>
+                            <div id="sfdx-log-content" class="sfdx-log-content hidden"></div>
+                        </div>
+                        
+                        <!-- Config Success -->
+                        <div id="config-success" class="success-state hidden">
+                            <div class="success-icon">
+                                <i data-lucide="check-circle"></i>
+                            </div>
+                            <h3>Configuration Created Successfully!</h3>
+                            <div class="config-details">
+                                <p><strong>File:</strong> <span id="config-filename">config.json</span></p>
+                                <p><strong>Organizations:</strong> <span id="config-orgs-count">0</span></p>
+                                <p><strong>Created:</strong> <span id="config-created-time">Now</span></p>
+                            </div>
+                            
+                            <!-- Hidden elements for info display -->
+                            <div id="active-config-file" class="hidden"></div>
+                            <div id="active-orgs-count" class="hidden"></div>
+                            <div class="success-actions">
+                                <button id="start-object-selection-btn" class="btn btn-primary">
+                                    <i data-lucide="database"></i>
+                                    Configure Objects & Fields
+                                </button>
+                                <button id="create-another-config-btn" class="btn btn-secondary">
+                                    <i data-lucide="plus"></i>
+                                    Create Another Config
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Config Error -->
+                        <div id="config-error" class="error-state hidden">
+                            <div class="error-icon">
+                                <i data-lucide="x-circle"></i>
+                            </div>
+                            <h3>Configuration Failed</h3>
+                            <p id="config-error-message">An error occurred</p>
+                            <div class="error-actions">
+                                <button id="retry-config-btn" class="btn btn-primary">Retry</button>
+                                <button id="back-to-orgs-btn" class="btn btn-secondary">Back to Organizations</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- V1-Style 3-Panel Layout for Objects & Fields -->
+            <div id="objects-fields-state" class="config-generator-container hidden">
+        <!-- Panel 1: Objects -->
+        <div class="panel panel-objects">
+            <div class="panel-header">
+                <h3>Common Objects</h3>
+                <div class="panel-controls">
+                    <input type="text" id="objects-search" placeholder="Search objects..." class="search-input">
+                    <span id="objects-count" class="count">0 objects</span>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div id="objects-loading" class="loading">Loading objects...</div>
+                <div id="objects-error" class="error hidden">
+                    <p>Failed to load objects</p>
+                    <button id="retry-objects" class="btn">Retry</button>
+                </div>
+                <div id="objects-list" class="objects-list"></div>
+            </div>
+        </div>
+
+        <!-- Panel 2: Fields -->
+        <div class="panel panel-fields">
+            <div class="panel-header">
+                <h3 id="fields-title">Select an Object</h3>
+                <div class="panel-controls">
+                    <input type="text" id="fields-search" placeholder="Search fields..." class="search-input">
+                    <span id="fields-count" class="count">0 fields</span>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div class="field-controls">
+                    <button id="select-all-fields" class="btn btn-sm">Select All</button>
+                    <button id="clear-all-fields" class="btn btn-sm">Clear All</button>
+                </div>
+                <div id="no-object-selected" class="placeholder">
+                    <i data-lucide="arrow-left"></i>
+                    <p>Select an object to view its fields</p>
+                </div>
+                <div id="fields-loading" class="loading hidden">Loading fields...</div>
+                <div id="fields-list" class="fields-list"></div>
+            </div>
+        </div>
+
+        <!-- Panel 3: Configuration -->
+        <div class="panel panel-config">
+            <div class="panel-header">
+                <h3>Configuration</h3>
+                <div class="current-object">
+                    <span id="selected-object-name">No object selected</span>
+                </div>
+            </div>
+            <div class="panel-content">
+                <!-- Current Object Summary -->
+                <div class="config-section">
+                    <h4>Current Object</h4>
+                    <div class="config-stats">
+                        <div class="stat">
+                            <span class="number" id="selected-fields-count">0</span>
+                            <span class="label">Fields</span>
+                        </div>
+                        <div class="stat">
+                            <span class="number" id="foreign-key-status">No FK</span>
+                            <span class="label">Foreign Key</span>
+                        </div>
+                    </div>
+                    <div id="foreign-key-info" class="foreign-key-info">
+                        <span class="no-foreign-key">No foreign key selected</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="config-actions">
+                    <button id="validate-and-save-btn" class="btn btn-primary" disabled>
+                        <i data-lucide="save"></i>
+                        Validate & Save
+                    </button>
+                    <button id="add-filters-btn" class="btn btn-secondary" disabled>
+                        <i data-lucide="filter"></i>
+                        Add Filters
+                    </button>
+                </div>
+
+                <!-- Overall Progress -->
+                <div class="config-section">
+                    <h4>Overall Progress</h4>
+                    <div id="configured-objects-list" class="configured-objects">
+                        <p class="no-objects">No objects configured yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Per-Org Filters Modal -->
+    <div id="filters-modal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Configure Filters for <span id="filter-object-name"></span></h3>
+                <button class="modal-close" id="close-filters-modal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="org-filters-container">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-tab="active">Active Fields</button>
+                        <button class="filter-tab" data-tab="dates">Date Filters</button>
+                        <button class="filter-tab" data-tab="conditions">Conditions</button>
+                    </div>
+                    
+                    <div class="org-filters-grid">
+                        <!-- Organizations will be populated here -->
+                        <div id="org-filters-content"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-filters" class="btn btn-secondary">Cancel</button>
+                <button id="save-filters" class="btn btn-primary">Save Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reference Field Modal -->
+    <div id="reference-modal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Select Reference Field</h3>
+                <button class="modal-close" id="close-reference-modal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="reference-info">
+                    <div id="reference-path" class="reference-path"></div>
+                    <p id="reference-description"></p>
+                </div>
+                <div class="reference-search">
+                    <input type="text" id="reference-search-input" placeholder="Search reference fields..." class="search-input">
+                    <span id="reference-fields-count" class="count">0 fields</span>
+                </div>
+                <div id="reference-fields-list" class="reference-fields-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-reference" class="btn btn-secondary">Cancel</button>
+                <button id="add-reference" class="btn btn-primary" disabled>Add Selected Field</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

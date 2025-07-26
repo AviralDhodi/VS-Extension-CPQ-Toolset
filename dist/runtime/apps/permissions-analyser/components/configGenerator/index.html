@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permissions Configuration Generator</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+</head>
+<body>
+    <div class="slds-scope">
+        <!-- SLDS Path Component -->
+        <div class="slds-path">
+            <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container">
+                    <div class="slds-path__scroller" role="application">
+                        <div class="slds-path__scroller_inner">
+                            <ul class="slds-path__nav" role="listbox">
+                                <li class="slds-path__item slds-is-current slds-is-active" role="presentation" data-step="orgs">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="0">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Organizations</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete" role="presentation" data-step="metadata">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Metadata Selection</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete" role="presentation" data-step="permissions">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Permission Types</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete" role="presentation" data-step="finalize">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Review & Generate</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="slds-container_x-large slds-container_center slds-p-horizontal_x-large slds-p-vertical_medium">
+            <!-- Step 1: Organizations -->
+            <div id="step-orgs" class="step-content">
+                <div class="slds-text-align_center slds-m-bottom_x-large">
+                    <h1 class="slds-text-heading_large">Select Organizations</h1>
+                    <p class="slds-text-body_large slds-text-color_weak">
+                        Choose at least 2 organizations to compare permissions
+                    </p>
+                </div>
+
+                <article class="slds-card">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-1">
+                                <button class="slds-button slds-button_outline-brand" id="loadOrgsBtn">
+                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+                                    </svg>
+                                    Load Organizations
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Organizations Data Table -->
+                        <div id="orgsList" class="slds-m-top_medium">
+                            <!-- Organizations table will be loaded here -->
+                        </div>
+
+                        <div class="slds-m-top_large slds-text-align_right">
+                            <button class="slds-button slds-button_neutral" disabled>Previous</button>
+                            <button class="slds-button slds-button_brand slds-m-left_x-small" id="validateOrgsBtn" disabled>
+                                Next: Select Metadata
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Step 2: Metadata Selection (Profiles, Permission Sets, etc.) -->
+            <div id="step-metadata" class="step-content" style="display: none;">
+                <div class="slds-text-align_center slds-m-bottom_x-large">
+                    <h1 class="slds-text-heading_large">Select Metadata to Compare</h1>
+                    <p class="slds-text-body_large slds-text-color_weak">
+                        Choose which profiles, permission sets, and other metadata to analyze
+                    </p>
+                </div>
+
+                <!-- SLDS Tabs for Metadata Selection -->
+                <div class="slds-tabs_default">
+                    <ul class="slds-tabs_default__nav" role="tablist">
+                        <li class="slds-tabs_default__item slds-is-active" title="Profiles" role="presentation">
+                            <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-profiles" id="tab-profiles__item">
+                                <span class="slds-icon_container slds-icon-standard-contact slds-m-right_x-small">
+                                    <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#contact"></use>
+                                    </svg>
+                                </span>
+                                Profiles
+                            </a>
+                        </li>
+                        <li class="slds-tabs_default__item" title="Permission Sets" role="presentation">
+                            <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-permsets" id="tab-permsets__item">
+                                <span class="slds-icon_container slds-icon-standard-permission-set slds-m-right_x-small">
+                                    <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#permission_set"></use>
+                                    </svg>
+                                </span>
+                                Permission Sets
+                            </a>
+                        </li>
+                        <li class="slds-tabs_default__item" title="Muting Permission Sets" role="presentation">
+                            <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-muting" id="tab-muting__item">
+                                <span class="slds-icon_container slds-icon-standard-permission-set-group slds-m-right_x-small">
+                                    <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#permission_set_group"></use>
+                                    </svg>
+                                </span>
+                                Muting Permission Sets
+                            </a>
+                        </li>
+                        <li class="slds-tabs_default__item" title="Permission Set Groups" role="presentation">
+                            <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-groups" id="tab-groups__item">
+                                <span class="slds-icon_container slds-icon-standard-permission-set-group slds-m-right_x-small">
+                                    <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#permission_set_group"></use>
+                                    </svg>
+                                </span>
+                                Permission Set Groups
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Tab Content -->
+                    <div id="tab-profiles" class="slds-tabs_default__content slds-show" role="tabpanel" aria-labelledby="tab-profiles__item">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="selectAllProfiles">
+                                    <label class="slds-checkbox__label" for="selectAllProfiles">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">Select All Common Profiles</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="profilesList" class="slds-scrollable_y slds-m-top_small" style="max-height: 300px;">
+                            <!-- Profiles will be loaded here -->
+                        </div>
+                    </div>
+
+                    
+                    <div id="tab-permsets" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-permsets__item">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="selectAllPermSets">
+                                    <label class="slds-checkbox__label" for="selectAllPermSets">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">Select All Common Permission Sets</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="permSetsList" class="slds-scrollable_y slds-m-top_small" style="max-height: 300px;">
+                            <!-- Permission sets will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div id="tab-muting" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-muting__item">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="selectAllMutingPermSets">
+                                    <label class="slds-checkbox__label" for="selectAllMutingPermSets">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">Select All Common Muting Permission Sets</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="mutingPermSetsList" class="slds-scrollable_y slds-m-top_small" style="max-height: 300px;">
+                            <!-- Muting permission sets will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div id="tab-groups" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-groups__item">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="selectAllPermSetGroups">
+                                    <label class="slds-checkbox__label" for="selectAllPermSetGroups">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">Select All Common Permission Set Groups</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="permSetGroupsList" class="slds-scrollable_y slds-m-top_small" style="max-height: 300px;">
+                            <!-- Permission set groups will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-m-top_large slds-text-align_right">
+                    <button class="slds-button slds-button_neutral" id="backToOrgsBtn">Previous</button>
+                    <button class="slds-button slds-button_brand slds-m-left_x-small" id="nextToPermTypesBtn">
+                        Next: Permission Types
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Permission Types Selection -->
+            <div id="step-permissions" class="step-content" style="display: none;">
+                <div class="slds-text-align_center slds-m-bottom_x-large">
+                    <h1 class="slds-text-heading_large">Select Permission Types to Compare</h1>
+                    <p class="slds-text-body_large slds-text-color_weak">
+                        Choose which types of permissions you want to analyze
+                    </p>
+                </div>
+
+                <!-- Permission Types Form -->
+                <div class="slds-form" role="list">
+                    <fieldset class="slds-form-element">
+                        <legend class="slds-form-element__legend slds-form-element__label">
+                            <span class="slds-form-element__label">Select Permission Categories</span>
+                        </legend>
+                        <div class="slds-form-element__control">
+                            <div class="slds-checkbox-group slds-grid slds-gutters slds-wrap">
+                            <!-- Object Permissions -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="objectPermissions" checked>
+                                    <label class="slds-checkbox__label" for="objectPermissions">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Object Permissions</strong>
+                                            <span class="slds-form-element__help">Read, Create, Edit, Delete, View All, Modify All</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Field Permissions -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="fieldPermissions" checked>
+                                    <label class="slds-checkbox__label" for="fieldPermissions">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Field Permissions</strong>
+                                            <span class="slds-form-element__help">Field-level read and edit access</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- System Permissions -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="systemPermissions" checked>
+                                    <label class="slds-checkbox__label" for="systemPermissions">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>System Permissions</strong>
+                                            <span class="slds-form-element__help">Administrative and system-level permissions</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- User Permissions -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="userPermissions" checked>
+                                    <label class="slds-checkbox__label" for="userPermissions">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>User Permissions</strong>
+                                            <span class="slds-form-element__help">User-specific permissions and capabilities</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Setup Entity Access -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="setupEntityAccess" checked>
+                                    <label class="slds-checkbox__label" for="setupEntityAccess">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Setup Entity Access</strong>
+                                            <span class="slds-form-element__help">Access to setup and configuration areas</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- App Permissions -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="appPermissions" checked>
+                                    <label class="slds-checkbox__label" for="appPermissions">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>App Permissions</strong>
+                                            <span class="slds-form-element__help">Connected app and custom app access</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Apex Class Access -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="apexClassAccess">
+                                    <label class="slds-checkbox__label" for="apexClassAccess">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Apex Class Access</strong>
+                                            <span class="slds-form-element__help">Access to Apex classes</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Visualforce Page Access -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="vfPageAccess">
+                                    <label class="slds-checkbox__label" for="vfPageAccess">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Visualforce Page Access</strong>
+                                            <span class="slds-form-element__help">Access to Visualforce pages</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Custom Permissions -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="customPermissions">
+                                    <label class="slds-checkbox__label" for="customPermissions">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Custom Permissions</strong>
+                                            <span class="slds-form-element__help">Custom permission definitions</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Tab Visibility -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="tabVisibility">
+                                    <label class="slds-checkbox__label" for="tabVisibility">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Tab Visibility</strong>
+                                            <span class="slds-form-element__help">Tab visibility and default settings</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Record Type Assignments -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="recordTypeAssignments">
+                                    <label class="slds-checkbox__label" for="recordTypeAssignments">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Record Type Assignments</strong>
+                                            <span class="slds-form-element__help">Record type visibility and defaults</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Layout Assignments -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" id="layoutAssignments">
+                                    <label class="slds-checkbox__label" for="layoutAssignments">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">
+                                            <strong>Layout Assignments</strong>
+                                            <span class="slds-form-element__help">Page layout assignments</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="slds-m-top_large slds-text-align_right">
+                    <button class="slds-button slds-button_neutral" id="backToMetadataBtn">Previous</button>
+                    <button class="slds-button slds-button_brand slds-m-left_x-small" id="nextToFinalizeBtn">
+                        Next: Review & Generate
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Finalize -->
+            <div id="step-finalize" class="step-content" style="display: none;">
+                <div class="slds-text-align_center slds-m-bottom_x-large">
+                    <h1 class="slds-text-heading_large">Review Configuration</h1>
+                    <p class="slds-text-body_large slds-text-color_weak">
+                        Review your selections and generate the package.xml for metadata extraction
+                    </p>
+                </div>
+
+                <article class="slds-card">
+                    <header class="slds-card__header">
+                        <h2 class="slds-text-heading_small">Configuration Summary</h2>
+                    </header>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div id="configSummary">
+                            <!-- Summary will be loaded here -->
+                        </div>
+                    </div>
+                    <footer class="slds-card__footer">
+                        <div class="slds-text-align_center">
+                            <button class="slds-button slds-button_neutral slds-m-right_x-small" id="saveConfigBtn">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#save"></use>
+                                </svg>
+                                Save Configuration
+                            </button>
+                            <button class="slds-button slds-button_brand" id="startExtractionBtn">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#play"></use>
+                                </svg>
+                                Start Metadata Extraction
+                            </button>
+                        </div>
+                    </footer>
+                </article>
+
+                <div class="slds-m-top_large slds-text-align_right">
+                    <button class="slds-button slds-button_neutral" id="backToPermTypesBtn">Previous</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="slds-notify_container slds-is-fixed"></div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="slds-spinner_container slds-is-fixed" style="display: none;">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <!-- Save Configuration Modal -->
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal" id="saveConfigModal">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="closeModal('saveConfigModal')">
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Save Configuration</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="configName">Configuration Name</label>
+                    <div class="slds-form-element__control">
+                        <input type="text" id="configName" placeholder="Enter configuration name" class="slds-input" />
+                    </div>
+                </div>
+                <div class="slds-form-element slds-m-top_medium">
+                    <label class="slds-form-element__label" for="configDescription">Description (Optional)</label>
+                    <div class="slds-form-element__control">
+                        <textarea id="configDescription" placeholder="Enter description" class="slds-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick="closeModal('saveConfigModal')">Cancel</button>
+                <button class="slds-button slds-button_brand" onclick="confirmSaveConfiguration()">Save</button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop" id="saveConfigBackdrop"></div>
+</body>
+</html>

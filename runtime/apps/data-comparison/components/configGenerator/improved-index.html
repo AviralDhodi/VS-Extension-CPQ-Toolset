@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Generator - CPQ Toolset</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <link rel="stylesheet" href="/data-comparison/components/configGenerator/improved-index-clean.css">
+</head>
+<body>
+    <div class="slds-scope">
+        <!-- Page Header with Path -->
+        <div class="slds-page-header slds-page-header_joined slds-page-header_joined-bottom">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-settings">
+                                <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#settings"></use>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate">Configuration Generator</span>
+                                </h1>
+                            </div>
+                            <p class="slds-page-header__name-meta">Create comparison configuration across multiple Salesforce organizations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Path Component for Steps -->
+        <div class="slds-path">
+            <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container">
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <ul class="slds-path__nav" role="listbox">
+                                <li class="slds-path__item slds-is-current slds-is-active" role="presentation" id="step-orgs" data-step="orgs">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="0">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Organizations</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete" role="presentation" id="step-objects" data-step="objects">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Objects & Fields</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete" role="presentation" id="step-filters" data-step="filters">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Date Filters</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete" role="presentation" id="step-finalize" data-step="finalize">
+                                    <a class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                                        <span class="slds-path__stage">
+                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="slds-path__title">Finalize</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="slds-container slds-container_fluid slds-p-around_medium">
+            <!-- Step 1: Organization Selection -->
+            <div id="orgs-page" class="page-container slds-show">
+                <div class="slds-text-heading_large slds-m-bottom_medium">Select Organizations</div>
+                <div class="slds-text-body_regular slds-m-bottom_large">Choose 2 or more Salesforce organizations to compare</div>
+
+                <!-- Loading State -->
+                <div id="orgs-loading" class="slds-align_absolute-center slds-m-around_xx-large">
+                    <div class="slds-spinner_container">
+                        <div role="status" class="slds-spinner slds-spinner_medium">
+                            <span class="slds-assistive-text">Loading authenticated organizations...</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div id="orgs-error" class="slds-hide">
+                    <div class="slds-text-align_center">
+                        <svg class="slds-icon slds-icon_large slds-icon-text-error slds-m-bottom_small" aria-hidden="true">
+                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#error"></use>
+                        </svg>
+                        <h3 class="slds-text-heading_medium">Failed to load organizations</h3>
+                        <p id="orgs-error-message" class="slds-text-body_regular slds-m-top_small"></p>
+                    </div>
+                    <div class="slds-m-top_large slds-text-align_center">
+                        <button id="retry-orgs-btn" class="slds-button slds-button_brand">
+                            <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+                            </svg>
+                            Retry
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Orgs Content -->
+                <div id="orgs-content" class="slds-hide">
+                    <div class="slds-grid slds-gutters slds-m-bottom_small">
+                        <div class="slds-col">
+                            <div class="slds-text-body_regular">
+                                <span id="selection-count">0 selected</span>
+                                <span class="slds-text-color_weak slds-m-left_x-small">(minimum 2 required)</span>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-text-align_right">
+                            <div class="slds-button-group">
+                                <button id="select-all-orgs" class="slds-button slds-button_neutral">Select All</button>
+                                <button id="clear-orgs" class="slds-button slds-button_neutral">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="orgs-list" class="slds-grid slds-gutters slds-wrap">
+                        <!-- Organization cards will be rendered here -->
+                    </div>
+
+                    <div class="slds-m-top_large slds-text-align_right">
+                        <button id="debug-selection-btn" class="slds-button slds-button_neutral slds-m-right_small" onclick="window.configGenerator && window.configGenerator.debugSelection()">
+                            Debug Selection
+                        </button>
+                        <button id="validate-orgs-btn" class="slds-button slds-button_brand" disabled>
+                            <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                            </svg>
+                            Validate & Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Objects & Fields Selection -->
+            <div id="objects-page" class="page-container slds-hide">
+                <div class="slds-text-heading_large slds-m-bottom_medium">Configure Objects & Fields</div>
+                <div class="slds-text-body_regular slds-m-bottom_large">Select objects and fields for comparison</div>
+
+                <!-- Three Panel Layout -->
+                <div class="slds-grid slds-gutters">
+                    <!-- Panel 1: Objects -->
+                    <div class="slds-col slds-size_1-of-3">
+                        <article id="panel1" class="slds-card">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                    <div class="slds-media__body">
+                                        <h2 class="slds-card__header-title">
+                                            <span>Common Objects</span>
+                                        </h2>
+                                    </div>
+                                    <div class="slds-no-flex">
+                                        <div class="slds-button-group">
+                                            <button id="p1-sort-package" class="slds-button slds-button_icon slds-button_icon-border-filled" title="Group by package">
+                                                <svg class="slds-button__icon" aria-hidden="true">
+                                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#package"></use>
+                                                </svg>
+                                            </button>
+                                            <button id="p1-sort-direction" class="slds-button slds-button_icon slds-button_icon-border-filled" title="Sort direction">
+                                                <svg class="slds-button__icon" aria-hidden="true" id="p1-sort-icon">
+                                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#arrowup"></use>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body">
+                                <div class="slds-m-bottom_small">
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                                            <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                            </svg>
+                                            <input type="search" id="p1-search" class="slds-input" placeholder="Search objects..." />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-content" data-state="loading">
+                                    <div class="loading-state slds-align_absolute-center slds-m-around_large">
+                                        <div class="slds-spinner_container">
+                                            <div role="status" class="slds-spinner slds-spinner_small">
+                                                <span class="slds-assistive-text">Discovering common objects...</span>
+                                                <div class="slds-spinner__dot-a"></div>
+                                                <div class="slds-spinner__dot-b"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="error-state slds-hide slds-text-align_center slds-m-around_medium">
+                                        <svg class="slds-icon slds-icon_large slds-icon-text-error" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#error"></use>
+                                        </svg>
+                                        <p class="slds-m-top_small">Failed to load objects</p>
+                                        <button id="retry-objects" class="slds-button slds-button_brand slds-m-top_small">Retry</button>
+                                    </div>
+                                    <div class="content-area">
+                                        <div id="p1-objects-list" class="slds-scrollable_y" style="max-height: 400px;">
+                                            <!-- Objects will be rendered here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Panel 2: Fields -->
+                    <div class="slds-col slds-size_1-of-3">
+                        <article id="panel2" class="slds-card">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                    <div class="slds-media__body">
+                                        <h2 class="slds-card__header-title">
+                                            <span id="p2-title">Select an Object</span>
+                                        </h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body">
+                                <div class="slds-tabs_default">
+                                    <ul class="slds-tabs_default__nav" role="tablist">
+                                        <li class="slds-tabs_default__item slds-is-active" role="presentation">
+                                            <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" id="p2-fields-tab" data-mode="fields">Fields</a>
+                                        </li>
+                                        <li class="slds-tabs_default__item" role="presentation">
+                                            <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" id="p2-lookups-tab" data-mode="lookups">Lookups</a>
+                                        </li>
+                                    </ul>
+                                    <div class="slds-m-top_small slds-m-bottom_small">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                                                <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                                </svg>
+                                                <input type="search" id="p2-search" class="slds-input" placeholder="Search fields..." />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-content" data-state="empty">
+                                        <div class="empty-state slds-align_absolute-center slds-m-around_large">
+                                            <div class="slds-text-align_center">
+                                                <svg class="slds-icon slds-icon_large slds-icon-text-default" aria-hidden="true">
+                                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
+                                                </svg>
+                                                <p class="slds-m-top_small">Select an object to view fields</p>
+                                            </div>
+                                        </div>
+                                        <div class="loading-state slds-hide slds-align_absolute-center slds-m-around_large">
+                                            <div class="slds-spinner_container">
+                                                <div role="status" class="slds-spinner slds-spinner_small">
+                                                    <span class="slds-assistive-text">Loading fields...</span>
+                                                    <div class="slds-spinner__dot-a"></div>
+                                                    <div class="slds-spinner__dot-b"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="error-state slds-hide slds-text-align_center slds-m-around_medium">
+                                            <svg class="slds-icon slds-icon_large slds-icon-text-error" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#error"></use>
+                                            </svg>
+                                            <p class="slds-m-top_small">Failed to load fields</p>
+                                            <button id="retry-fields" class="slds-button slds-button_brand slds-m-top_small">Retry</button>
+                                        </div>
+                                        <div class="content-area">
+                                            <!-- Fields Tab Content -->
+                                            <div id="fields-content" class="tab-content slds-show">
+                                                <div class="slds-m-bottom_small">
+                                                    <div class="slds-button-group">
+                                                        <button id="select-all-fields" class="slds-button slds-button_neutral slds-button_small">Select All</button>
+                                                        <button id="clear-all-fields" class="slds-button slds-button_neutral slds-button_small">Clear All</button>
+                                                    </div>
+                                                </div>
+                                                <div id="p2-fields-list" class="slds-scrollable_y" style="max-height: 350px;">
+                                                    <!-- Fields will be rendered here -->
+                                                </div>
+                                            </div>
+                                            <!-- Lookups Tab Content -->
+                                            <div id="lookups-content" class="tab-content slds-hide">
+                                                <div class="slds-box slds-box_x-small slds-theme_info slds-m-bottom_small">
+                                                    <p class="slds-text-body_small"><strong>Foreign Key:</strong> Select one field for record linkage</p>
+                                                    <p class="slds-text-body_small"><strong>Lookups:</strong> Select fields that reference other objects</p>
+                                                </div>
+                                                <div class="slds-m-bottom_medium">
+                                                    <h4 class="slds-text-heading_small slds-m-bottom_x-small">Foreign Key (Required)</h4>
+                                                    <div id="foreign-key-list">
+                                                        <!-- Foreign key options -->
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="slds-text-heading_small slds-m-bottom_x-small">Lookup Fields</h4>
+                                                    <div class="slds-m-bottom_x-small">
+                                                        <div class="slds-button-group">
+                                                            <button id="select-all-lookups" class="slds-button slds-button_neutral slds-button_small">Select All</button>
+                                                            <button id="clear-all-lookups" class="slds-button slds-button_neutral slds-button_small">Clear All</button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="p2-lookups-list" class="slds-scrollable_y" style="max-height: 250px;">
+                                                        <!-- Lookups will be rendered here -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Panel 3: Configuration -->
+                    <div class="slds-col slds-size_1-of-3">
+                        <article id="panel3" class="slds-card">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                    <div class="slds-media__body">
+                                        <h2 class="slds-card__header-title">
+                                            <span>Object Configuration</span>
+                                        </h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body">
+                                <div class="slds-m-bottom_medium">
+                                    <dl class="slds-list_horizontal slds-wrap">
+                                        <dt class="slds-item_label slds-text-color_weak">Current Object:</dt>
+                                        <dd class="slds-item_detail" id="p3-current-object">No object selected</dd>
+                                    </dl>
+                                </div>
+
+                                <!-- Current Object Stats -->
+                                <div class="slds-box slds-theme_shade slds-m-bottom_medium">
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-col slds-text-align_center">
+                                            <div class="slds-text-heading_medium" id="selected-fields-count">0</div>
+                                            <div class="slds-text-body_small">Fields</div>
+                                        </div>
+                                        <div class="slds-col slds-text-align_center">
+                                            <div class="slds-text-heading_medium" id="selected-lookups-count">0</div>
+                                            <div class="slds-text-body_small">Lookups</div>
+                                        </div>
+                                        <div class="slds-col slds-text-align_center">
+                                            <div class="slds-text-heading_medium" id="foreign-key-status">None</div>
+                                            <div class="slds-text-body_small">Foreign Key</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="foreign-key-info" class="slds-m-bottom_medium">
+                                    <div class="no-foreign-key">
+                                        <div class="slds-text-color_error">
+                                            <svg class="slds-icon slds-icon_x-small slds-icon-text-error slds-m-right_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#warning"></use>
+                                            </svg>
+                                            Foreign key required for record linkage
+                                        </div>
+                                    </div>
+                                    <div class="has-foreign-key slds-hide">
+                                        <div class="slds-text-color_success">
+                                            <svg class="slds-icon slds-icon_x-small slds-icon-text-success slds-m-right_x-small" aria-hidden="true">
+                                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#success"></use>
+                                            </svg>
+                                            Foreign key: <strong id="selected-fk-name"></strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-m-bottom_medium">
+                                    <button id="validate-object-btn" class="slds-button slds-button_brand slds-button_stretch" disabled>
+                                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                        </svg>
+                                        Validate Object
+                                    </button>
+                                </div>
+
+                                <div class="slds-m-bottom_medium">
+                                    <h4 class="slds-text-heading_small slds-m-bottom_small">Configured Objects</h4>
+                                    <div id="configured-objects-list">
+                                        <p class="slds-text-body_small slds-text-color_weak no-objects">No objects configured yet</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button id="proceed-filters-btn" class="slds-button slds-button_neutral slds-button_stretch" disabled>
+                                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#forward"></use>
+                                        </svg>
+                                        Configure Date Filters
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Date Filters -->
+            <div id="filters-page" class="page-container slds-hide">
+                <div class="slds-text-heading_large slds-m-bottom_medium">Configure Active Conditions</div>
+                <div class="slds-text-body_regular slds-m-bottom_large">Set up per-organization active conditions for each object</div>
+
+                <div class="slds-box slds-theme_shade slds-m-bottom_large">
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">Active Conditions Setup</h3>
+                    <p class="slds-text-body_regular slds-m-bottom_small">For each object and organization combination, you can specify:</p>
+                    <ul class="slds-list_dotted">
+                        <li><strong>Active Condition:</strong> Boolean field that determines if records are active/valid</li>
+                        <li><strong>Date Range:</strong> Optional date filters to limit comparison scope</li>
+                        <li><strong>Custom Filters:</strong> Additional WHERE conditions for data filtering</li>
+                    </ul>
+                    <div class="slds-box slds-theme_info slds-m-top_small">
+                        <p class="slds-text-body_small"><strong>Note:</strong> Each organization can have different active conditions for the same object.</p>
+                    </div>
+                </div>
+
+                <div id="conditions-objects-list">
+                    <!-- Objects with per-org conditions will be rendered here -->
+                </div>
+
+                <div class="slds-m-top_large">
+                    <div class="slds-grid">
+                        <div class="slds-col">
+                            <button id="back-to-objects-btn" class="slds-button slds-button_neutral">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#back"></use>
+                                </svg>
+                                Back to Objects
+                            </button>
+                        </div>
+                        <div class="slds-col slds-text-align_right">
+                            <button id="finalize-config-btn" class="slds-button slds-button_brand">
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                </svg>
+                                Finalize Configuration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Finalize -->
+            <div id="finalize-page" class="page-container slds-hide">
+                <div class="slds-text-heading_large slds-m-bottom_medium">Configuration Complete</div>
+                <div class="slds-text-body_regular slds-m-bottom_large">Review and save your configuration</div>
+
+                <article class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title">
+                                    <span>Configuration Summary</span>
+                                </h2>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                            <div class="slds-col">
+                                <dl class="slds-list_horizontal">
+                                    <dt class="slds-item_label slds-text-color_weak">Organizations:</dt>
+                                    <dd class="slds-item_detail slds-text-heading_small" id="summary-orgs-count">0</dd>
+                                </dl>
+                            </div>
+                            <div class="slds-col">
+                                <dl class="slds-list_horizontal">
+                                    <dt class="slds-item_label slds-text-color_weak">Objects:</dt>
+                                    <dd class="slds-item_detail slds-text-heading_small" id="summary-objects-count">0</dd>
+                                </dl>
+                            </div>
+                            <div class="slds-col">
+                                <dl class="slds-list_horizontal">
+                                    <dt class="slds-item_label slds-text-color_weak">Total Fields:</dt>
+                                    <dd class="slds-item_detail slds-text-heading_small" id="summary-fields-count">0</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div id="summary-objects-list" class="slds-m-top_medium">
+                            <!-- Object summaries will be rendered here -->
+                        </div>
+                        
+                        <!-- Comparison Options Section -->
+                        <div class="slds-m-top_large">
+                            <h3 class="slds-text-heading_small slds-m-bottom_small">Comparison Options</h3>
+                            <div class="slds-box slds-theme_shade">
+                                <div class="slds-form">
+                                    <div class="slds-form__row">
+                                        <div class="slds-form__item">
+                                            <label class="slds-form-element__label" for="fetch-method-select">
+                                                Data Fetch Method
+                                                <abbr class="slds-required" title="required">*</abbr>
+                                            </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-select_container">
+                                                    <select class="slds-select" id="fetch-method-select">
+                                                        <option value="soql" selected>SOQL (Fast, up to 50K records per object)</option>
+                                                        <option value="graphql">GraphQL (Slower, handles unlimited records with pagination)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element__help slds-m-top_xx-small">
+                                                <span id="soql-help" class="fetch-method-help">
+                                                    SOQL is faster but limited to 50,000 records per object. Use for smaller datasets.
+                                                </span>
+                                                <span id="graphql-help" class="fetch-method-help slds-hide">
+                                                    GraphQL supports unlimited records through pagination. Use for large datasets but expect longer processing times.
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-card__footer">
+                        <div class="slds-grid">
+                            <div class="slds-col">
+                                <button id="save-config-btn" class="slds-button slds-button_brand">
+                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#download"></use>
+                                    </svg>
+                                    Download Configuration
+                                </button>
+                            </div>
+                            <div class="slds-col slds-text-align_right">
+                                <button id="start-comparison-btn" class="slds-button slds-button_success" disabled>
+                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#play"></use>
+                                    </svg>
+                                    Start Comparison
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <!-- Per-Object Per-Org Active Conditions Modal -->
+        <section role="dialog" tabindex="-1" id="conditions-modal" class="slds-modal slds-modal_large" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" id="close-conditions-modal">
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-modal__title slds-hyphenate">Configure Active Conditions: <span id="condition-object-name"></span></h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p class="slds-m-bottom_medium">Configure active conditions for each organization. Each org can have different active conditions for the same object.</p>
+                    <div id="org-conditions-content">
+                        <!-- Per-org condition configuration will be rendered here -->
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" id="cancel-conditions">Cancel</button>
+                    <button class="slds-button slds-button_brand" id="save-conditions">Save Conditions</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop" id="conditions-backdrop"></div>
+
+        <!-- Field Details Modal -->
+        <section role="dialog" tabindex="-1" id="field-details-modal" class="slds-modal slds-modal_medium" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" id="close-field-details-modal">
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-modal__title slds-hyphenate" id="field-details-title">Field Details</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div id="field-details-content">
+                        <!-- Field details will be rendered here -->
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_brand" id="field-details-close">Close</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop" id="field-details-backdrop"></div>
+    </div>
+</body>
+</html>

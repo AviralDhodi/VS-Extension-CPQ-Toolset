@@ -1,0 +1,95 @@
+/* Clean SLDS Implementation - Minimal custom styles only */
+
+/* Panel layout for 3-column display */
+#objects-fields-page .slds-grid {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#objects-fields-page .slds-col {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Panel content states */
+.panel-content {
+    min-height: 300px;
+    position: relative;
+}
+
+.panel-content[data-state="loading"] .loading-state,
+.panel-content[data-state="error"] .error-state,
+.panel-content[data-state="empty"] .empty-state,
+.panel-content[data-state="loaded"] .content-area {
+    display: block;
+}
+
+.panel-content .loading-state,
+.panel-content .error-state,
+.panel-content .empty-state,
+.panel-content .content-area {
+    display: none;
+}
+
+/* Object/Field item states */
+.object-item,
+.field-item {
+    padding: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+}
+
+.object-item:hover,
+.field-item:hover {
+    background-color: var(--slds-g-color-neutral-base-95);
+}
+
+.object-item.selected,
+.field-item.selected {
+    background-color: var(--slds-g-color-brand-base-95);
+    border-left: 3px solid var(--slds-g-color-brand-base-50);
+}
+
+/* Status indicators */
+.object-item.validated {
+    border-right: 3px solid var(--slds-g-color-success);
+}
+
+.object-item.volatile {
+    border-right: 3px solid var(--slds-g-color-warning);
+}
+
+/* Tab content visibility */
+.tab-content {
+    display: none;
+}
+
+.tab-content.slds-show {
+    display: block;
+}
+
+/* Modal fixes */
+.slds-modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.slds-modal.slds-fade-in-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    #objects-fields-page .slds-grid {
+        flex-wrap: wrap;
+    }
+    
+    #objects-fields-page .slds-col {
+        flex: 0 0 100%;
+        margin-bottom: 1rem;
+    }
+}

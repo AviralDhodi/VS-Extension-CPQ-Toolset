@@ -1,0 +1,27 @@
+{
+  "extractionId": "ext_1753167812570_9f45ef28",
+  "timestamp": "2025-07-22T07:03:41.557Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "processedOrgs": 2,
+  "status": "completed",
+  "config": {
+    "version": "3.0.0",
+    "createdAt": "2025-07-22T07:03:32.569Z",
+    "orgs": [
+      "aviraldhodi1@gmail.com",
+      "aviraldhodi@brave-goat-hsejmn.com"
+    ],
+    "permissions": {
+      "Profile": [
+        "Admin"
+      ]
+    },
+    "permissionTypes": [
+      "Profile"
+    ],
+    "id": "perm_1753167812569"
+  }
+}

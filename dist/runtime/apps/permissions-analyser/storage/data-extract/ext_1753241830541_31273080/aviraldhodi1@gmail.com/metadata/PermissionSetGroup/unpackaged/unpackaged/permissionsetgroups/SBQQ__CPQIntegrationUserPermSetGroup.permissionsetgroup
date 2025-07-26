@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permission set group that contains the Salesforce CPQ admin permission set, the C2C integration permission set, and other permission sets required to make a callout to Heroku services.</description>
+    <hasActivationRequired>true</hasActivationRequired>
+    <label>CPQIntegrationUserPermSetGroup</label>
+    <status>Updated</status>
+</PermissionSetGroup>

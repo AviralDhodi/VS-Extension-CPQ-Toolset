@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permissions Analyser</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        /* SLDS 2.0 Global Styling Hooks */
+        :root {
+            /* Brand Colors */
+            --slds-g-color-brand-base-50: #0176d3;
+            --slds-g-color-brand-base-60: #014486;
+            --slds-g-color-brand-base-70: #032d60;
+            
+            /* Spacing Scale */
+            --slds-g-spacing-xxx-small: 0.125rem;
+            --slds-g-spacing-xx-small: 0.25rem;
+            --slds-g-spacing-x-small: 0.5rem;
+            --slds-g-spacing-small: 0.75rem;
+            --slds-g-spacing-medium: 1rem;
+            --slds-g-spacing-large: 1.5rem;
+            --slds-g-spacing-x-large: 2rem;
+            --slds-g-spacing-xx-large: 3rem;
+            
+            /* Border Radius */
+            --slds-g-radius-border-2: 0.25rem;
+            --slds-g-radius-border-3: 0.375rem;
+            --slds-g-radius-border-4: 0.5rem;
+            
+            /* Component-specific hooks */
+            --slds-c-card-radius-border: var(--slds-g-radius-border-3);
+            --slds-c-card-shadow: 0 2px 4px rgba(0,0,0,0.07);
+            --slds-c-button-brand-color-background: var(--slds-g-color-brand-base-50);
+            --slds-c-button-brand-color-background-hover: var(--slds-g-color-brand-base-60);
+        }
+        
+        /* Custom hover effects using hooks */
+        .action-card {
+            transition: all 0.3s ease;
+            border-radius: var(--slds-c-card-radius-border);
+        }
+        
+        .action-card:hover {
+            box-shadow: var(--slds-c-card-shadow), 0 8px 16px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Feature item styling */
+        .feature-item {
+            padding: var(--slds-g-spacing-large);
+        }
+    </style>
+</head>
+<body>
+    <div class="slds-scope">
+        <div class="slds-container_center slds-container_x-large slds-p-horizontal_xx-large slds-p-vertical_x-large">
+            <!-- Welcome Header -->
+            <div class="slds-text-align_center slds-m-bottom_xx-large">
+                <div class="slds-m-bottom_medium">
+                    <span class="slds-icon_container slds-icon-standard-user slds-icon_container_circle">
+                        <svg class="slds-icon slds-icon_xx-large">
+                            <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#user"></use>
+                        </svg>
+                    </span>
+                </div>
+                <h1 class="slds-text-heading_large slds-text-color_default slds-m-bottom_x-small">
+                    Permissions Analyser
+                </h1>
+                <p class="slds-text-body_large slds-text-color_weak">
+                    Analyze and compare Salesforce permissions, profiles, and permission sets across multiple organizations
+                </p>
+            </div>
+
+            <!-- Action Cards -->
+            <div class="slds-grid slds-gutters slds-wrap">
+                <!-- Upload Configuration Card -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                    <article class="slds-card action-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-upload">
+                                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#upload"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Upload Configuration</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-text-body_regular">Upload an existing permissions configuration file to quickly start your analysis.</p>
+                            <ul class="slds-list_dotted slds-m-top_x-small">
+                                <li>JSON configuration files</li>
+                                <li>Previously saved analyses</li>
+                                <li>Template configurations</li>
+                            </ul>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_brand slds-button_stretch" id="uploadConfigBtn">
+                                <svg class="slds-button__icon slds-button__icon_left">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#upload"></use>
+                                </svg>
+                                Upload Configuration
+                            </button>
+                            <input type="file" id="configFileInput" accept=".json" style="display: none;">
+                        </footer>
+                    </article>
+                </div>
+
+                <!-- Create Configuration Card -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                    <article class="slds-card action-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-new">
+                                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#new"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Create Configuration</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-text-body_regular">Create a new permissions configuration using our guided wizard.</p>
+                            <ul class="slds-list_dotted slds-m-top_x-small">
+                                <li>Select organizations to compare</li>
+                                <li>Choose profiles and permission sets</li>
+                                <li>Configure object and field permissions</li>
+                                <li>Set up Apex and VF page access</li>
+                            </ul>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_brand slds-button_stretch" id="createConfigBtn">
+                                <svg class="slds-button__icon slds-button__icon_left">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#new"></use>
+                                </svg>
+                                Create Configuration
+                            </button>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="slds-m-top_xx-large">
+                <h2 class="slds-text-heading_medium slds-text-align_center slds-m-bottom_x-large">
+                    Key Features
+                </h2>
+                <div class="slds-grid slds-gutters slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <div class="feature-item slds-text-align_center">
+                            <span class="slds-icon_container slds-icon-utility-groups slds-m-bottom_small">
+                                <svg class="slds-icon slds-icon_large slds-icon-text-default" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#groups"></use>
+                                </svg>
+                            </span>
+                            <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Multi-Org Analysis</h3>
+                            <p class="slds-text-body_small slds-text-color_weak">Compare permissions across multiple Salesforce organizations simultaneously</p>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <div class="feature-item slds-text-align_center">
+                            <span class="slds-icon_container slds-icon-utility-shield slds-m-bottom_small">
+                                <svg class="slds-icon slds-icon_large slds-icon-text-default" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#shield"></use>
+                                </svg>
+                            </span>
+                            <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Granular Permissions</h3>
+                            <p class="slds-text-body_small slds-text-color_weak">Detailed analysis of object, field, and system permissions</p>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <div class="feature-item slds-text-align_center">
+                            <span class="slds-icon_container slds-icon-utility-chart slds-m-bottom_small">
+                                <svg class="slds-icon slds-icon_large slds-icon-text-default" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#chart"></use>
+                                </svg>
+                            </span>
+                            <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Visual Reports</h3>
+                            <p class="slds-text-body_small slds-text-color_weak">Interactive visualizations and exportable permission matrices</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="slds-notify_container slds-is-fixed"></div>
+</body>
+</html>

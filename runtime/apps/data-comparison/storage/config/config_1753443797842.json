@@ -1,0 +1,95 @@
+{
+  "version": "2.0.0",
+  "createdAt": "2025-07-15T22:28:01.463Z",
+  "orgs": [
+    "ad1",
+    "brave"
+  ],
+  "objects": {
+    "SBQQ__PriceCondition__c": {
+      "fields": [
+        "SBQQ__Field__c",
+        "SBQQ__FilterFormula__c",
+        "SBQQ__FilterType__c",
+        "SBQQ__Index__c",
+        "SBQQ__Object__c",
+        "SBQQ__Operator__c",
+        "SBQQ__ParentRuleIsActive__c",
+        "SBQQ__RuleTargetsCalculator__c",
+        "SBQQ__TestedFormula__c",
+        "SBQQ__Value__c",
+        "Price_Condition_Foreign_Key__c"
+      ],
+      "lookups": [
+        "SBQQ__Rule__c"
+      ],
+      "foreignKey": "Price_Condition_Foreign_Key__c",
+      "orgFilters": {
+        "ad1": {
+          "customFilter": "SBQQ__ParentRuleIsActive__c = TRUE"
+        },
+        "brave": {
+          "customFilter": "SBQQ__ParentRuleIsActive__c = TRUE"
+        }
+      }
+    },
+    "SBQQ__PriceAction__c": {
+      "fields": [
+        "SBQQ__Field__c",
+        "SBQQ__Formula__c",
+        "SBQQ__Order__c",
+        "SBQQ__ParentRuleIsActive__c",
+        "SBQQ__RuleLookupObject__c",
+        "SBQQ__RuleTargetsCalculator__c",
+        "SBQQ__SourceLookupField__c",
+        "SBQQ__TargetObject__c",
+        "SBQQ__Value__c",
+        "SBQQ__ValueField__c",
+        "Price_Action_Foreign_Key__c"
+      ],
+      "lookups": [
+        "SBQQ__Rule__c"
+      ],
+      "foreignKey": "Price_Action_Foreign_Key__c",
+      "orgFilters": {
+        "ad1": {
+          "customFilter": "SBQQ__ParentRuleIsActive__c = TRUE"
+        },
+        "brave": {
+          "customFilter": "SBQQ__ParentRuleIsActive__c = TRUE"
+        }
+      }
+    },
+    "SBQQ__PriceRule__c": {
+      "fields": [
+        "Name",
+        "SBQQ__Active__c",
+        "SBQQ__AdvancedCondition__c",
+        "SBQQ__ConditionsMet__c",
+        "SBQQ__ConfiguratorEvaluationEvent__c",
+        "SBQQ__EvaluationEvent__c",
+        "SBQQ__EvaluationOrder__c",
+        "SBQQ__LookupObject__c",
+        "SBQQ__TargetObject__c",
+        "Price_Rule_Foreign_Key__c"
+      ],
+      "lookups": [],
+      "foreignKey": "Price_Rule_Foreign_Key__c",
+      "orgFilters": {
+        "ad1": {
+          "customFilter": "SBQQ__Active__c = TRUE"
+        },
+        "brave": {
+          "customFilter": "SBQQ__Active__c = TRUE"
+        }
+      }
+    }
+  },
+  "metadata": {
+    "totalOrgs": 2,
+    "totalObjects": 3,
+    "totalFields": 32,
+    "configGenerator": "enhanced",
+    "uiVersion": "v1-ux-v2-styling"
+  }
+}

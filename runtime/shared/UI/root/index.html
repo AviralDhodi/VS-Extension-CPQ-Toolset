@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPQ Toolset v3</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <link rel="stylesheet" href="/shared/assets/spinner-fix.css">
+</head>
+<body>
+    <div class="slds-scope">
+        <!-- Page Header -->
+        <header class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-lightning-component">
+                                <svg class="slds-icon slds-page-header__icon">
+                                    <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#lightning_component"></use>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate">CPQ Toolset v3</h1>
+                            <p class="slds-page-header__info">Salesforce CPQ Development & Analysis Platform</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_medium slds-m-bottom_medium">Available Applications</h2>
+            
+            <!-- Application Cards Grid -->
+            <div class="slds-grid slds-gutters">
+                <!-- Data Comparison App -->
+                <div class="slds-col slds-size_1-of-2">
+                    <article class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-data-mapping">
+                                        <svg class="slds-icon slds-icon_small">
+                                            <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#data_mapping"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <a href="/data-comparison" class="slds-card__header-link slds-truncate">
+                                            <span>Data Comparison</span>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            Compare Salesforce CPQ configurations across multiple orgs with advanced filtering and analysis.
+                        </div>
+                        <footer class="slds-card__footer">
+                            <a class="slds-card__footer-action" href="/data-comparison">Launch
+                                <span class="slds-assistive-text">Data Comparison</span>
+                            </a>
+                        </footer>
+                    </article>
+                </div>
+
+                <!-- Permissions Analyser App -->
+                <div class="slds-col slds-size_1-of-2">
+                    <article class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-user">
+                                        <svg class="slds-icon slds-icon_small">
+                                            <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#user"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <a href="/permissions-analyser" class="slds-card__header-link slds-truncate">
+                                            <span>Permissions Analyser</span>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            Analyze and compare permission sets, profiles, and security configurations.
+                        </div>
+                        <footer class="slds-card__footer">
+                            <a class="slds-card__footer-action" href="/permissions-analyser">Launch
+                                <span class="slds-assistive-text">Permissions Analyser</span>
+                            </a>
+                        </footer>
+                    </article>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
