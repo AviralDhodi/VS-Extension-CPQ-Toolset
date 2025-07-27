@@ -882,29 +882,14 @@ async function startComparisonProcess(comparisonId, config, configPath) {
       pkgReader.mkdirSync(dataDir, { recursive: true });
     }
 
-    // Choose fetching method based on configuration
-    const fetchMethod = config.fetchMethod || 'soql'; // Default to SOQL for backward compatibility
+    // Always use GraphQL fetcher for unlimited record support
+    logger.info(`Using GraphQL fetcher for comparison ${comparisonId}`);
     
-    if (fetchMethod === 'graphql') {
-      // Use GraphQL fetcher with pagination
-      logger.info(`Using GraphQL fetcher for comparison ${comparisonId}`);
-      
-      // Update config to include dataDir for GraphQL fetcher
-      const graphqlConfig = { ...config, dataDir };
-      
-      const spawnGraphQLFetchers = require(pathResolver.getWorkerPath('data-comparison', 'spawnGraphQLFetchers.js'));
-      await spawnGraphQLFetchers(graphqlConfig, comparisonId);
-    } else {
-      // Use traditional SOQL fetcher
-      logger.info(`Using SOQL fetcher for comparison ${comparisonId}`);
-      const spawnFetchers = require(pathResolver.getWorkerPath('data-comparison', 'spawnFetchers.js'));
-      const fetchCoordinator = new spawnFetchers.FetchCoordinator();
-      
-      await fetchCoordinator.startParallelFetching(config, dataDir, (progress) => {
-        comparison.phases.dataFetch.progress = progress;
-        comparison.progress = progress * 0.4; // Data fetch is 40% of total
-      });
-    }
+    // Update config to include dataDir for GraphQL fetcher
+    const graphqlConfig = { ...config, dataDir };
+    
+    const { spawnGraphQLFetchers } = require(pathResolver.getWorkerPath('data-comparison', 'spawnGraphQLFetchers.js'));
+    await spawnGraphQLFetchers(graphqlConfig, comparisonId);
 
     comparison.phases.dataFetch.status = 'completed';
     comparison.phases.dataFetch.progress = 100;

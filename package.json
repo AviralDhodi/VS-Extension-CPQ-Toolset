@@ -1,8 +1,9 @@
 {
   "name": "cpq-toolset-v3",
-  "version": "3.1.0",
+  "version": "3.1.6",
   "displayName": "Salesforce Comparison Toolset",
   "description": "Compare Salesforce data and permissions across multiple orgs",
+  "icon": "icon.png",
   "main": "extension.js",
   "scripts": {
     "dev": "node server.js",

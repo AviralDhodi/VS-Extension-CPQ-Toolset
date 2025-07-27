@@ -1,0 +1,89 @@
+{
+  "summary": {
+    "total_orgs_with_duplicates": 1,
+    "total_objects_with_duplicates": 1,
+    "total_duplicate_fks": 1,
+    "requires_resolution": true
+  },
+  "duplicates": {
+    "0_page0_ad1": {
+      "org_name": "0_page0_ad1",
+      "objects_with_duplicates": 1,
+      "objects": {
+        "SBQQ__PriceRule__c": {
+          "object_name": "SBQQ__PriceRule__c",
+          "foreign_key_field": "Price_Rule_Foreign_Key__c",
+          "duplicate_count": 1,
+          "duplicates": {
+            "Rule_050": {
+              "foreign_key": "Rule_050",
+              "record_count": 2,
+              "records": [
+                {
+                  "line_number": 50,
+                  "record_id": "a0aJ4000005XJ3HIAW",
+                  "record_data": {
+                    "Id": "a0aJ4000005XJ3HIAW",
+                    "Name": "Rule_050",
+                    "SBQQ__Active__c": true,
+                    "SBQQ__AdvancedCondition__c": "Condition text 50",
+                    "SBQQ__ConditionsMet__c": "All",
+                    "SBQQ__ConfiguratorEvaluationEvent__c": "Save",
+                    "SBQQ__EvaluationEvent__c": "On Initialization",
+                    "SBQQ__LookupObject__c": "SBQQ__LookupData__c",
+                    "SBQQ__TargetObject__c": "Configurator",
+                    "Price_Rule_Foreign_Key__c": "Rule_050",
+                    "_sourceOrg": "ad1",
+                    "_objectName": "SBQQ__PriceRule__c",
+                    "_fetchTimestamp": "2025-07-26T18:49:02.322Z",
+                    "_recordIndex": 49
+                  }
+                },
+                {
+                  "line_number": 51,
+                  "record_id": "a0aJ4000005ZQcRIAW",
+                  "record_data": {
+                    "Id": "a0aJ4000005ZQcRIAW",
+                    "Name": "Rule_050",
+                    "SBQQ__Active__c": true,
+                    "SBQQ__AdvancedCondition__c": "Condition text 50Dupe",
+                    "SBQQ__ConditionsMet__c": "All",
+                    "SBQQ__ConfiguratorEvaluationEvent__c": "Save",
+                    "SBQQ__EvaluationEvent__c": "On Initialization",
+                    "SBQQ__LookupObject__c": "SBQQ__LookupData__c",
+                    "SBQQ__TargetObject__c": "Configurator",
+                    "Price_Rule_Foreign_Key__c": "Rule_050",
+                    "_sourceOrg": "ad1",
+                    "_objectName": "SBQQ__PriceRule__c",
+                    "_fetchTimestamp": "2025-07-26T18:49:02.322Z",
+                    "_recordIndex": 50
+                  }
+                }
+              ],
+              "differences": [
+                {
+                  "base_record_line": 50,
+                  "compare_record_line": 51,
+                  "different_fields": {
+                    "_recordIndex": {
+                      "base_value": 49,
+                      "compare_value": 50
+                    },
+                    "SBQQ__AdvancedCondition__c": {
+                      "base_value": "Condition text 50",
+                      "compare_value": "Condition text 50Dupe"
+                    },
+                    "Id": {
+                      "base_value": "a0aJ4000005XJ3HIAW",
+                      "compare_value": "a0aJ4000005ZQcRIAW"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

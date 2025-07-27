@@ -295,12 +295,7 @@ class ImprovedConfigGenerator {
         document.getElementById('save-config-btn')?.addEventListener('click', () => this.downloadConfiguration());
         document.getElementById('start-comparison-btn')?.addEventListener('click', () => this.startComparison());
         
-        // Fetch method dropdown
-        document.getElementById('fetch-method-select')?.addEventListener('change', (e) => {
-            const value = e.target.value;
-            document.getElementById('soql-help')?.classList.toggle('slds-hide', value !== 'soql');
-            document.getElementById('graphql-help')?.classList.toggle('slds-hide', value !== 'graphql');
-        });
+        // Removed fetch method selector - always use GraphQL
         
         // Modal events
         this.elements.closeConditionsModal?.addEventListener('click', () => this.closeModal('conditionsModal'));
@@ -2603,9 +2598,8 @@ class ImprovedConfigGenerator {
     }
     
     generateFinalConfiguration() {
-        // Get the selected fetch method
-        const fetchMethodSelect = document.getElementById('fetch-method-select');
-        const fetchMethod = fetchMethodSelect ? fetchMethodSelect.value : 'soql';
+        // Always use GraphQL for unlimited record support
+        const fetchMethod = 'graphql';
         
         // Generate complete configuration object for download/comparison
         const configData = {

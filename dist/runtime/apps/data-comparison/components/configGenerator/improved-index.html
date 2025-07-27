@@ -511,28 +511,6 @@
                             <div class="slds-box slds-theme_shade">
                                 <div class="slds-form">
                                     <div class="slds-form__row">
-                                        <div class="slds-form__item">
-                                            <label class="slds-form-element__label" for="fetch-method-select">
-                                                Data Fetch Method
-                                                <abbr class="slds-required" title="required">*</abbr>
-                                            </label>
-                                            <div class="slds-form-element__control">
-                                                <div class="slds-select_container">
-                                                    <select class="slds-select" id="fetch-method-select">
-                                                        <option value="soql" selected>SOQL (Fast, up to 50K records per object)</option>
-                                                        <option value="graphql">GraphQL (Slower, handles unlimited records with pagination)</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="slds-form-element__help slds-m-top_xx-small">
-                                                <span id="soql-help" class="fetch-method-help">
-                                                    SOQL is faster but limited to 50,000 records per object. Use for smaller datasets.
-                                                </span>
-                                                <span id="graphql-help" class="fetch-method-help slds-hide">
-                                                    GraphQL supports unlimited records through pagination. Use for large datasets but expect longer processing times.
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

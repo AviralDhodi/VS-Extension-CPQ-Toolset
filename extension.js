@@ -12,16 +12,26 @@ const SERVER_PORT = 3030;
  * Extension activation
  */
 function activate(context) {
-  console.log('CPQ Toolset v3 is activating...');
-  
-  // Create output channel for server logs
+  // Create output channel for server logs and show it automatically
   outputChannel = vscode.window.createOutputChannel('CPQ Toolset');
+  outputChannel.show(true); // true = preserve focus on current editor
+  
+  const timestamp = new Date().toISOString();
+  outputChannel.appendLine(`[${timestamp}] CPQ Toolset v3 is activating...`);
+  outputChannel.appendLine(`[${timestamp}] Extension Path: ${context.extensionPath}`);
+  outputChannel.appendLine(`[${timestamp}] Platform: ${process.platform}`);
+  outputChannel.appendLine(`[${timestamp}] VS Code Version: ${vscode.version}`);
+  outputChannel.appendLine('============================================================');
+  
+  console.log('CPQ Toolset v3 is activating...');
 
   // Register launch command
   const launchCommand = vscode.commands.registerCommand('cpq-toolset.launch', async () => {
+    outputChannel.appendLine(`[${new Date().toISOString()}] [COMMAND] Launch command invoked`);
     try {
       await launchCPQToolset(context);
     } catch (error) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Launch command failed: ${error.message}`);
       vscode.window.showErrorMessage(`Failed to launch CPQ Toolset: ${error.message}`);
     }
   });
@@ -29,15 +39,20 @@ function activate(context) {
   
   // Register stop command
   const stopCommand = vscode.commands.registerCommand('cpq-toolset.stop', async () => {
+    outputChannel.appendLine(`[${new Date().toISOString()}] [COMMAND] Stop command invoked`);
     try {
       if (serverProcess) {
+        outputChannel.appendLine(`[${new Date().toISOString()}] Stopping server...`);
         serverProcess.kill('SIGTERM');
         serverProcess = null;
+        outputChannel.appendLine(`[${new Date().toISOString()}] Server stopped`);
         vscode.window.showInformationMessage('CPQ Toolset server stopped');
       } else {
+        outputChannel.appendLine(`[${new Date().toISOString()}] Server is not running`);
         vscode.window.showInformationMessage('CPQ Toolset server is not running');
       }
     } catch (error) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Failed to stop server: ${error.message}`);
       vscode.window.showErrorMessage(`Failed to stop server: ${error.message}`);
     }
   });
@@ -45,15 +60,20 @@ function activate(context) {
   
   // Register restart command
   const restartCommand = vscode.commands.registerCommand('cpq-toolset.restart', async () => {
+    outputChannel.appendLine(`[${new Date().toISOString()}] [COMMAND] Restart command invoked`);
     try {
       if (serverProcess) {
+        outputChannel.appendLine(`[${new Date().toISOString()}] Stopping current server...`);
         serverProcess.kill('SIGTERM');
         serverProcess = null;
         await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
       }
+      outputChannel.appendLine(`[${new Date().toISOString()}] Starting new server instance...`);
       await startServer(context.extensionPath);
+      outputChannel.appendLine(`[${new Date().toISOString()}] Server restarted successfully`);
       vscode.window.showInformationMessage('CPQ Toolset server restarted');
     } catch (error) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Failed to restart server: ${error.message}`);
       vscode.window.showErrorMessage(`Failed to restart server: ${error.message}`);
     }
   });
@@ -61,6 +81,7 @@ function activate(context) {
   
   // Register show output command
   const showOutputCommand = vscode.commands.registerCommand('cpq-toolset.showOutput', () => {
+    outputChannel.appendLine(`[${new Date().toISOString()}] [COMMAND] Show output command invoked`);
     if (outputChannel) {
       outputChannel.show();
     }
@@ -73,18 +94,86 @@ function activate(context) {
   statusBarItem.tooltip = 'Launch CPQ Toolset';
   statusBarItem.command = 'cpq-toolset.launch';
   statusBarItem.show();
+  outputChannel.appendLine(`[${new Date().toISOString()}] Status bar item created and shown`);
   context.subscriptions.push(statusBarItem);
 
   // Cleanup on deactivation
   context.subscriptions.push({
     dispose: () => {
+      if (outputChannel) {
+        outputChannel.appendLine(`[${new Date().toISOString()}] Cleanup: Disposing resources`);
+      }
       if (serverProcess) {
+        if (outputChannel) {
+          outputChannel.appendLine(`[${new Date().toISOString()}] Cleanup: Killing server process`);
+        }
         serverProcess.kill('SIGTERM');
         serverProcess = null;
       }
     }
   });
 
+  // Override console.log to also send to output channel
+  const originalLog = console.log;
+  const originalError = console.error;
+  const originalWarn = console.warn;
+  
+  console.log = (...args) => {
+    originalLog(...args);
+    if (outputChannel) {
+      const timestamp = new Date().toISOString();
+      const message = args.map(arg => {
+        if (typeof arg === 'object') {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputChannel.appendLine(`[${timestamp}] [LOG] ${message}`);
+    }
+  };
+  
+  console.error = (...args) => {
+    originalError(...args);
+    if (outputChannel) {
+      const timestamp = new Date().toISOString();
+      const message = args.map(arg => {
+        if (typeof arg === 'object') {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputChannel.appendLine(`[${timestamp}] [ERROR] ${message}`);
+    }
+  };
+  
+  console.warn = (...args) => {
+    originalWarn(...args);
+    if (outputChannel) {
+      const timestamp = new Date().toISOString();
+      const message = args.map(arg => {
+        if (typeof arg === 'object') {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputChannel.appendLine(`[${timestamp}] [WARN] ${message}`);
+    }
+  };
+
+  outputChannel.appendLine(`[${new Date().toISOString()}] CPQ Toolset v3 activated successfully`);
+  outputChannel.appendLine('============================================================');
   console.log('CPQ Toolset v3 activated');
 }
 
@@ -92,17 +181,28 @@ function activate(context) {
  * Launch the CPQ Toolset server and open browser
  */
 async function launchCPQToolset(context) {
+  outputChannel.appendLine('============================================================');
+  outputChannel.appendLine(`[${new Date().toISOString()}] Launching CPQ Toolset...`);
+  outputChannel.show(true); // Show output channel when launching
+  
   try {
     // Start server if not already running
     if (!serverProcess || serverProcess.killed) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] Server not running, starting new instance...`);
       await startServer(context.extensionPath);
+    } else {
+      outputChannel.appendLine(`[${new Date().toISOString()}] Server already running`);
     }
 
     // Open browser
+    outputChannel.appendLine(`[${new Date().toISOString()}] Opening browser...`);
     await openBrowser();
 
+    outputChannel.appendLine(`[${new Date().toISOString()}] CPQ Toolset launched successfully!`);
+    outputChannel.appendLine('============================================================');
     vscode.window.showInformationMessage('CPQ Toolset launched successfully!');
   } catch (error) {
+    outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Launch failed: ${error.message}`);
     console.error('Launch failed:', error);
     throw error;
   }
@@ -117,7 +217,7 @@ async function killProcessOnPort(port) {
   try {
     console.log(`Attempting to clear port ${port} on ${platform}...`);
     if (outputChannel) {
-      outputChannel.appendLine(`Attempting to clear port ${port} on ${platform}...`);
+      outputChannel.appendLine(`[${new Date().toISOString()}] Attempting to clear port ${port} on ${platform}...`);
     }
     if (platform === 'win32') {
       // Windows: Use netstat and taskkill
@@ -134,7 +234,7 @@ async function killProcessOnPort(port) {
           if (error || !stdout) {
             // No process found on port or command failed
             if (outputChannel && error) {
-              outputChannel.appendLine(`Port check info: ${error.message || 'No process found on port'}`);
+              outputChannel.appendLine(`[${new Date().toISOString()}] Port check info: ${error.message || 'No process found on port'}`);
             }
             resolve();
             return;
@@ -158,6 +258,9 @@ async function killProcessOnPort(port) {
               exec(`taskkill /F /PID ${pid}`, (killError) => {
                 if (!killError) {
                   console.log(`Killed process ${pid} on port ${port}`);
+                  if (outputChannel) {
+                    outputChannel.appendLine(`[${new Date().toISOString()}] Killed process ${pid} on port ${port}`);
+                  }
                 }
                 resolveKill();
               });
@@ -176,6 +279,9 @@ async function killProcessOnPort(port) {
         exec(cmd, (error) => {
           if (!error) {
             console.log(`Killed process on port ${port}`);
+            if (outputChannel) {
+              outputChannel.appendLine(`[${new Date().toISOString()}] Killed process on port ${port}`);
+            }
           }
           // Always resolve, even if error (no process found)
           resolve();
@@ -190,12 +296,18 @@ async function killProcessOnPort(port) {
         exec(`lsof -ti :${port} | xargs kill -9`, (error) => {
           if (!error) {
             console.log(`Killed process on port ${port} using lsof`);
+            if (outputChannel) {
+              outputChannel.appendLine(`[${new Date().toISOString()}] Killed process on port ${port} using lsof`);
+            }
             resolve();
           } else {
             // Fallback to fuser
             exec(`fuser -k ${port}/tcp`, (fuserError) => {
               if (!fuserError) {
                 console.log(`Killed process on port ${port} using fuser`);
+                if (outputChannel) {
+                  outputChannel.appendLine(`[${new Date().toISOString()}] Killed process on port ${port} using fuser`);
+                }
               }
               resolve();
             });
@@ -206,8 +318,8 @@ async function killProcessOnPort(port) {
   } catch (error) {
     console.warn(`Failed to kill process on port ${port}:`, error.message);
     if (outputChannel) {
-      outputChannel.appendLine(`Warning: Could not clear port ${port}: ${error.message}`);
-      outputChannel.appendLine('The server will attempt to start anyway...');
+      outputChannel.appendLine(`[${new Date().toISOString()}] [WARN] Could not clear port ${port}: ${error.message}`);
+      outputChannel.appendLine(`[${new Date().toISOString()}] The server will attempt to start anyway...`);
     }
     // Don't throw - we want to continue even if kill fails
   }
@@ -218,24 +330,25 @@ async function killProcessOnPort(port) {
  */
 function startServer(extensionPath) {
   return new Promise(async (resolve, reject) => {
+    outputChannel.appendLine('--------------------------------------------');
+    outputChannel.appendLine(`[${new Date().toISOString()}] Starting server process...`);
+    outputChannel.show(true); // Auto-show when starting server
+    
     const platform = process.platform;
     const arch = process.arch === 'x64' ? 'x64' : 'x64'; // pkg only supports x64 for now
     
     // Kill port before starting
     try {
-      if (outputChannel) {
-        outputChannel.appendLine(`Checking for existing processes on port ${SERVER_PORT}...`);
-      }
+      outputChannel.appendLine(`[${new Date().toISOString()}] Checking for existing processes on port ${SERVER_PORT}...`);
       await killProcessOnPort(SERVER_PORT);
       
       // Small delay to ensure port is freed
       await new Promise(res => setTimeout(res, 500));
+      outputChannel.appendLine(`[${new Date().toISOString()}] Port cleared successfully`);
     } catch (error) {
       console.warn('Port clearing failed, but continuing:', error);
-      if (outputChannel) {
-        outputChannel.appendLine(`Warning: Port clearing failed: ${error.message}`);
-        outputChannel.appendLine('Attempting to start server anyway...');
-      }
+      outputChannel.appendLine(`[${new Date().toISOString()}] [WARN] Port clearing failed: ${error.message}`);
+      outputChannel.appendLine(`[${new Date().toISOString()}] Attempting to start server anyway...`);
     }
     
     // Use traditional Node.js approach
@@ -247,13 +360,17 @@ function startServer(extensionPath) {
       isBundled = false;
       
       if (!fs.existsSync(serverPath)) {
+        outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Server file not found at ${serverPath}`);
         reject(new Error('Server file not found'));
         return;
       }
     }
     
+    outputChannel.appendLine(`[${new Date().toISOString()}] Starting CPQ Toolset server (${isBundled ? 'bundled' : 'development'} mode)`);
+    outputChannel.appendLine(`[${new Date().toISOString()}] Server path: ${serverPath}`);
     console.log(`Starting CPQ Toolset server (${isBundled ? 'bundled' : 'development'})...`);
     const serverExecutable = getNodeExecutable(extensionPath);
+    outputChannel.appendLine(`[${new Date().toISOString()}] Node executable: ${serverExecutable}`);
     const serverArgs = [serverPath];
 
     serverProcess = spawn(serverExecutable, serverArgs, {
@@ -273,53 +390,60 @@ function startServer(extensionPath) {
 
     serverProcess.stdout.on('data', (data) => {
       const output = data.toString();
-      console.log('Server:', output.trim());
+      const lines = output.split('\n').filter(line => line.trim());
       
-      // Send to output channel
-      if (outputChannel) {
-        outputChannel.appendLine(output.trim());
-      }
+      lines.forEach(line => {
+        // Format server output with timestamp
+        outputChannel.appendLine(`[${new Date().toISOString()}] [SERVER] ${line}`);
+      });
 
       // Look for server ready signal
       if (output.includes('CPQ Toolset v3 running') && !startupComplete) {
         startupComplete = true;
+        outputChannel.appendLine(`[${new Date().toISOString()}] [SUCCESS] Server started successfully!`);
         resolve();
       }
     });
 
     serverProcess.stderr.on('data', (data) => {
       const error = data.toString();
-      console.error('Server Error:', error);
       errorBuffer += error;
+      const lines = error.split('\n').filter(line => line.trim());
       
-      // Send errors to output channel
-      if (outputChannel) {
-        outputChannel.appendLine(`[ERROR] ${error.trim()}`);
-      }
+      lines.forEach(line => {
+        // Format server errors with timestamp
+        outputChannel.appendLine(`[${new Date().toISOString()}] [SERVER ERROR] ${line}`);
+      });
 
       // Check for specific errors
       if (error.includes('EADDRINUSE')) {
         if (!startupComplete) {
+          outputChannel.appendLine(`[${new Date().toISOString()}] [FATAL] Port ${SERVER_PORT} is already in use`);
           reject(new Error(`Port ${SERVER_PORT} is already in use`));
         }
       } else if (error.includes('MODULE_NOT_FOUND')) {
         if (!startupComplete) {
+          outputChannel.appendLine(`[${new Date().toISOString()}] [FATAL] Missing dependencies. Please run npm install.`);
           reject(new Error('Missing dependencies. Please run npm install.'));
         }
       }
     });
 
     serverProcess.on('close', (code) => {
-      console.log(`Server process exited with code ${code}`);
+      outputChannel.appendLine(`[${new Date().toISOString()}] [INFO] Server process exited with code ${code}`);
       serverProcess = null;
       
       if (!startupComplete && code !== 0) {
+        outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Server failed to start. Exit code: ${code}`);
+        if (errorBuffer) {
+          outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Error details: ${errorBuffer}`);
+        }
         reject(new Error(`Server failed to start (exit code ${code}): ${errorBuffer}`));
       }
     });
 
     serverProcess.on('error', (error) => {
-      console.error('Failed to start server:', error);
+      outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Failed to start server: ${error.message}`);
       if (!startupComplete) {
         reject(error);
       }
@@ -328,6 +452,7 @@ function startServer(extensionPath) {
     // Timeout after 10 seconds
     setTimeout(() => {
       if (!startupComplete) {
+        outputChannel.appendLine(`[${new Date().toISOString()}] [ERROR] Server startup timeout (10 seconds)`);
         reject(new Error('Server startup timeout'));
       }
     }, 10000);
@@ -382,11 +507,21 @@ function getNodeExecutable(extensionPath) {
  */
 async function openBrowser() {
   const url = `http://localhost:${SERVER_PORT}`;
+  
+  if (outputChannel) {
+    outputChannel.appendLine(`[${new Date().toISOString()}] Opening browser to ${url}`);
+  }
 
   try {
     // Use VS Code's built-in browser opening
     await vscode.env.openExternal(vscode.Uri.parse(url));
+    if (outputChannel) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] Browser opened successfully`);
+    }
   } catch (error) {
+    if (outputChannel) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] [WARN] Failed to open browser automatically: ${error.message}`);
+    }
     // Fallback: show message with URL
     const action = await vscode.window.showInformationMessage(
       `CPQ Toolset is running at ${url}`,
@@ -403,13 +538,22 @@ async function openBrowser() {
  * Extension deactivation
  */
 function deactivate() {
+  if (outputChannel) {
+    outputChannel.appendLine(`[${new Date().toISOString()}] CPQ Toolset v3 deactivating...`);
+  }
   console.log('CPQ Toolset v3 deactivating...');
 
   if (serverProcess) {
+    if (outputChannel) {
+      outputChannel.appendLine(`[${new Date().toISOString()}] Stopping server process...`);
+    }
     serverProcess.kill('SIGTERM'); // Graceful shutdown
     serverProcess = null;
   }
 
+  if (outputChannel) {
+    outputChannel.appendLine(`[${new Date().toISOString()}] CPQ Toolset v3 deactivated`);
+  }
   console.log('CPQ Toolset v3 deactivated');
 }
 
