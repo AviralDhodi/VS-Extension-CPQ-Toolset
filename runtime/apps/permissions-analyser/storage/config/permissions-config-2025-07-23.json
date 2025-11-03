@@ -1,0 +1,47 @@
+{
+  "version": "3.0.0",
+  "createdAt": "2025-07-23T09:16:28.603Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "permissions": {
+    "PermissionSet": [
+      "sfdcInternalInt__sfdc_scrt2"
+    ],
+    "PermissionSetGroup": [
+      "SBQQ__CPQIntegrationUserPermSetGroup"
+    ],
+    "Profile": [
+      "Admin"
+    ]
+  },
+  "selectedPermissionOptions": {
+    "PermissionSet": {
+      "apexClasses": true,
+      "visualforcePages": true,
+      "customPermissions": true,
+      "tabSettings": true,
+      "applicationVisibilities": true,
+      "recordTypeVisibilities": true
+    }
+  },
+  "objectSelection": "COMMON",
+  "specificObjects": [],
+  "apexClassSelection": "COMMON",
+  "specificApexClasses": [],
+  "pageSelection": "COMMON",
+  "specificPages": [],
+  "permissionTypes": [
+    "PermissionSet",
+    "PermissionSetGroup",
+    "Profile",
+    "MutingPermissionSet"
+  ],
+  "metadata": {
+    "createdAt": "2025-07-23T09:16:28.620Z",
+    "version": "3.0.0",
+    "appType": "permissions-analyser"
+  },
+  "id": "perm_1753262188620"
+}

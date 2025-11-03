@@ -1,0 +1,30 @@
+/* CPQ Toolset v3 - Clean SLDS Component Styles */
+
+/* Base resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Remove all custom theming - use SLDS defaults */
+
+/* Warning notification styles */
+.slds-icon_container_warning {
+    background-color: var(--slds-g-color-palette-orange-70, #fe9339);
+}
+
+.slds-icon_container_warning .slds-icon {
+    fill: rgb(255, 255, 255);
+}
+
+/* Duplicate details formatting */
+.duplicate-fk-details ul {
+    margin-left: 1rem;
+    list-style-type: disc;
+}
+
+.duplicate-fk-details ul ul {
+    margin-left: 1.5rem;
+    list-style-type: circle;
+}

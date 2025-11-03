@@ -1,0 +1,12 @@
+/* Permissions Config Generator - Minimal SLDS 2.0 Overrides */
+
+/* Step Content Animation */
+.step-content {
+    min-height: 400px;
+}
+
+/* Configuration Summary - Using SLDS utilities */
+.config-summary-section h3 {
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}

@@ -1,0 +1,29 @@
+/* CPQ Toolset v3 - Config Generator Clean SLDS Styles */
+
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Layout containers */
+.app-container {
+    min-height: 100vh;
+    background: var(--lwc-colorBackgroundAlt);
+}
+
+.app-main {
+    padding: 0;
+    width: 100%;
+}
+
+/* Let SLDS handle all component styling */
+.config-generator {
+    /* SLDS will handle spacing */
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Selection</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+</head>
+<body>
+<div class="slds-scope">
+    <div class="org-selection-container">
+        <header class="page-header">
+            <div class="header-content">
+                <h1 class="page-title slds-text-heading_large slds-text-heading_large">Organization Selection</h1>
+                <p class="page-subtitle">Select organizations to include in your comparison</p>
+                <div class="progress-indicator">
+                    <span class="step active">1</span>
+                    <span class="step-label">Organizations</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <!-- Loading State -->
+            <div class="loading-section" id="loadingSection">
+                <div class="loading-spinner"></div>
+                <p>Loading authenticated organizations...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-section" id="errorSection" style="display: none;">
+                <div class="error-card">
+                    <div class="error-icon">[Warning]</div>
+                    <h3>Unable to Load Organizations</h3>
+                    <p id="errorMessage">Failed to retrieve authenticated organizations.</p>
+                    <button class="btn btn-secondary slds-button slds-button_neutral slds-button slds-button_neutral" id="retryBtn">Retry</button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="content-section" id="contentSection" style="display: none;">
+                <div class="org-list-header">
+                    <div class="list-controls">
+                        <div class="search-box">
+                            <input type="text" class="slds-input" class="slds-input slds-input" id="orgSearch" placeholder="Search organizations..." class="slds-input search-input">
+                            <span class="search-icon">[Search]</span>
+                        </div>
+                        <div class="filter-controls">
+                            <label class="filter-label">
+                                <input type="checkbox"  id="showScratchOrgs" checked>
+                                Include Scratch Orgs
+                            </label>
+                            <label class="filter-label">
+                                <input type="checkbox"  id="showProductionOrgs" checked>
+                                Include Production Orgs
+                            </label>
+                        </div>
+                    </div>
+                    <div class="selection-summary">
+                        <span class="selected-count">0 of 0 organizations selected</span>
+                        <button class="btn btn-link slds-button slds-button_neutral slds-button slds-button_neutral" id="selectAllBtn">Select All</button>
+                        <button class="btn btn-link slds-button slds-button_neutral slds-button slds-button_neutral" id="clearAllBtn">Clear All</button>
+                    </div>
+                </div>
+
+                <div class="org-list" id="orgList">
+                    <!-- Organizations will be populated here -->
+                </div>
+
+                <div class="action-section">
+                    <div class="validation-messages" id="validationMessages"></div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary slds-button slds-button_neutral slds-button slds-button_neutral" id="backBtn">← Back to Welcome</button>
+                        <button class="btn btn-primary slds-button slds-button_neutral slds-button slds-button_neutral" id="continueBtn" disabled>
+                            Continue to Objects →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Organization Details Modal -->
+        <div class="modal-overlay" id="orgDetailsModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Organization Details</h3>
+                    <button class="modal-close slds-button slds-button_neutral slds-button slds-button_neutral" id="closeModalBtn">×</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Details will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary slds-button slds-button_neutral slds-button slds-button_neutral" id="modalCloseBtn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

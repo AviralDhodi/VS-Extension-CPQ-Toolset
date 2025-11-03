@@ -1,0 +1,41 @@
+{
+  "version": "3.0.0",
+  "createdAt": "2025-07-22T07:14:47.243Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "permissions": {
+    "Profile": [
+      "Admin"
+    ]
+  },
+  "selectedPermissionOptions": {
+    "Profile": {
+      "apexClasses": true,
+      "visualforcePages": true,
+      "applicationVisibilities": true,
+      "recordTypeVisibilities": true,
+      "layoutAssignments": true,
+      "loginHours": true,
+      "loginIpRanges": true,
+      "custom": true,
+      "userLicense": true
+    }
+  },
+  "objectSelection": "ALL",
+  "specificObjects": [],
+  "apexClassSelection": "ALL",
+  "specificApexClasses": [],
+  "pageSelection": "ALL",
+  "specificPages": [],
+  "permissionTypes": [
+    "Profile"
+  ],
+  "metadata": {
+    "createdAt": "2025-07-22T07:14:47.255Z",
+    "version": "3.0.0",
+    "appType": "permissions-analyser"
+  },
+  "id": "perm_1753168604786"
+}

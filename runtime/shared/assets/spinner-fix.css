@@ -1,0 +1,49 @@
+/* SLDS Spinner Container Fix */
+/* Ensure spinner containers are hidden by default unless explicitly shown */
+
+/* For modal spinners - hide the entire modal by default */
+.slds-modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s linear;
+}
+
+.slds-modal.slds-fade-in-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* For inline spinners - hide by default */
+.slds-spinner_container:not(.slds-is-relative):not(.slds-is-fixed) {
+    display: none;
+}
+
+/* Show spinner when parent has loading class */
+.slds-is-loading .slds-spinner_container,
+.loading .slds-spinner_container,
+.is-loading .slds-spinner_container {
+    display: block;
+}
+
+/* Ensure backdrop is also hidden by default */
+.slds-backdrop {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s linear;
+}
+
+.slds-backdrop.slds-backdrop_open {
+    opacity: 0.5;
+    visibility: visible;
+}
+
+/* Fix for status cards that should show spinner */
+#live-status-content .slds-spinner_container {
+    display: block;
+}
+
+/* Hide spinner when content is loaded */
+.status-loaded .slds-spinner_container,
+.content-loaded .slds-spinner_container {
+    display: none !important;
+}

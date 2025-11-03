@@ -1,0 +1,205 @@
+/* Duplicate FK Resolver - Enhanced UI Styles */
+
+/* Base resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Remove selected record highlighting - using radio buttons instead */
+
+/* Resolution status indicators */
+.duplicate-group {
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.duplicate-group.resolved {
+    border: 2px solid var(--slds-g-color-success-base-50, #04844b);
+    transition: border-color 0.3s ease;
+}
+
+.duplicate-group.resolved.skip-mode {
+    border-color: var(--slds-g-color-warning-base-50, #ff9500);
+}
+
+.duplicate-group.resolved::before {
+    content: "Resolved";
+    position: absolute;
+    top: var(--slds-g-spacing-xx-small, 10px);
+    right: var(--slds-g-spacing-xx-small, 10px);
+    background: var(--slds-g-color-success-base-50, #04844b);
+    color: white;
+    padding: var(--slds-g-spacing-1, 4px) var(--slds-g-spacing-3, 12px);
+    border-radius: var(--slds-g-radius-border-1, 4px);
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    font-weight: var(--slds-g-font-weight-6, 600);
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+.duplicate-group.resolved.skip-mode::before {
+    content: "[Warning] Will Skip";
+    background: var(--slds-g-color-warning-base-50, #ff9500);
+}
+
+/* Radio button group styling */
+.slds-radio_button-group {
+    display: inline-flex;
+    border: 1px solid var(--slds-g-color-border-base-4, #c9c9c9);
+    border-radius: var(--slds-g-radius-border-1, 4px);
+    overflow: hidden;
+}
+
+.slds-radio_button {
+    margin: 0;
+}
+
+.slds-radio_button input[type="radio"]:checked + .slds-radio_button__label {
+    background-color: var(--slds-g-color-brand-base-50, #1589ee);
+    color: white;
+    font-weight: var(--slds-g-font-weight-6, 600);
+}
+
+.slds-radio_button__label {
+    transition: all 0.2s ease;
+}
+
+/* Field display improvements */
+.key-fields-list {
+    list-style: none;
+    margin: 0;
+}
+
+.key-fields-list li {
+    padding: var(--slds-g-spacing-xx-small, 2px) 0;
+}
+
+.field-name {
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-neutral-base-50, #444444);
+}
+
+.field-value {
+    color: var(--slds-g-color-neutral-base-70, #666666);
+}
+
+.field-difference {
+    padding: var(--slds-g-spacing-1, 4px) 0;
+    border-bottom: 1px solid var(--slds-g-color-border-base-1, #f3f3f3);
+}
+
+.field-difference:last-child {
+    border-bottom: none;
+}
+
+/* Expand/collapse animation */
+.duplicate-details {
+    transition: all 0.3s ease;
+}
+
+.expand-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.duplicate-group.expanded .expand-btn svg {
+    transform: rotate(180deg);
+}
+
+/* Resolution options visual feedback */
+.resolution-options {
+    background-color: var(--slds-g-color-neutral-base-95, #f7f9fb);
+    padding: var(--slds-g-spacing-4, 1rem);
+    border-radius: var(--slds-g-radius-border-1, 4px);
+    border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+/* Record selection improvements */
+.record-radio:disabled {
+    opacity: 0.3;
+}
+
+.records-table-container {
+    margin-top: 1rem;
+    max-height: 25rem;
+    overflow-y: auto;
+}
+
+/* Progress indicator styling */
+#resolution-progress {
+    color: var(--slds-g-color-brand-base-50, #1589ee);
+    font-weight: var(--slds-g-font-weight-7, 700);
+}
+
+/* Loading overlay improvements */
+#loading-overlay {
+    z-index: 9999;
+    background-color: var(--slds-g-color-neutral-base-50, rgba(0, 0, 0, 0.4));
+}
+
+/* Action feedback */
+.slds-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#apply-resolution-btn:not(:disabled) {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(21, 137, 238, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(21, 137, 238, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(21, 137, 238, 0);
+    }
+}
+
+/* SLDS toast notification positioning */
+.slds-notify_container.slds-is-fixed {
+    position: fixed;
+    top: var(--slds-g-spacing-medium, 1rem);
+    right: var(--slds-g-spacing-medium, 1rem);
+    z-index: 10000;
+}
+
+/* Hover states for better interactivity */
+.duplicate-group:hover {
+    box-shadow: var(--slds-g-shadow-drop-1, 0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Remove hover effect - using radio buttons instead */
+
+/* Visual distinction for skip vs keep */
+.duplicate-group.skip-mode .records-table-container {
+    opacity: 0.3;
+    pointer-events: none;
+    position: relative;
+}
+
+.duplicate-group.skip-mode .records-table-container::after {
+    content: "This foreign key will be skipped";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--slds-g-color-warning-base-50, rgba(255, 149, 0, 0.9));
+    color: white;
+    padding: var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-6, 2rem);
+    border-radius: var(--slds-g-radius-border-1, 4px);
+    font-weight: var(--slds-g-font-weight-6, 600);
+    font-size: var(--slds-g-font-scale-2, 1rem);
+    box-shadow: var(--slds-g-shadow-drop-2, 0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* Skip mode styling handled by opacity and overlay */
+
+/* SLDS badge styling is handled by framework classes */
+.resolution-badge {
+    vertical-align: middle;
+}

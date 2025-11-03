@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparison Toolset - Enterprise Platform</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <link rel="stylesheet" href="/shared/assets/css/slds-2.0-enhanced.css">
+    <style>
+        /* Custom Creative Styles */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100px, -100px); }
+        }
+        
+        .app-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .app-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .app-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        }
+        
+        .app-icon-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .app-icon-container.data-comparison {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .app-icon-container.permissions {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+        
+        .app-icon-container.analytics {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .app-icon-container.automation {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            opacity: 0.8;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.9);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .animated-icon {
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #43e97b;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-animation 2s infinite;
+        }
+        
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0 rgba(67, 233, 123, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(67, 233, 123, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(67, 233, 123, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="slds-scope">
+        <!-- Hero Section -->
+        <div class="hero-gradient">
+            <div class="slds-container_x-large slds-container_center" style="position: relative; z-index: 1;">
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <div class="slds-col slds-size_2-of-3">
+                        <h1 style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem;">
+                            Comparison Toolset
+                        </h1>
+                        <p style="font-size: 1.5rem; opacity: 0.95; margin-bottom: 2rem;">
+                            Enterprise-Grade Salesforce Comparison Platform
+                        </p>
+                        <p style="font-size: 1.1rem; opacity: 0.9; line-height: 1.6;">
+                            Powerful tools for comparing, analyzing, and synchronizing Salesforce configurations, 
+                            data, and permissions across multiple organizations.
+                        </p>
+                        
+                        <div class="stats-container">
+                            <div class="stat-card">
+                                <div class="stat-number">10+</div>
+                                <div style="opacity: 0.8;">Orgs Supported</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">500+</div>
+                                <div style="opacity: 0.8;">Objects</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">Real-time</div>
+                                <div style="opacity: 0.8;">Analysis</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">100%</div>
+                                <div style="opacity: 0.8;">SLDS 2.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3 slds-text-align_center">
+                        <div class="animated-icon">
+                            <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="100" cy="100" r="80" fill="url(#grad1)" stroke="white" stroke-width="2" opacity="0.5"/>
+                                <circle cx="100" cy="100" r="60" fill="none" stroke="white" stroke-width="2" opacity="0.6" stroke-dasharray="5,5">
+                                    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="20s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="100" cy="100" r="40" fill="url(#grad1)" stroke="white" stroke-width="2" opacity="0.7"/>
+                                <path d="M 100,60 L 120,100 L 100,140 L 80,100 Z" fill="white" opacity="0.9"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="slds-container_x-large slds-container_center slds-p-horizontal_large">
+            <!-- Applications Grid -->
+            <div class="slds-grid slds-gutters slds-wrap">
+                <!-- Data Comparison App -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 slds-p-around_medium">
+                    <div class="app-card" style="padding: 2rem;">
+                        <div class="app-icon-container data-comparison">
+                            <svg class="slds-icon slds-icon_large" style="fill: white;">
+                                <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#data_mapping"></use>
+                            </svg>
+                        </div>
+                        <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                            Data Comparison
+                        </h2>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                            Compare Salesforce CPQ configurations, custom objects, and metadata across multiple organizations with advanced filtering and real-time analysis.
+                        </p>
+                        <div style="margin-bottom: 1.5rem;">
+                            <span class="slds-badge slds-m-right_x-small" style="background: #e0e7ff; color: #4338ca;">CPQ</span>
+                            <span class="slds-badge slds-m-right_x-small" style="background: #dcfce7; color: #16a34a;">Real-time</span>
+                            <span class="slds-badge" style="background: #fef3c7; color: #d97706;">Multi-Org</span>
+                        </div>
+                        <a href="/data-comparison" class="slds-button slds-button_brand slds-button_stretch" style="font-weight: bold;">
+                            Launch Data Comparison
+                            <svg class="slds-button__icon slds-button__icon_right" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#forward"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Permissions Analyser App -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 slds-p-around_medium">
+                    <div class="app-card" style="padding: 2rem;">
+                        <div class="app-icon-container permissions">
+                            <svg class="slds-icon slds-icon_large" style="fill: white;">
+                                <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#user_role"></use>
+                            </svg>
+                        </div>
+                        <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                            Permissions Analyser
+                        </h2>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                            Analyze and compare permission sets, profiles, and security configurations. Identify discrepancies and ensure compliance across organizations.
+                        </p>
+                        <div style="margin-bottom: 1.5rem;">
+                            <span class="slds-badge slds-m-right_x-small" style="background: #fee2e2; color: #dc2626;">Security</span>
+                            <span class="slds-badge slds-m-right_x-small" style="background: #e0f2fe; color: #0284c7;">Profiles</span>
+                            <span class="slds-badge" style="background: #f3e8ff; color: #9333ea;">Compliance</span>
+                        </div>
+                        <a href="/permissions-analyser" class="slds-button slds-button_brand slds-button_stretch" style="font-weight: bold;">
+                            Launch Permissions Analyser
+                            <svg class="slds-button__icon slds-button__icon_right" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#forward"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Coming Soon: Analytics Dashboard -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 slds-p-around_medium">
+                    <div class="app-card" style="padding: 2rem; opacity: 0.7;">
+                        <div class="app-icon-container analytics">
+                            <svg class="slds-icon slds-icon_large" style="fill: white;">
+                                <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#analytics"></use>
+                            </svg>
+                        </div>
+                        <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                            Analytics Dashboard
+                            <span class="slds-badge slds-m-left_x-small" style="background: #6366f1; color: white;">Coming Soon</span>
+                        </h2>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                            Visualize comparison results with interactive charts, trend analysis, and customizable reports. Export insights in multiple formats.
+                        </p>
+                        <button class="slds-button slds-button_neutral slds-button_stretch" disabled>
+                            Available in Q2 2025
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Coming Soon: Automation Engine -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 slds-p-around_medium">
+                    <div class="app-card" style="padding: 2rem; opacity: 0.7;">
+                        <div class="app-icon-container automation">
+                            <svg class="slds-icon slds-icon_large" style="fill: white;">
+                                <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#flow"></use>
+                            </svg>
+                        </div>
+                        <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                            Automation Engine
+                            <span class="slds-badge slds-m-left_x-small" style="background: #6366f1; color: white;">Coming Soon</span>
+                        </h2>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                            Schedule automated comparisons, set up alerts for configuration drift, and auto-generate deployment packages.
+                        </p>
+                        <button class="slds-button slds-button_neutral slds-button_stretch" disabled>
+                            Available in Q2 2025
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div style="margin-top: 4rem; margin-bottom: 4rem;">
+                <h2 class="slds-text-align_center" style="font-size: 2rem; font-weight: bold; margin-bottom: 3rem;">
+                    Platform Features
+                </h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="slds-icon slds-icon_large slds-icon-text-default">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#database"></use>
+                            </svg>
+                        </div>
+                        <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Multi-Org Support</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem;">Compare unlimited orgs simultaneously</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="slds-icon slds-icon_large slds-icon-text-default">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#filter"></use>
+                            </svg>
+                        </div>
+                        <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Advanced Filtering</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem;">Powerful query and filter capabilities</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="slds-icon slds-icon_large slds-icon-text-default">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+                            </svg>
+                        </div>
+                        <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Real-time Sync</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem;">Live data synchronization</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="slds-icon slds-icon_large slds-icon-text-default">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#download"></use>
+                            </svg>
+                        </div>
+                        <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Export Options</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem;">CSV, Excel, JSON, and more</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="slds-icon slds-icon_large slds-icon-text-default">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#lock"></use>
+                            </svg>
+                        </div>
+                        <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Secure</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem;">Enterprise-grade security</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="slds-icon slds-icon_large slds-icon-text-default">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#lightning"></use>
+                            </svg>
+                        </div>
+                        <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Lightning Fast</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem;">Optimized performance</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Bar -->
+            <div style="background: white; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <div class="slds-col">
+                        <span style="font-weight: bold; margin-right: 0.5rem;">System Status:</span>
+                        <span class="pulse-dot"></span>
+                        <span style="color: #16a34a; margin-left: 0.5rem;">All Systems Operational</span>
+                    </div>
+                    <div class="slds-col slds-text-align_right">
+                        <span style="color: #6b7280;">Version 3.0.0 | SLDS 2.0 Compliant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

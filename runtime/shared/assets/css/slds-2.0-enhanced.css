@@ -1,0 +1,290 @@
+/**
+ * SLDS 2.0 Enhanced Design System
+ * Only uses SLDS styling hooks and utilities - no custom CSS
+ */
+
+/* ============================================
+   SLDS 2.0 Styling Hooks Configuration
+   ============================================ */
+:root {
+    /* Spacing System - Using SLDS standard values */
+    --slds-g-spacing-xxx-small: 0.125rem;
+    --slds-g-spacing-xx-small: 0.25rem;
+    --slds-g-spacing-x-small: 0.5rem;
+    --slds-g-spacing-small: 0.75rem;
+    --slds-g-spacing-medium: 1rem;
+    --slds-g-spacing-large: 1.5rem;
+    --slds-g-spacing-x-large: 2rem;
+    --slds-g-spacing-xx-large: 3rem;
+    
+    /* Brand Colors - SLDS standard */
+    --slds-g-color-brand-base-10: #001639;
+    --slds-g-color-brand-base-20: #032d60;
+    --slds-g-color-brand-base-30: #014486;
+    --slds-g-color-brand-base-40: #0176d3;
+    --slds-g-color-brand-base-50: #0176d3;
+    --slds-g-color-brand-base-60: #57a3fd;
+    --slds-g-color-brand-base-70: #78b4fd;
+    --slds-g-color-brand-base-80: #aacbff;
+    --slds-g-color-brand-base-90: #d8e6fe;
+    --slds-g-color-brand-base-95: #eef4ff;
+    
+    /* Semantic Colors */
+    --slds-g-color-success: #2e844a;
+    --slds-g-color-warning: #dd7a01;
+    --slds-g-color-error: #ba0517;
+    --slds-g-color-info: #0176d3;
+    
+    /* Neutral Colors */
+    --slds-g-color-neutral-base-10: #181818;
+    --slds-g-color-neutral-base-30: #444444;
+    --slds-g-color-neutral-base-50: #747474;
+    --slds-g-color-neutral-base-70: #aeaeae;
+    --slds-g-color-neutral-base-80: #c9c9c9;
+    --slds-g-color-neutral-base-90: #e5e5e5;
+    --slds-g-color-neutral-base-95: #f3f3f3;
+    --slds-g-color-neutral-base-100: #ffffff;
+    
+    /* Background Colors */
+    --slds-g-color-background: #ffffff;
+    --slds-g-color-background-alt: #f3f3f3;
+    
+    /* Border Colors */
+    --slds-g-color-border-base-1: #e5e5e5;
+    --slds-g-color-border-base-2: #c9c9c9;
+    --slds-g-color-border-base-3: #aeaeae;
+    --slds-g-color-border-base-4: #747474;
+    
+    /* Typography */
+    --slds-g-font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --slds-g-font-size-1: 0.625rem;
+    --slds-g-font-size-2: 0.75rem;
+    --slds-g-font-size-3: 0.8125rem;
+    --slds-g-font-size-4: 0.875rem;
+    --slds-g-font-size-5: 1rem;
+    --slds-g-font-size-6: 1.125rem;
+    --slds-g-font-size-7: 1.25rem;
+    --slds-g-font-size-8: 1.5rem;
+    
+    /* Font Weights */
+    --slds-g-font-weight-light: 300;
+    --slds-g-font-weight-regular: 400;
+    --slds-g-font-weight-bold: 700;
+    
+    /* Line Heights */
+    --slds-g-line-height-heading: 1.25;
+    --slds-g-line-height-text: 1.5;
+    
+    /* Border Radius */
+    --slds-g-radius-border-none: 0;
+    --slds-g-radius-border-2: 0.25rem;
+    --slds-g-radius-border-3: 0.5rem;
+    --slds-g-radius-border-4: 1rem;
+    --slds-g-radius-border-circle: 50%;
+    
+    /* Shadows */
+    --slds-g-shadow-1: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+    --slds-g-shadow-2: 0 2px 4px rgba(0, 0, 0, 0.07);
+    --slds-g-shadow-3: 0 4px 8px rgba(0, 0, 0, 0.16);
+    --slds-g-shadow-inset-1: inset 0 2px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   SLDS Component Overrides using Hooks
+   ============================================ */
+
+/* Cards */
+.slds-card {
+    background: var(--slds-g-color-background);
+    border-radius: var(--slds-g-radius-border-2);
+    box-shadow: var(--slds-g-shadow-1);
+}
+
+.slds-card__header {
+    padding: var(--slds-g-spacing-medium) var(--slds-g-spacing-large);
+    background: var(--slds-g-color-background-alt);
+}
+
+.slds-card__body {
+    padding: var(--slds-g-spacing-large);
+}
+
+.slds-card__body_inner {
+    padding: var(--slds-g-spacing-large);
+}
+
+.slds-card__footer {
+    padding: var(--slds-g-spacing-small) var(--slds-g-spacing-large);
+    background: var(--slds-g-color-background-alt);
+}
+
+/* Page Headers */
+.slds-page-header {
+    padding: var(--slds-g-spacing-large) var(--slds-g-spacing-x-large);
+    background: var(--slds-g-color-background);
+    border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+/* Buttons */
+.slds-button {
+    font-family: var(--slds-g-font-family);
+    border-radius: var(--slds-g-radius-border-2);
+}
+
+.slds-button_brand {
+    background-color: var(--slds-g-color-brand-base-50);
+    border-color: var(--slds-g-color-brand-base-50);
+}
+
+/* Forms */
+.slds-input,
+.slds-select,
+.slds-textarea {
+    background-color: var(--slds-g-color-background);
+    border: 1px solid var(--slds-g-color-border-base-2);
+    border-radius: var(--slds-g-radius-border-2);
+    padding: var(--slds-g-spacing-x-small) var(--slds-g-spacing-small);
+}
+
+/* Listbox Items */
+.slds-listbox__item {
+    padding: 0;
+    border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-listbox__item:last-child {
+    border-bottom: none;
+}
+
+.slds-listbox__item:hover {
+    background-color: var(--slds-g-color-background-alt);
+}
+
+.slds-listbox__item.slds-is-selected {
+    background-color: var(--slds-g-color-brand-base-95);
+    border-left: 3px solid var(--slds-g-color-brand-base-50);
+}
+
+.slds-listbox__option {
+    padding: var(--slds-g-spacing-x-small) var(--slds-g-spacing-small);
+}
+
+/* Form Elements */
+.slds-form-element {
+    margin-bottom: var(--slds-g-spacing-medium);
+}
+
+.slds-form-element__label {
+    margin-bottom: var(--slds-g-spacing-x-small);
+    font-weight: var(--slds-g-font-weight-bold);
+}
+
+.slds-form-element__help {
+    margin-top: var(--slds-g-spacing-x-small);
+    padding: var(--slds-g-spacing-x-small);
+    background: var(--slds-g-color-background-alt);
+    border-radius: var(--slds-g-radius-border-2);
+}
+
+/* Tabs */
+.slds-tabs_default__nav {
+    padding: 0 var(--slds-g-spacing-medium);
+    margin-bottom: var(--slds-g-spacing-medium);
+}
+
+.slds-tabs_default__link {
+    padding: var(--slds-g-spacing-x-small) var(--slds-g-spacing-medium);
+}
+
+/* Spinners */
+.slds-spinner_container {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+/* Toast Notifications */
+.slds-notify_toast {
+    border-radius: var(--slds-g-radius-border-2);
+}
+
+/* Path Component */
+.slds-path__item {
+    background-color: var(--slds-g-color-background-alt);
+}
+
+.slds-path__item.slds-is-current,
+.slds-path__item.slds-is-active {
+    background-color: var(--slds-g-color-brand-base-50);
+}
+
+/* Box Component */
+.slds-box {
+    padding: var(--slds-g-spacing-medium);
+    border-radius: var(--slds-g-radius-border-2);
+}
+
+/* Media Object */
+.slds-media__figure {
+    margin-right: var(--slds-g-spacing-small);
+}
+
+/* Grid Gutters */
+.slds-gutters {
+    margin: calc(-1 * var(--slds-g-spacing-small));
+}
+
+.slds-gutters > .slds-col {
+    padding: var(--slds-g-spacing-small);
+}
+
+/* Text Utilities */
+.slds-text-body_small {
+    font-size: var(--slds-g-font-size-2);
+}
+
+.slds-text-body_regular {
+    font-size: var(--slds-g-font-size-4);
+}
+
+.slds-text-heading_small {
+    font-size: var(--slds-g-font-size-5);
+    font-weight: var(--slds-g-font-weight-bold);
+}
+
+.slds-text-heading_medium {
+    font-size: var(--slds-g-font-size-6);
+    font-weight: var(--slds-g-font-weight-bold);
+}
+
+.slds-text-heading_large {
+    font-size: var(--slds-g-font-size-8);
+    font-weight: var(--slds-g-font-weight-bold);
+}
+
+/* Badges */
+.slds-badge {
+    padding: 0.125rem var(--slds-g-spacing-x-small);
+    border-radius: var(--slds-g-radius-border-4);
+}
+
+/* Scrollable Areas */
+.slds-scrollable_y::-webkit-scrollbar {
+    width: 6px;
+}
+
+.slds-scrollable_y::-webkit-scrollbar-track {
+    background: var(--slds-g-color-background-alt);
+    border-radius: var(--slds-g-radius-border-2);
+}
+
+.slds-scrollable_y::-webkit-scrollbar-thumb {
+    background: var(--slds-g-color-border-base-3);
+    border-radius: var(--slds-g-radius-border-2);
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] {
+    --slds-g-color-background: #0c0c0c;
+    --slds-g-color-background-alt: #171717;
+    --slds-g-color-border-base-1: #2e2e2e;
+    --slds-g-color-border-base-2: #444444;
+}

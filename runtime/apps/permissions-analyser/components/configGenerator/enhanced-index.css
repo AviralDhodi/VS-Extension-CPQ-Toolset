@@ -1,0 +1,161 @@
+/* Enhanced Config Generator Styles - SLDS 2.0 */
+
+/* Path Progress Indicator */
+.slds-path {
+    margin-bottom: var(--slds-g-spacing-large);
+}
+
+.slds-path__item.slds-is-current .slds-path__title {
+    color: var(--slds-g-color-brand-base-50);
+}
+
+.slds-path__item.slds-is-complete .slds-path__title {
+    color: var(--slds-g-color-success);
+}
+
+/* Step Content */
+.step-content {
+    min-height: 400px;
+}
+
+/* Organization Table */
+.slds-table tbody tr:hover {
+    background-color: var(--slds-g-color-neutral-base-95);
+}
+
+/* Metadata Selection Tables */
+.slds-tabs_default__content {
+    background-color: var(--slds-g-color-neutral-base-100);
+    border: 1px solid var(--slds-g-color-border-base-1);
+    border-top: 0;
+}
+
+/* Assignment Count Badges */
+.slds-badge {
+    min-width: 2rem;
+    text-align: center;
+}
+
+.slds-badge_lightest {
+    background-color: var(--slds-g-color-brand-base-95);
+    color: var(--slds-g-color-brand-base-50);
+}
+
+/* Warning Highlights */
+.slds-theme_warning {
+    background-color: var(--slds-g-color-warning-base-95) !important;
+}
+
+/* Permission Options */
+.slds-checkbox__label .slds-text-color_weak {
+    display: block;
+    margin-top: var(--slds-g-spacing-xx-small);
+    font-size: 0.875rem;
+}
+
+/* Sub-options Indentation */
+.slds-m-left_large {
+    border-left: 3px solid var(--slds-g-color-border-base-1);
+    padding-left: var(--slds-g-spacing-medium);
+}
+
+/* Radio Group Styling */
+.slds-radio_group {
+    margin-bottom: var(--slds-g-spacing-small);
+}
+
+/* Textarea for Specific Selection */
+.slds-textarea {
+    font-family: 'Salesforce Sans', monospace;
+    min-height: 100px;
+}
+
+/* Review Section */
+.slds-summary-detail {
+    background-color: var(--slds-g-color-neutral-base-95);
+    padding: var(--slds-g-spacing-medium);
+    border-radius: var(--slds-g-radius-border-3);
+}
+
+.slds-summary-detail__content {
+    margin-top: var(--slds-g-spacing-small);
+}
+
+/* Loading State */
+.slds-spinner_container.slds-is-fixed {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Toast Positioning */
+.slds-notify_container {
+    top: var(--slds-g-spacing-large);
+    right: var(--slds-g-spacing-large);
+}
+
+/* Scrollable Table Container */
+.slds-scrollable {
+    overflow-y: auto;
+    border: 1px solid var(--slds-g-color-border-base-1);
+}
+
+/* Tab Navigation */
+.slds-tabs_default__nav {
+    background-color: var(--slds-g-color-neutral-base-95);
+}
+
+.slds-tabs_default__item.slds-is-active .slds-tabs_default__link {
+    color: var(--slds-g-color-brand-base-50);
+    border-bottom-color: var(--slds-g-color-brand-base-50);
+}
+
+/* Responsive Design */
+@media (max-width: 48em) {
+    .slds-container_x-large {
+        padding-left: var(--slds-g-spacing-medium);
+        padding-right: var(--slds-g-spacing-medium);
+    }
+    
+    .slds-summary-detail__content .slds-col {
+        width: 100%;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .slds-tabs_default__content {
+        background-color: var(--slds-g-color-neutral-base-10);
+        border-color: var(--slds-g-color-neutral-base-30);
+    }
+    
+    .slds-summary-detail {
+        background-color: var(--slds-g-color-neutral-base-20);
+    }
+    
+    .slds-theme_warning {
+        background-color: rgba(254, 147, 57, 0.1) !important;
+    }
+    
+    .slds-table tbody tr:hover {
+        background-color: var(--slds-g-color-neutral-base-20);
+    }
+}
+
+/* Action Card Hover Effects */
+.action-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Element Spacing */
+.slds-form__row + .slds-form__row {
+    margin-top: var(--slds-g-spacing-medium);
+}
+
+/* Button Group Alignment */
+.slds-text-align_right .slds-button + .slds-button {
+    margin-left: var(--slds-g-spacing-x-small);
+}

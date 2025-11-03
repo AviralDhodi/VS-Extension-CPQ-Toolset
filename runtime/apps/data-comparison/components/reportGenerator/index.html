@@ -1,0 +1,156 @@
+<!-- SLDS Report Generator -->
+<div class="slds-scope">
+    <!-- Page Header -->
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-report" title="Report Generator">
+                            <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#report"></use>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1 class="slds-text-heading_large slds-text-heading_large slds-text-heading_large">
+                                    <span class="slds-page-header__title slds-truncate">Comparison Report Generator</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Configuration -->
+    <div class="slds-m-around_medium">
+        <div class="slds-grid slds-gutters">
+            <!-- Report Settings -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3">
+                <article class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title slds-text-heading_medium slds-text-heading_medium">
+                                    <span class="slds-text-heading_small">Report Configuration</span>
+                                </h2>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="slds-text-align_center slds-p-around_large">
+                            <div class="slds-text-heading_small slds-m-bottom_small">Configuration Comparison Report</div>
+                            <p class="slds-text-body_regular slds-text-color_weak">
+                                Generate a comprehensive PDF report analyzing configuration differences between your Salesforce environments
+                            </p>
+                            <div class="slds-m-top_medium">
+                                <span class="slds-badge slds-theme_success">
+                                    <svg class="slds-icon slds-icon_xx-small slds-icon-text-default slds-m-right_xx-small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                    </svg>
+                                    Executive Summary
+                                </span>
+                                <span class="slds-badge slds-theme_success slds-m-left_xx-small">
+                                    <svg class="slds-icon slds-icon_xx-small slds-icon-text-default slds-m-right_xx-small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                    </svg>
+                                    Visual Analytics
+                                </span>
+                                <span class="slds-badge slds-theme_success slds-m-left_xx-small">
+                                    <svg class="slds-icon slds-icon_xx-small slds-icon-text-default slds-m-right_xx-small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                    </svg>
+                                    Action Items
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Preview -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                <article class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title slds-text-heading_medium slds-text-heading_medium">
+                                    <span class="slds-text-heading_small">Report Preview</span>
+                                </h2>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div id="report-preview" class="slds-box slds-theme_shade">
+                            <div class="slds-text-align_center slds-p-around_medium">
+                                <p class="slds-text-body_regular">Configure report settings to see preview</p>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-m-top_medium">
+                            <dl class="slds-list_horizontal slds-wrap">
+                                <dt class="slds-item_label slds-text-color_weak">Estimated Pages:</dt>
+                                <dd class="slds-item_detail" id="estimated-pages">-</dd>
+                                <dt class="slds-item_label slds-text-color_weak">File Size:</dt>
+                                <dd class="slds-item_detail" id="estimated-size">-</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <footer class="slds-card__footer">
+                        <button class="slds-button slds-button_brand slds-button_stretch slds-button slds-button_neutral slds-button slds-button_neutral" id="generate-report-btn">
+                            <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#download"></use>
+                            </svg>
+                            Generate PDF Report
+                        </button>
+                    </footer>
+                </article>
+            </div>
+        </div>
+
+        <!-- Recent Reports -->
+        <div class="slds-m-top_large">
+            <article class="slds-card">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-card__header-title slds-text-heading_medium slds-text-heading_medium">
+                                <span class="slds-text-heading_small">Recent Reports</span>
+                            </h2>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col">
+                                    <div class="slds-truncate">Report Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate">Type</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate">Generated</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate">Size</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate">Actions</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-reports-list">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>

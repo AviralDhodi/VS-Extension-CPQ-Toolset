@@ -1,0 +1,25 @@
+{
+  "version": "3.0.0",
+  "createdAt": "2025-07-23T03:37:10.540Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "permissions": {
+    "PermissionSet": [
+      "sfdcInternalInt__sfdc_scrt2"
+    ],
+    "PermissionSetGroup": [
+      "SBQQ__CPQIntegrationUserPermSetGroup"
+    ],
+    "Profile": [
+      "Admin"
+    ]
+  },
+  "permissionTypes": [
+    "PermissionSet",
+    "PermissionSetGroup",
+    "Profile"
+  ],
+  "id": "perm_1753241830540"
+}

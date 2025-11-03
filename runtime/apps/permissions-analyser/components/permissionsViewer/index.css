@@ -1,0 +1,254 @@
+/* Permissions Viewer Styles - SLDS 2.0 Patterns */
+
+/* Status Content with SLDS 2.0 Hooks */
+.status-item {
+    display: flex;
+    align-items: center;
+    padding: var(--slds-g-spacing-small);
+    border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-label {
+    font-weight: 600;
+    min-width: 150px;
+    color: var(--slds-g-color-text-label, #3e3e3c);
+}
+
+.status-value {
+    flex: 1;
+    color: var(--slds-g-color-text-default, #181818);
+}
+
+/* Progress Bar with SLDS 2.0 */
+.slds-progress-bar {
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-radius: var(--slds-g-radius-border-4);
+    height: 8px;
+    overflow: hidden;
+}
+
+.slds-progress-bar__value {
+    background-color: var(--slds-g-color-brand-base-50);
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Tab Navigation with Component Hooks */
+.slds-tabs_card__nav {
+    background-color: var(--slds-c-tabs-list-color-background, var(--slds-g-color-neutral-base-95));
+    border-bottom: 2px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-tabs_card__link {
+    color: var(--slds-g-color-text-default);
+    padding: var(--slds-g-spacing-small) var(--slds-g-spacing-medium);
+}
+
+.slds-is-active .slds-tabs_card__link {
+    color: var(--slds-g-color-brand-base-50);
+    border-bottom-color: var(--slds-g-color-brand-base-50);
+}
+
+.slds-tabs_card__content {
+    min-height: 400px;
+    background-color: var(--slds-g-color-neutral-base-100);
+}
+
+/* Comparison Results with SLDS 2.0 */
+.comparison-table {
+    width: 100%;
+    margin-top: var(--slds-g-spacing-medium);
+}
+
+.difference-cell {
+    background-color: var(--slds-g-color-error-base-90, #fdd5d5);
+    color: var(--slds-g-color-error, #ba0517);
+    padding: var(--slds-g-spacing-x-small);
+}
+
+.same-cell {
+    background-color: var(--slds-g-color-success-base-90, #d4f4dd);
+    color: var(--slds-g-color-success, #2e844a);
+    padding: var(--slds-g-spacing-x-small);
+}
+
+/* Permission Matrix with SLDS 2.0 */
+.permission-matrix {
+    overflow-x: auto;
+    margin-top: var(--slds-g-spacing-medium);
+    border: 1px solid var(--slds-g-color-border-base-1);
+    border-radius: var(--slds-g-radius-border-3);
+}
+
+.permission-matrix table {
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+.permission-matrix th {
+    position: sticky;
+    top: 0;
+    background-color: var(--slds-g-color-neutral-base-95);
+    color: var(--slds-g-color-text-label);
+    font-weight: 600;
+    padding: var(--slds-g-spacing-small);
+    z-index: 10;
+}
+
+.permission-matrix td:first-child,
+.permission-matrix th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: var(--slds-g-color-neutral-base-95);
+    font-weight: 600;
+    z-index: 5;
+}
+
+.permission-matrix td {
+    padding: var(--slds-g-spacing-x-small);
+    text-align: center;
+    border: 1px solid var(--slds-g-color-border-base-2);
+}
+
+/* Permission Icons with SLDS 2.0 Colors */
+.permission-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: var(--slds-g-radius-border-2);
+}
+
+.permission-granted {
+    color: var(--slds-g-color-success);
+    background-color: var(--slds-g-color-success-base-95);
+}
+
+.permission-denied {
+    color: var(--slds-g-color-error);
+    background-color: var(--slds-g-color-error-base-95);
+}
+
+/* Status Badge Classes using SLDS 2.0 */
+.slds-theme_success {
+    background-color: var(--slds-g-color-success-base-90);
+    color: var(--slds-g-color-success);
+}
+
+.slds-theme_error {
+    background-color: var(--slds-g-color-error-base-90);
+    color: var(--slds-g-color-error);
+}
+
+.slds-theme_info {
+    background-color: var(--slds-g-color-brand-base-90);
+    color: var(--slds-g-color-brand-base-50);
+}
+
+/* Loading States with SLDS 2.0 */
+.slds-spinner_container.slds-is-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Toast Container with SLDS 2.0 */
+.slds-notify_container {
+    position: fixed;
+    top: var(--slds-g-spacing-medium);
+    right: var(--slds-g-spacing-medium);
+    z-index: 10000;
+}
+
+/* Dark Theme Support with SLDS 2.0 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --slds-g-color-neutral-base-100: #1b1b1b;
+        --slds-g-color-neutral-base-95: #2e2e2e;
+        --slds-g-color-neutral-base-90: #3e3e3e;
+        --slds-g-color-border-base-1: #3e3e3e;
+        --slds-g-color-border-base-2: #4a4a4a;
+        --slds-g-color-text-default: #d6d6d6;
+        --slds-g-color-text-label: #afafaf;
+    }
+    
+    .slds-tabs_card__nav {
+        background-color: var(--slds-g-color-neutral-base-20, #2e2e2e);
+    }
+    
+    .permission-matrix th,
+    .permission-matrix td:first-child {
+        background-color: var(--slds-g-color-neutral-base-20, #2e2e2e);
+    }
+    
+    .status-item {
+        border-bottom-color: var(--slds-g-color-neutral-base-30, #3e3e3e);
+    }
+    
+    .difference-cell {
+        background-color: rgba(186, 5, 23, 0.2);
+    }
+    
+    .same-cell {
+        background-color: rgba(46, 132, 74, 0.2);
+    }
+}
+
+/* Responsive Design with SLDS 2.0 */
+@media (max-width: 48em) { /* 768px */
+    .slds-p-horizontal_x-large {
+        padding-left: var(--slds-g-spacing-medium);
+        padding-right: var(--slds-g-spacing-medium);
+    }
+    
+    .slds-tabs_card__link {
+        font-size: 0.875rem;
+        padding: var(--slds-g-spacing-x-small) var(--slds-g-spacing-small);
+    }
+    
+    .permission-matrix {
+        font-size: 0.875rem;
+    }
+    
+    .status-label {
+        min-width: 100px;
+    }
+}
+
+/* Accessibility with SLDS 2.0 */
+.slds-tabs_card__link:focus {
+    outline: 3px solid var(--slds-g-color-brand-base-50);
+    outline-offset: -3px;
+    z-index: 1;
+}
+
+.slds-button:focus {
+    box-shadow: 0 0 3px var(--slds-g-color-brand-base-50);
+}
+
+/* Print Styles */
+@media print {
+    .slds-page-header__col-actions,
+    .slds-notify_container,
+    .slds-spinner_container {
+        display: none;
+    }
+    
+    .permission-matrix {
+        overflow: visible;
+        page-break-inside: avoid;
+    }
+}

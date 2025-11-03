@@ -1,0 +1,10 @@
+/* CPQ Toolset v3 - Clean SLDS Component Styles */
+
+/* Base resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Remove all custom theming - use SLDS defaults */

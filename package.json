@@ -1,0 +1,133 @@
+{
+	"name": "cpq-toolset-v3-win",
+	"version": "3.5.19",
+	"displayName": "Salesforce Comparison Toolset - Windows Edition",
+	"description": "Compare Salesforce data and permissions across multiple orgs - Windows x64 Edition",
+	"icon": "icon.png",
+	"main": "extension.js",
+	"scripts": {
+		"dev": "node server.js",
+		"build": "node scripts/build.js",
+		"build:extension": "node scripts/build-extension.js",
+		"build:all": "npm run build && npm run build:extension",
+		"build:vscode": "node scripts/build-vscode-extension.js",
+		"clean": "node scripts/clean.js",
+		"package": "vsce package"
+	},
+	"engines": {
+		"vscode": "^1.74.0",
+		"node": ">=16.0.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"os": [
+		"win32"
+	],
+	"cpu": [
+		"x64"
+	],
+	"activationEvents": [
+		"onCommand:cpq-toolset.launch",
+		"onCommand:cpq-toolset.stop",
+		"onCommand:cpq-toolset.showOutput",
+		"onCommand:cpq-toolset.soqlToConfig"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "cpq-toolset.launch",
+				"title": "Launch Salesforce Comparison Toolset",
+				"category": "Salesforce"
+			},
+			{
+				"command": "cpq-toolset.stop",
+				"title": "Stop Comparison Server",
+				"category": "Salesforce"
+			},
+			{
+				"command": "cpq-toolset.showOutput",
+				"title": "Show Comparison Output",
+				"category": "Salesforce"
+			},
+			{
+				"command": "cpq-toolset.soqlToConfig",
+				"title": "Convert SOQL to Comparison Config",
+				"category": "Salesforce"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "cpq-toolset.soqlToConfig",
+					"when": "resourceExtname == .soql || resourceExtname == .txt || resourceExtname == .sql || editorHasSelection",
+					"group": "salesforce@1"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "cpq-toolset.launch",
+				"key": "ctrl+shift+c",
+				"mac": "cmd+shift+c"
+			}
+		],
+		"configuration": {
+			"title": "Salesforce Comparison Toolset",
+			"properties": {
+				"cpq-toolset.salesforceCliPath": {
+					"type": "string",
+					"default": "",
+					"description": "Path to Salesforce CLI (sf or sfdx)"
+				},
+				"cpq-toolset.enableDebugLogging": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable debug logging"
+				},
+				"cpq-toolset.defaultTimeout": {
+					"type": "number",
+					"default": 30000,
+					"description": "Default timeout for SFDX commands (ms)"
+				},
+				"cpq-toolset.pythonPath": {
+					"type": "string",
+					"default": "",
+					"description": "Path to Python executable (leave empty to auto-detect)"
+				},
+				"cpq-toolset.maxConcurrentWorkers": {
+					"type": "number",
+					"default": 3,
+					"minimum": 1,
+					"maximum": 10,
+					"description": "Maximum number of concurrent data fetcher processes"
+				}
+			}
+		}
+	},
+	"dependencies": {
+		"compression": "^1.7.4",
+		"cors": "^2.8.5",
+		"express": "^4.18.2",
+		"glob": "^8.1.0",
+		"multer": "^1.4.5-lts.1",
+		"pdfkit": "^0.17.1",
+		"proper-lockfile": "^4.1.2",
+		"python-shell": "^5.0.0",
+		"canvas": "^3.1.2",
+		"uuid": "^9.0.1"
+	},
+	"devDependencies": {
+		"@vscode/vsce": "^2.22.0"
+	},
+	"publisher": "aviraldhodi",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AviralDhodi/VS-Extension-CPQ-Toolset.git"
+	},
+	"__metadata": {
+		"installedTimestamp": 1761339746917,
+		"targetPlatform": "undefined",
+		"size": 480850798
+	}
+}

@@ -1,0 +1,145 @@
+2025-07-28 19:59:26 - ===== Starting Embedded Python Setup =====
+2025-07-28 19:59:26 - Checking if C:\Users\avira\Documents\py\python313._pth exists...
+2025-07-28 19:59:26 - ✅ Found C:\Users\avira\Documents\py\python313._pth
+2025-07-28 19:59:26 - 'import site' already present in C:\Users\avira\Documents\py\python313._pth
+2025-07-28 19:59:26 - get-pip.py already exists. Skipping download.
+2025-07-28 19:59:26 - Installing pip using embedded Python...
+2025-07-28 19:59:28 - Collecting pip
+2025-07-28 19:59:28 -   Using cached pip-25.1.1-py3-none-any.whl.metadata (3.6 kB)
+2025-07-28 19:59:28 - Using cached pip-25.1.1-py3-none-any.whl (1.8 MB)
+2025-07-28 19:59:28 - Installing collected packages: pip
+2025-07-28 19:59:31 - Successfully installed pip-25.1.1
+2025-07-28 19:59:32 - Collecting pandas>=1.5.0
+2025-07-28 19:59:32 -   Using cached pandas-2.3.1-cp313-cp313-win_amd64.whl.metadata (19 kB)
+2025-07-28 19:59:32 - Collecting numpy>=1.26.0 (from pandas>=1.5.0)
+2025-07-28 19:59:32 -   Using cached numpy-2.3.2-cp313-cp313-win_amd64.whl.metadata (60 kB)
+2025-07-28 19:59:32 - Collecting python-dateutil>=2.8.2 (from pandas>=1.5.0)
+2025-07-28 19:59:32 -   Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+2025-07-28 19:59:32 - Collecting pytz>=2020.1 (from pandas>=1.5.0)
+2025-07-28 19:59:32 -   Using cached pytz-2025.2-py2.py3-none-any.whl.metadata (22 kB)
+2025-07-28 19:59:32 - Collecting tzdata>=2022.7 (from pandas>=1.5.0)
+2025-07-28 19:59:32 -   Using cached tzdata-2025.2-py2.py3-none-any.whl.metadata (1.4 kB)
+2025-07-28 19:59:32 - Collecting six>=1.5 (from python-dateutil>=2.8.2->pandas>=1.5.0)
+2025-07-28 19:59:32 -   Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+2025-07-28 19:59:32 - Using cached pandas-2.3.1-cp313-cp313-win_amd64.whl (11.0 MB)
+2025-07-28 19:59:32 - Using cached numpy-2.3.2-cp313-cp313-win_amd64.whl (12.8 MB)
+2025-07-28 19:59:32 - Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2025-07-28 19:59:32 - Using cached pytz-2025.2-py2.py3-none-any.whl (509 kB)
+2025-07-28 19:59:32 - Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+2025-07-28 19:59:32 - Using cached tzdata-2025.2-py2.py3-none-any.whl (347 kB)
+2025-07-28 19:59:32 - Installing collected packages: pytz, tzdata, six, numpy, python-dateutil, pandas
+2025-07-28 19:59:46 - 
+2025-07-28 19:59:46 - Successfully installed numpy-2.3.2 pandas-2.3.1 python-dateutil-2.9.0.post0 pytz-2025.2 six-1.17.0 tzdata-2025.2
+2025-07-28 19:59:47 - Requirement already satisfied: numpy>=1.21.0 in c:\users\avira\documents\py\lib\site-packages (2.3.2)
+2025-07-28 19:59:47 - Collecting dask>=2023.1.0
+2025-07-28 19:59:47 -   Using cached dask-2025.7.0-py3-none-any.whl.metadata (3.8 kB)
+2025-07-28 19:59:47 - Collecting click>=8.1 (from dask>=2023.1.0)
+2025-07-28 19:59:47 -   Using cached click-8.2.1-py3-none-any.whl.metadata (2.5 kB)
+2025-07-28 19:59:47 - Collecting cloudpickle>=3.0.0 (from dask>=2023.1.0)
+2025-07-28 19:59:47 -   Using cached cloudpickle-3.1.1-py3-none-any.whl.metadata (7.1 kB)
+2025-07-28 19:59:47 - Collecting fsspec>=2021.09.0 (from dask>=2023.1.0)
+2025-07-28 19:59:47 -   Using cached fsspec-2025.7.0-py3-none-any.whl.metadata (12 kB)
+2025-07-28 19:59:48 - Collecting packaging>=20.0 (from dask>=2023.1.0)
+2025-07-28 19:59:48 -   Using cached packaging-25.0-py3-none-any.whl.metadata (3.3 kB)
+2025-07-28 19:59:48 - Collecting partd>=1.4.0 (from dask>=2023.1.0)
+2025-07-28 19:59:48 -   Using cached partd-1.4.2-py3-none-any.whl.metadata (4.6 kB)
+2025-07-28 19:59:48 - Collecting pyyaml>=5.3.1 (from dask>=2023.1.0)
+2025-07-28 19:59:48 -   Using cached PyYAML-6.0.2-cp313-cp313-win_amd64.whl.metadata (2.1 kB)
+2025-07-28 19:59:48 - Collecting toolz>=0.10.0 (from dask>=2023.1.0)
+2025-07-28 19:59:48 -   Using cached toolz-1.0.0-py3-none-any.whl.metadata (5.1 kB)
+2025-07-28 19:59:48 - Collecting colorama (from click>=8.1->dask>=2023.1.0)
+2025-07-28 19:59:48 -   Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+2025-07-28 19:59:48 - Collecting locket (from partd>=1.4.0->dask>=2023.1.0)
+2025-07-28 19:59:48 -   Using cached locket-1.0.0-py2.py3-none-any.whl.metadata (2.8 kB)
+2025-07-28 19:59:48 - Using cached dask-2025.7.0-py3-none-any.whl (1.5 MB)
+2025-07-28 19:59:48 - Using cached click-8.2.1-py3-none-any.whl (102 kB)
+2025-07-28 19:59:48 - Using cached cloudpickle-3.1.1-py3-none-any.whl (20 kB)
+2025-07-28 19:59:48 - Using cached fsspec-2025.7.0-py3-none-any.whl (199 kB)
+2025-07-28 19:59:48 - Using cached packaging-25.0-py3-none-any.whl (66 kB)
+2025-07-28 19:59:48 - Using cached partd-1.4.2-py3-none-any.whl (18 kB)
+2025-07-28 19:59:48 - Using cached PyYAML-6.0.2-cp313-cp313-win_amd64.whl (156 kB)
+2025-07-28 19:59:48 - Using cached toolz-1.0.0-py3-none-any.whl (56 kB)
+2025-07-28 19:59:48 - Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+2025-07-28 19:59:48 - Using cached locket-1.0.0-py2.py3-none-any.whl (4.4 kB)
+2025-07-28 19:59:48 - Installing collected packages: toolz, pyyaml, packaging, locket, fsspec, colorama, cloudpickle, partd, click, dask
+2025-07-28 19:59:52 - 
+2025-07-28 19:59:52 - Successfully installed click-8.2.1 cloudpickle-3.1.1 colorama-0.4.6 dask-2025.7.0 fsspec-2025.7.0 locket-1.0.0 packaging-25.0 partd-1.4.2 pyyaml-6.0.2 toolz-1.0.0
+2025-07-28 19:59:53 - Collecting pyarrow>=10.0.0
+2025-07-28 19:59:53 -   Using cached pyarrow-21.0.0-cp313-cp313-win_amd64.whl.metadata (3.4 kB)
+2025-07-28 19:59:53 - Using cached pyarrow-21.0.0-cp313-cp313-win_amd64.whl (26.1 MB)
+2025-07-28 19:59:53 - Installing collected packages: pyarrow
+2025-07-28 19:59:54 - Successfully installed pyarrow-21.0.0
+2025-07-28 19:59:55 - Collecting openpyxl>=3.0.0
+2025-07-28 19:59:55 -   Using cached openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+2025-07-28 19:59:55 - Collecting et-xmlfile (from openpyxl>=3.0.0)
+2025-07-28 19:59:55 -   Using cached et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+2025-07-28 19:59:55 - Using cached openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+2025-07-28 19:59:55 - Using cached et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+2025-07-28 19:59:55 - Installing collected packages: et-xmlfile, openpyxl
+2025-07-28 19:59:56 - 
+2025-07-28 19:59:56 - Successfully installed et-xmlfile-2.0.0 openpyxl-3.1.5
+2025-07-28 19:59:57 - Collecting lxml>=4.9.0
+2025-07-28 19:59:57 -   Using cached lxml-6.0.0-cp313-cp313-win_amd64.whl.metadata (6.8 kB)
+2025-07-28 19:59:57 - Using cached lxml-6.0.0-cp313-cp313-win_amd64.whl (4.0 MB)
+2025-07-28 19:59:57 - Installing collected packages: lxml
+2025-07-28 19:59:57 - Successfully installed lxml-6.0.0
+2025-07-28 19:59:57 - Python Package Installer for CPQ Toolset
+2025-07-28 19:59:57 - ========================================
+2025-07-28 19:59:57 - Python: C:\Users\avira\Documents\py\python.exe
+2025-07-28 19:59:57 - Version: 3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Pip not found. Installing...
+2025-07-28 19:59:57 - Downloading get-pip.py from https://bootstrap.pypa.io/get-pip.py...
+2025-07-28 19:59:57 - Downloaded successfully!
+2025-07-28 19:59:57 - Installing pip...
+2025-07-28 19:59:57 - Pip installed successfully!
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Installing required packages: pandas>=1.5.0, numpy>=1.21.0, dask>=2023.1.0, pyarrow>=10.0.0, openpyxl>=3.0.0, lxml>=4.9.0
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Installing pandas>=1.5.0...
+2025-07-28 19:59:57 - pandas>=1.5.0 installed successfully!
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Installing numpy>=1.21.0...
+2025-07-28 19:59:57 - numpy>=1.21.0 installed successfully!
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Installing dask>=2023.1.0...
+2025-07-28 19:59:57 - dask>=2023.1.0 installed successfully!
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Installing pyarrow>=10.0.0...
+2025-07-28 19:59:57 - pyarrow>=10.0.0 installed successfully!
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Installing openpyxl>=3.0.0...
+2025-07-28 19:59:57 - openpyxl>=3.0.0 installed successfully!
+2025-07-28 19:59:57 - 
+2025-07-28 19:59:57 - Installing lxml>=4.9.0...
+2025-07-28 19:59:57 - lxml>=4.9.0 installed successfully!
+2025-07-28 19:59:57 - pip installation completed.
+2025-07-28 19:59:57 - Installing pandas...
+2025-07-28 19:59:58 - Requirement already satisfied: pandas in c:\users\avira\documents\py\lib\site-packages (2.3.1)
+2025-07-28 19:59:58 - Requirement already satisfied: numpy>=1.26.0 in c:\users\avira\documents\py\lib\site-packages (from pandas) (2.3.2)
+2025-07-28 19:59:58 - Requirement already satisfied: python-dateutil>=2.8.2 in c:\users\avira\documents\py\lib\site-packages (from pandas) (2.9.0.post0)
+2025-07-28 19:59:58 - Requirement already satisfied: pytz>=2020.1 in c:\users\avira\documents\py\lib\site-packages (from pandas) (2025.2)
+2025-07-28 19:59:58 - Requirement already satisfied: tzdata>=2022.7 in c:\users\avira\documents\py\lib\site-packages (from pandas) (2025.2)
+2025-07-28 19:59:58 - Requirement already satisfied: six>=1.5 in c:\users\avira\documents\py\lib\site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+2025-07-28 19:59:58 - Finished installing pandas.
+2025-07-28 19:59:58 - Installing numpy...
+2025-07-28 19:59:59 - Requirement already satisfied: numpy in c:\users\avira\documents\py\lib\site-packages (2.3.2)
+2025-07-28 19:59:59 - Finished installing numpy.
+2025-07-28 19:59:59 - Installing dask...
+2025-07-28 19:59:59 - Requirement already satisfied: dask in c:\users\avira\documents\py\lib\site-packages (2025.7.0)
+2025-07-28 19:59:59 - Requirement already satisfied: click>=8.1 in c:\users\avira\documents\py\lib\site-packages (from dask) (8.2.1)
+2025-07-28 19:59:59 - Requirement already satisfied: cloudpickle>=3.0.0 in c:\users\avira\documents\py\lib\site-packages (from dask) (3.1.1)
+2025-07-28 19:59:59 - Requirement already satisfied: fsspec>=2021.09.0 in c:\users\avira\documents\py\lib\site-packages (from dask) (2025.7.0)
+2025-07-28 19:59:59 - Requirement already satisfied: packaging>=20.0 in c:\users\avira\documents\py\lib\site-packages (from dask) (25.0)
+2025-07-28 19:59:59 - Requirement already satisfied: partd>=1.4.0 in c:\users\avira\documents\py\lib\site-packages (from dask) (1.4.2)
+2025-07-28 19:59:59 - Requirement already satisfied: pyyaml>=5.3.1 in c:\users\avira\documents\py\lib\site-packages (from dask) (6.0.2)
+2025-07-28 19:59:59 - Requirement already satisfied: toolz>=0.10.0 in c:\users\avira\documents\py\lib\site-packages (from dask) (1.0.0)
+2025-07-28 19:59:59 - Requirement already satisfied: colorama in c:\users\avira\documents\py\lib\site-packages (from click>=8.1->dask) (0.4.6)
+2025-07-28 19:59:59 - Requirement already satisfied: locket in c:\users\avira\documents\py\lib\site-packages (from partd>=1.4.0->dask) (1.0.0)
+2025-07-28 19:59:59 - Finished installing dask.
+2025-07-28 19:59:59 - Installing pyarrow...
+2025-07-28 20:00:00 - Requirement already satisfied: pyarrow in c:\users\avira\documents\py\lib\site-packages (21.0.0)
+2025-07-28 20:00:00 - Finished installing pyarrow.
+2025-07-28 20:00:00 - ✅ Embedded Python 3.13 setup complete with required modules.
+2025-07-28 20:00:00 - ===== Setup Finished =====
+

@@ -1,0 +1,30 @@
+{
+  "name": "permissions-config-1753127606758",
+  "description": "",
+  "version": "3.0.0",
+  "createdAt": "2025-07-21T19:53:26.759Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "metadata": {
+    "createdAt": "2025-07-21T19:53:26.775Z",
+    "version": "3.0.0",
+    "appType": "permissions-analyser"
+  },
+  "permissionTypes": {
+    "objectPermissions": true,
+    "fieldPermissions": true,
+    "systemPermissions": true,
+    "userPermissions": true,
+    "setupEntityAccess": true,
+    "appPermissions": true,
+    "apexClassAccess": true,
+    "vfPageAccess": true,
+    "customPermissions": true,
+    "tabVisibility": true,
+    "recordTypeAssignments": true,
+    "layoutAssignments": true
+  },
+  "id": "perm_1753127606775"
+}

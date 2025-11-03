@@ -1,0 +1,10 @@
+/* Welcome Component - Minimal SLDS 2.0 Overrides */
+
+/* Action Card hover effect - minimal override */
+.action-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+}

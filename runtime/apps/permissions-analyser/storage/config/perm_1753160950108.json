@@ -1,0 +1,33 @@
+{
+  "version": "3.0.0",
+  "createdAt": "2025-07-22T05:09:10.108Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "permissions": {
+    "profiles": [
+      "Admin",
+      "Minimum Access - Salesforce",
+      "Salesforce API Only System Integrations"
+    ],
+    "permissionSets": [],
+    "mutingPermissionSets": [],
+    "permissionSetGroups": []
+  },
+  "permissionTypes": {
+    "objectPermissions": true,
+    "fieldPermissions": true,
+    "systemPermissions": true,
+    "userPermissions": true,
+    "setupEntityAccess": true,
+    "appPermissions": true,
+    "apexClassAccess": true,
+    "vfPageAccess": true,
+    "customPermissions": true,
+    "tabVisibility": true,
+    "recordTypeAssignments": true,
+    "layoutAssignments": true
+  },
+  "id": "perm_1753160950108"
+}

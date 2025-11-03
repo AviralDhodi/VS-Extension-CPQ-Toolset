@@ -1,0 +1,62 @@
+{
+  "version": "3.0.0",
+  "createdAt": "2025-07-23T03:37:08.563Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "permissions": {
+    "PermissionSet": [
+      "sfdcInternalInt__sfdc_scrt2"
+    ],
+    "PermissionSetGroup": [
+      "SBQQ__CPQIntegrationUserPermSetGroup"
+    ],
+    "Profile": [
+      "Admin"
+    ]
+  },
+  "selectedPermissionOptions": {
+    "PermissionSet": {
+      "apexClasses": true,
+      "visualforcePages": true,
+      "customPermissions": true,
+      "tabSettings": true,
+      "applicationVisibilities": true,
+      "recordTypeVisibilities": true,
+      "customMetadataTypeAccesses": true,
+      "externalDataSourceAccesses": true,
+      "flowAccesses": true,
+      "customSettingAccesses": true
+    },
+    "Profile": {
+      "loginIpRanges": true,
+      "loginHours": true,
+      "layoutAssignments": true,
+      "recordTypeVisibilities": true,
+      "applicationVisibilities": true,
+      "visualforcePages": true,
+      "apexClasses": true
+    },
+    "PermissionSetGroup": {
+      "status": true
+    }
+  },
+  "objectSelection": "ALL",
+  "specificObjects": [],
+  "apexClassSelection": "ALL",
+  "specificApexClasses": [],
+  "pageSelection": "ALL",
+  "specificPages": [],
+  "permissionTypes": [
+    "PermissionSet",
+    "PermissionSetGroup",
+    "Profile"
+  ],
+  "metadata": {
+    "createdAt": "2025-07-23T03:37:08.586Z",
+    "version": "3.0.0",
+    "appType": "permissions-analyser"
+  },
+  "id": "perm_1753260068498"
+}

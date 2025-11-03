@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPQ Toolset v3 - Extension Dashboard</title>
+    <link rel="stylesheet" href="/shared/assets/slds/styles/salesforce-lightning-design-system.min.css">
+    <link rel="stylesheet" href="/shared/assets/css/slds-proper.css">
+    <style>
+        /* Custom styles for homepage */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .app-card-custom {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .app-card-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .slds-theme_dark .app-card-custom:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .app-icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .data-comparison-icon {
+            background-color: #0176d3;
+        }
+        
+        .permissions-icon {
+            background-color: #04844b;
+        }
+        
+        .schema-icon {
+            background-color: #ff6000;
+        }
+        
+        .app-icon-container .slds-icon {
+            fill: white;
+            width: 2rem;
+            height: 2rem;
+        }
+        
+        .feature-list {
+            margin: 1rem 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-item .slds-icon {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            fill: #0176d3;
+        }
+        
+        .slds-theme_dark .feature-item .slds-icon {
+            fill: #1589ee;
+        }
+        
+        /* Fix card spacing - IMPORTANT */
+        .slds-col {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.production {
+            background-color: #04844b;
+            color: white;
+        }
+        
+        .status-badge.development {
+            background-color: #ff6000;
+            color: white;
+        }
+        
+        .status-badge.placeholder {
+            background-color: #706e6b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="slds">
+        <!-- Page Header -->
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-lightning-component">
+                                <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#lightning_component"></use>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate">CPQ Toolset v3</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <p class="slds-page-header__name-meta">Salesforce CPQ Development & Analysis Platform</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <div class="slds-badge slds-badge_success">
+                                <span class="slds-badge__icon slds-badge__icon_left">
+                                    <span class="slds-icon_container slds-icon-utility-check slds-current-color">
+                                        <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                        </svg>
+                                    </span>
+                                </span>
+                                Ready
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="slds-container slds-container_fluid slds-p-around_large">
+            <!-- Welcome Section -->
+            <div class="slds-m-bottom_large">
+                <h2 class="slds-text-heading_medium slds-m-bottom_small">Available Applications</h2>
+                <p class="slds-text-body_regular">Choose an application to begin your CPQ development workflow.</p>
+            </div>
+
+            <!-- Application Cards -->
+            <div class="slds-grid slds-gutters slds-wrap">
+                <!-- Data Comparison App -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                    <article class="slds-card app-card-custom" onclick="window.location.href='/data-comparison'">
+                        <div class="slds-card__header">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <div class="app-icon-container data-comparison-icon">
+                                        <svg class="slds-icon" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#merge"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Data Comparison</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-text-body_regular slds-m-bottom_medium">
+                                Compare Salesforce CPQ configurations across multiple orgs with advanced filtering and analysis.
+                            </p>
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#database"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Multi-org data extraction</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Advanced filtering options</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#description"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Detailed comparison reports</span>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <span class="status-badge production">Production Ready</span>
+                            <button class="slds-button slds-button_brand slds-float_right">
+                                Launch
+                                <svg class="slds-button__icon slds-button__icon_right" aria-hidden="true">
+                                    <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#forward"></use>
+                                </svg>
+                            </button>
+                        </footer>
+                    </article>
+                </div>
+
+                <!-- Permissions Analyser App -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                    <article class="slds-card app-card-custom">
+                        <div class="slds-card__header">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <div class="app-icon-container permissions-icon">
+                                        <svg class="slds-icon" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#shield"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Permissions Analyser</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-text-body_regular slds-m-bottom_medium">
+                                Analyze and compare permission sets, profiles, and security configurations across organizations.
+                            </p>
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#groups"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Profile & permission analysis</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#lock"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Security configuration audit</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#shield"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Cross-org permission comparison</span>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <span class="status-badge development">In Development</span>
+                            <button class="slds-button slds-button_neutral slds-float_right" disabled>
+                                Coming Soon
+                            </button>
+                        </footer>
+                    </article>
+                </div>
+
+                <!-- Schema Analysis App (Placeholder) -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                    <article class="slds-card app-card-custom">
+                        <div class="slds-card__header">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <div class="app-icon-container schema-icon">
+                                        <svg class="slds-icon" aria-hidden="true">
+                                            <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#hierarchy"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span class="slds-text-heading_small">Schema Analysis</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p class="slds-text-body_regular slds-m-bottom_medium">
+                                Analyze object relationships, field dependencies, and schema complexity across your Salesforce orgs.
+                            </p>
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#hierarchy"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Object relationship mapping</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#flow"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Field dependency analysis</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#chart"></use>
+                                    </svg>
+                                    <span class="slds-text-body_small">Schema complexity metrics</span>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <span class="status-badge placeholder">Placeholder</span>
+                            <button class="slds-button slds-button_neutral slds-float_right" disabled>
+                                Planned
+                            </button>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+
+            <!-- System Information -->
+            <div class="slds-m-top_xx-large">
+                <article class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-system-and-global-variable">
+                                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                        <use xlink:href="/shared/assets/slds/icons/standard-sprite/svg/symbols.svg#system_and_global_variable"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title">
+                                    <span>System Information</span>
+                                </h2>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <dl class="slds-list_horizontal slds-wrap">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate" style="width: 30%;">Version:</dt>
+                            <dd class="slds-item_detail slds-truncate" style="width: 70%;">3.0.0</dd>
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate" style="width: 30%;">Server:</dt>
+                            <dd class="slds-item_detail slds-truncate" style="width: 70%;">http://localhost:3030</dd>
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate" style="width: 30%;">Status:</dt>
+                            <dd class="slds-item_detail slds-truncate" style="width: 70%;">
+                                <span class="slds-badge slds-badge_success">Connected</span>
+                            </dd>
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate" style="width: 30%;">SFDX CLI:</dt>
+                            <dd class="slds-item_detail slds-truncate" style="width: 70%;" id="sfdx-status">Checking...</dd>
+                        </dl>
+                    </div>
+                    <footer class="slds-card__footer">
+                        <button class="slds-button slds-button_neutral" onclick="checkHealth()">
+                            <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#heart"></use>
+                            </svg>
+                            Health Check
+                        </button>
+                        <button class="slds-button slds-button_neutral" onclick="window.location.reload()">
+                            <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xlink:href="/shared/assets/slds/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+                            </svg>
+                            Refresh
+                        </button>
+                    </footer>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check health
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                alert(`Health Status: ${data.status}\nVersion: ${data.version}\nUptime: ${data.uptime}`);
+            } catch (error) {
+                alert('Health check failed: ' + error.message);
+            }
+        }
+
+        // Check SFDX status
+        async function checkSFDXStatus() {
+            try {
+                const response = await fetch('/debug');
+                const data = await response.json();
+                const sfdxStatus = document.getElementById('sfdx-status');
+                if (data.sfdx?.available) {
+                    sfdxStatus.textContent = `Available (${data.sfdx.cliPath})`;
+                    sfdxStatus.className = 'slds-text-color_success';
+                } else {
+                    sfdxStatus.textContent = 'Not found';
+                    sfdxStatus.className = 'slds-text-color_error';
+                }
+            } catch (error) {
+                document.getElementById('sfdx-status').textContent = 'Error checking';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSFDXStatus();
+        });
+    </script>
+</body>
+</html>

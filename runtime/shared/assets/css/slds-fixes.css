@@ -1,0 +1,623 @@
+/* SLDS 2.0 Critical Fixes for CPQ Toolset v3 */
+/* Fixes white-on-white text, spacing, padding, and visibility issues */
+
+/* ========================================
+   BODY & ROOT FIXES
+   ======================================== */
+
+/* Fix dark theme body background */
+body {
+    background-color: #f3f2f2;
+    color: #080707;
+}
+
+body.slds-theme_dark {
+    background-color: #16171b !important;
+    color: #ffffff;
+}
+
+/* Fix scope background */
+.slds-scope {
+    background-color: transparent;
+    color: inherit;
+}
+
+.slds-theme_dark .slds-scope {
+    background-color: transparent;
+    color: #ffffff;
+}
+
+/* ========================================
+   CRITICAL COLOR FIXES
+   ======================================== */
+
+/* Fix white-on-white page headers */
+.slds-page-header,
+.slds-page-header__row {
+    background-color: #f3f2f2;
+    color: #080707;
+}
+
+.slds-theme_dark .slds-page-header,
+.slds-theme_dark .slds-page-header__row {
+    background-color: #1b1b1b;
+    color: #ffffff;
+}
+
+/* Fix page header text visibility */
+.slds-page-header__title,
+.slds-page-header__name-title,
+.slds-page-header__name-meta {
+    color: #080707 !important;
+}
+
+.slds-theme_dark .slds-page-header__title,
+.slds-theme_dark .slds-page-header__name-title,
+.slds-theme_dark .slds-page-header__name-meta {
+    color: #ffffff !important;
+}
+
+/* Fix path component white-on-white */
+.slds-path__item:not(.slds-is-current):not(.slds-is-active):not(.slds-is-complete) {
+    background-color: #ecebea;
+    border-color: #c9c9c5;
+}
+
+.slds-path__item:not(.slds-is-current):not(.slds-is-active):not(.slds-is-complete) .slds-path__title {
+    color: #514f47 !important;
+}
+
+.slds-theme_dark .slds-path__item:not(.slds-is-current):not(.slds-is-active):not(.slds-is-complete) {
+    background-color: #3e3e3c;
+    border-color: #514f47;
+}
+
+.slds-theme_dark .slds-path__item:not(.slds-is-current):not(.slds-is-active):not(.slds-is-complete) .slds-path__title {
+    color: #c9c7c5 !important;
+}
+
+/* Incomplete/future path items specifically */
+.slds-path__item.slds-is-incomplete {
+    background-color: #f3f2f2;
+    border-color: #c9c9c5;
+}
+
+.slds-path__item.slds-is-incomplete .slds-path__title {
+    color: #514f47 !important;
+}
+
+.slds-theme_dark .slds-path__item.slds-is-incomplete {
+    background-color: #3e3e3c;
+    border-color: #514f47;
+}
+
+.slds-theme_dark .slds-path__item.slds-is-incomplete .slds-path__title {
+    color: #c9c7c5 !important;
+}
+
+/* Active/Current path items */
+.slds-path__item.slds-is-current,
+.slds-path__item.slds-is-active {
+    background-color: #0176d3;
+    border-color: #0176d3;
+}
+
+.slds-path__item.slds-is-current .slds-path__title,
+.slds-path__item.slds-is-active .slds-path__title {
+    color: #ffffff !important;
+}
+
+/* Completed path items */
+.slds-path__item.slds-is-complete {
+    background-color: #04844b;
+    border-color: #04844b;
+}
+
+.slds-path__item.slds-is-complete .slds-path__title {
+    color: #ffffff !important;
+}
+
+/* ========================================
+   BUTTON VISIBILITY FIXES
+   ======================================== */
+
+/* Fix invisible buttons with matching bg/text */
+.slds-button_text-destructive {
+    background-color: transparent !important;
+    color: #ba0517 !important;
+}
+
+.slds-button_text-destructive:hover {
+    background-color: #fef1f2 !important;
+    color: #8e030e !important;
+}
+
+.slds-theme_dark .slds-button_text-destructive {
+    color: #fe9339 !important;
+}
+
+.slds-theme_dark .slds-button_text-destructive:hover {
+    background-color: rgba(254, 147, 57, 0.1) !important;
+    color: #ffa739 !important;
+}
+
+/* Standard button fixes */
+.slds-button {
+    min-height: 32px;
+    line-height: 1.875rem;
+}
+
+/* ========================================
+   CONTAINER & SPACING FIXES
+   ======================================== */
+
+/* Fix container not covering full page */
+.slds-container_fluid {
+    width: 100%;
+    max-width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.slds-p-around_large {
+    padding: 2rem !important;
+}
+
+@media (max-width: 48em) {
+    .slds-p-around_large {
+        padding: 1rem !important;
+    }
+}
+
+/* ========================================
+   CARD LAYOUT FIXES
+   ======================================== */
+
+/* Fix card colors for light theme */
+.slds-card {
+    background-color: #ffffff;
+    border: 1px solid #dddbda;
+    color: #080707;
+}
+
+.slds-theme_dark .slds-card {
+    background-color: #3e3e3c;
+    border: 1px solid #5e5e5c;
+    color: #ffffff;
+}
+
+/* Card headers */
+.slds-card__header {
+    background-color: #f3f2f2;
+    color: #080707;
+}
+
+.slds-theme_dark .slds-card__header {
+    background-color: #2e2e2c;
+    color: #ffffff;
+}
+
+/* Card body */
+.slds-card__body {
+    background-color: #ffffff;
+    color: #080707;
+}
+
+.slds-theme_dark .slds-card__body {
+    background-color: #3e3e3c;
+    color: #ffffff;
+}
+
+/* Card footer */
+.slds-card__footer {
+    background-color: #f3f2f2;
+    border-top: 1px solid #dddbda;
+    color: #080707;
+}
+
+.slds-theme_dark .slds-card__footer {
+    background-color: #2e2e2c;
+    border-top: 1px solid #5e5e5c;
+    color: #ffffff;
+}
+
+/* Fix org card layout and spacing */
+.org-card {
+    height: 100%;
+    margin-bottom: 1.5rem !important;
+}
+
+.org-card .slds-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.org-card .slds-card__header {
+    padding: 0.75rem 1rem;
+    align-items: center;
+}
+
+.org-card .slds-card__body {
+    flex: 1;
+    padding: 1rem;
+}
+
+/* Fix card header alignment */
+.slds-card__header .slds-media {
+    align-items: center;
+}
+
+.slds-card__header-title {
+    line-height: 1.25;
+    margin-bottom: 0.25rem;
+}
+
+/* Fix checkbox styling */
+.slds-checkbox {
+    display: inline-flex;
+    align-items: center;
+}
+
+.slds-checkbox .slds-checkbox__label {
+    margin-left: 0.5rem;
+}
+
+.org-card .slds-checkbox {
+    margin-bottom: 0;
+}
+
+/* ========================================
+   PANEL & CONTENT AREA FIXES
+   ======================================== */
+
+/* Fix panel header padding */
+.slds-card__header {
+    padding: 1rem;
+}
+
+/* Fix content touching edges */
+.slds-card__body {
+    padding: 1rem;
+}
+
+.slds-card__body_inner {
+    padding: 1rem;
+}
+
+/* Fix text elements touching edges */
+.slds-text-heading_small,
+.slds-text-heading_medium,
+.slds-text-body_regular,
+.slds-text-body_small {
+    margin-bottom: 0.5rem;
+}
+
+.slds-text-color_error,
+.slds-text-color_success,
+.slds-text-color_weak {
+    padding-left: 0.25rem;
+}
+
+/* Fix box component padding */
+.slds-box {
+    padding: 1rem;
+}
+
+.slds-box.slds-box_x-small {
+    padding: 0.5rem;
+}
+
+.slds-box.slds-box_small {
+    padding: 0.75rem;
+}
+
+/* ========================================
+   FORM ELEMENT FIXES
+   ======================================== */
+
+/* Input field styling */
+.slds-input,
+.slds-textarea,
+.slds-select {
+    background-color: #ffffff;
+    color: #080707;
+}
+
+.slds-theme_dark .slds-input,
+.slds-theme_dark .slds-textarea,
+.slds-theme_dark .slds-select {
+    background-color: #3e3e3c;
+    color: #ffffff;
+    border-color: #5e5e5c;
+}
+
+/* ========================================
+   MODAL FIXES
+   ======================================== */
+
+/* Modal backdrop */
+.slds-backdrop {
+    background-color: rgba(43, 40, 38, 0.4);
+}
+
+.slds-theme_dark .slds-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Modal container */
+.slds-modal__container {
+    background-color: #ffffff;
+}
+
+.slds-theme_dark .slds-modal__container {
+    background-color: #3e3e3c;
+}
+
+/* ========================================
+   GRID & LAYOUT FIXES
+   ======================================== */
+
+/* Fix grid gutters */
+.slds-gutters .slds-col {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+}
+
+.slds-gutters {
+    margin-right: -0.75rem;
+    margin-left: -0.75rem;
+}
+
+/* Fix grid columns */
+.slds-size_1-of-3 {
+    width: 33.3333%;
+    flex: 0 0 33.3333%;
+}
+
+/* Fix grid row spacing - CRITICAL FIX */
+.slds-grid .slds-col {
+    margin-bottom: 1.5rem;
+}
+
+/* Prevent double margin on last row */
+.slds-grid:last-child .slds-col {
+    margin-bottom: 0;
+}
+
+/* Card specific spacing */
+.slds-card {
+    margin-bottom: 0; /* Reset default margin */
+}
+
+/* When cards are in grid columns */
+.slds-col .slds-card {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+/* ========================================
+   LIST & DATA DISPLAY FIXES
+   ======================================== */
+
+/* Description list fixes */
+.slds-list_horizontal dt {
+    color: #3e3e3c;
+}
+
+.slds-theme_dark .slds-list_horizontal dt {
+    color: #aeaeac;
+}
+
+.slds-list_horizontal dd {
+    color: #080707;
+    font-weight: 600;
+}
+
+.slds-theme_dark .slds-list_horizontal dd {
+    color: #ffffff;
+}
+
+/* ========================================
+   SCROLLBAR STYLING
+   ======================================== */
+
+.slds-scrollable_y::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slds-scrollable_y::-webkit-scrollbar-track {
+    background: #f3f2f2;
+}
+
+.slds-theme_dark .slds-scrollable_y::-webkit-scrollbar-track {
+    background: #3e3e3c;
+}
+
+.slds-scrollable_y::-webkit-scrollbar-thumb {
+    background: #c9c7c5;
+    border-radius: 4px;
+}
+
+.slds-theme_dark .slds-scrollable_y::-webkit-scrollbar-thumb {
+    background: #706e6b;
+}
+
+/* ========================================
+   ICON FIXES
+   ======================================== */
+
+/* Icon colors */
+.slds-icon-text-default {
+    fill: #706e6b;
+}
+
+.slds-theme_dark .slds-icon-text-default {
+    fill: #aeaeac;
+}
+
+.slds-icon-text-error {
+    fill: #ea001e;
+}
+
+.slds-icon-text-success {
+    fill: #2e844a;
+}
+
+/* ========================================
+   TAB FIXES
+   ======================================== */
+
+/* Tab styling */
+.slds-tabs_default__nav {
+    background-color: #ffffff;
+    border-bottom: 2px solid #dddbda;
+}
+
+.slds-theme_dark .slds-tabs_default__nav {
+    background-color: #3e3e3c;
+    border-bottom-color: #5e5e5c;
+}
+
+.slds-tabs_default__link {
+    color: #3e3e3c;
+}
+
+.slds-theme_dark .slds-tabs_default__link {
+    color: #ffffff;
+}
+
+.slds-tabs_default__item.slds-is-active .slds-tabs_default__link {
+    color: #0176d3;
+    border-bottom: 2px solid #0176d3;
+}
+
+/* ========================================
+   UTILITY OVERRIDES
+   ======================================== */
+
+/* Ensure proper text contrast */
+.slds-text-body_regular,
+.slds-text-body_small {
+    color: #3e3e3c !important;
+}
+
+.slds-theme_dark .slds-text-body_regular,
+.slds-theme_dark .slds-text-body_small {
+    color: #ffffff !important;
+}
+
+/* Proper heading colors */
+.slds-text-heading_large,
+.slds-text-heading_medium,
+.slds-text-heading_small {
+    color: #080707 !important;
+}
+
+.slds-theme_dark .slds-text-heading_large,
+.slds-theme_dark .slds-text-heading_medium,
+.slds-theme_dark .slds-text-heading_small {
+    color: #ffffff !important;
+}
+
+/* Fix all text elements in cards */
+.slds-card * {
+    color: inherit;
+}
+
+/* Badge text visibility */
+.slds-badge {
+    background-color: #ecebea;
+    color: #080707 !important;
+}
+
+.slds-badge_success {
+    background-color: #04844b;
+    color: #ffffff !important;
+}
+
+.slds-theme_dark .slds-badge {
+    background-color: #3e3e3c;
+    color: #ffffff !important;
+}
+
+/* Fix weak text visibility */
+.slds-text-color_weak {
+    color: #706e6b !important;
+}
+
+.slds-theme_dark .slds-text-color_weak {
+    color: #aeaeac !important;
+}
+
+/* Fix truncate text */
+.slds-truncate {
+    color: inherit !important;
+}
+
+/* Specific fix for page elements */
+.slds-page-header .slds-truncate {
+    color: #080707 !important;
+}
+
+.slds-theme_dark .slds-page-header .slds-truncate {
+    color: #ffffff !important;
+}
+
+/* Fix description list colors */
+.slds-list_horizontal dt {
+    color: #706e6b !important;
+}
+
+.slds-list_horizontal dd {
+    color: #080707 !important;
+}
+
+.slds-theme_dark .slds-list_horizontal dt {
+    color: #aeaeac !important;
+}
+
+.slds-theme_dark .slds-list_horizontal dd {
+    color: #ffffff !important;
+}
+
+/* ========================================
+   RESPONSIVE FIXES
+   ======================================== */
+
+@media (max-width: 768px) {
+    .slds-col {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+    
+    .slds-size_1-of-3 {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+    
+    .org-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* ========================================
+   ANIMATION ENHANCEMENTS
+   ======================================== */
+
+/* Smooth transitions */
+.slds-card,
+.slds-button,
+.slds-input,
+.slds-path__item {
+    transition: all 0.2s ease;
+}
+
+/* Card hover effects */
+.slds-card:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
+}
+
+.slds-theme_dark .slds-card:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+}

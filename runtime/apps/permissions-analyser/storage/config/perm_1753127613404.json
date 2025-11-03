@@ -1,0 +1,35 @@
+{
+  "version": "3.0.0",
+  "createdAt": "2025-07-21T19:53:33.404Z",
+  "orgs": [
+    "aviraldhodi1@gmail.com",
+    "aviraldhodi@brave-goat-hsejmn.com"
+  ],
+  "permissions": {
+    "profiles": [
+      "Admin",
+      "Chatter External User"
+    ],
+    "permissionSets": [
+      "SBQQ__SalesforceCPQAdminAccess",
+      "SBQQ__SalesforceCPQCustomerUserAccess"
+    ],
+    "mutingPermissionSets": [],
+    "permissionSetGroups": []
+  },
+  "permissionTypes": {
+    "objectPermissions": true,
+    "fieldPermissions": true,
+    "systemPermissions": true,
+    "userPermissions": true,
+    "setupEntityAccess": true,
+    "appPermissions": true,
+    "apexClassAccess": true,
+    "vfPageAccess": true,
+    "customPermissions": true,
+    "tabVisibility": true,
+    "recordTypeAssignments": true,
+    "layoutAssignments": true
+  },
+  "id": "perm_1753127613404"
+}

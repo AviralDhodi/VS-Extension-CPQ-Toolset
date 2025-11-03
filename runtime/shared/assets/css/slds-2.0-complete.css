@@ -1,0 +1,523 @@
+/**
+ * SLDS 2.0 Complete Styling System
+ * Unified stylesheet for CPQ Toolset Extension
+ * Uses only SLDS styling hooks and utilities
+ */
+
+/* ============================================
+   SLDS 2.0 Styling Hooks - Global Theme
+   ============================================ */
+:root {
+    /* Brand Colors */
+    --slds-g-color-brand-base-10: #001639;
+    --slds-g-color-brand-base-20: #032d60;
+    --slds-g-color-brand-base-30: #014486;
+    --slds-g-color-brand-base-40: #0176d3;
+    --slds-g-color-brand-base-50: #0176d3;
+    --slds-g-color-brand-base-60: #57a3fd;
+    --slds-g-color-brand-base-70: #78b4fd;
+    --slds-g-color-brand-base-80: #aacbff;
+    --slds-g-color-brand-base-90: #d8e6fe;
+    --slds-g-color-brand-base-95: #eef4ff;
+    
+    /* Semantic Colors */
+    --slds-g-color-success: #2e844a;
+    --slds-g-color-success-base-50: #2e844a;
+    --slds-g-color-warning: #dd7a01;
+    --slds-g-color-warning-base-50: #dd7a01;
+    --slds-g-color-error: #ba0517;
+    --slds-g-color-error-base-50: #ba0517;
+    --slds-g-color-info: #0176d3;
+    
+    /* Neutral Colors */
+    --slds-g-color-neutral-base-10: #181818;
+    --slds-g-color-neutral-base-20: #2e2e2e;
+    --slds-g-color-neutral-base-30: #444444;
+    --slds-g-color-neutral-base-40: #5c5c5c;
+    --slds-g-color-neutral-base-50: #747474;
+    --slds-g-color-neutral-base-60: #8e8e8e;
+    --slds-g-color-neutral-base-70: #aeaeae;
+    --slds-g-color-neutral-base-80: #c9c9c9;
+    --slds-g-color-neutral-base-90: #e5e5e5;
+    --slds-g-color-neutral-base-95: #f3f3f3;
+    --slds-g-color-neutral-base-100: #ffffff;
+    
+    /* Background Colors */
+    --slds-g-color-background: #ffffff;
+    --slds-g-color-background-alt: #f3f3f3;
+    --slds-g-color-background-alt-2: #fafaf9;
+    
+    /* Border Colors */
+    --slds-g-color-border-base-1: #e5e5e5;
+    --slds-g-color-border-base-2: #c9c9c9;
+    --slds-g-color-border-base-3: #aeaeae;
+    --slds-g-color-border-base-4: #747474;
+    
+    /* Typography */
+    --slds-g-font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --slds-g-font-size-1: 0.625rem;  /* 10px */
+    --slds-g-font-size-2: 0.75rem;   /* 12px */
+    --slds-g-font-size-3: 0.8125rem; /* 13px */
+    --slds-g-font-size-4: 0.875rem;  /* 14px */
+    --slds-g-font-size-5: 1rem;      /* 16px */
+    --slds-g-font-size-6: 1.125rem;  /* 18px */
+    --slds-g-font-size-7: 1.25rem;   /* 20px */
+    --slds-g-font-size-8: 1.5rem;    /* 24px */
+    --slds-g-font-size-9: 1.75rem;   /* 28px */
+    --slds-g-font-size-10: 2rem;     /* 32px */
+    
+    /* Font Weights */
+    --slds-g-font-weight-light: 300;
+    --slds-g-font-weight-regular: 400;
+    --slds-g-font-weight-bold: 700;
+    
+    /* Line Heights */
+    --slds-g-line-height-heading: 1.25;
+    --slds-g-line-height-text: 1.5;
+    --slds-g-line-height-reset: 1;
+    
+    /* Spacing Scale */
+    --slds-g-spacing-xxx-small: 0.125rem;  /* 2px */
+    --slds-g-spacing-xx-small: 0.25rem;    /* 4px */
+    --slds-g-spacing-x-small: 0.5rem;      /* 8px */
+    --slds-g-spacing-small: 0.75rem;       /* 12px */
+    --slds-g-spacing-medium: 1rem;         /* 16px */
+    --slds-g-spacing-large: 1.5rem;        /* 24px */
+    --slds-g-spacing-x-large: 2rem;        /* 32px */
+    --slds-g-spacing-xx-large: 3rem;       /* 48px */
+    
+    /* Border Radius */
+    --slds-g-radius-border-none: 0;
+    --slds-g-radius-border-1: 0.125rem;
+    --slds-g-radius-border-2: 0.25rem;
+    --slds-g-radius-border-3: 0.5rem;
+    --slds-g-radius-border-4: 1rem;
+    --slds-g-radius-border-circle: 50%;
+    
+    /* Shadows */
+    --slds-g-shadow-1: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+    --slds-g-shadow-2: 0 2px 4px rgba(0, 0, 0, 0.07);
+    --slds-g-shadow-3: 0 4px 8px rgba(0, 0, 0, 0.16);
+    --slds-g-shadow-4: 0 8px 16px rgba(0, 0, 0, 0.16);
+    --slds-g-shadow-inset-1: inset 0 2px 2px rgba(0, 0, 0, 0.05);
+    --slds-g-shadow-inset-2: inset 0 2px 4px rgba(0, 0, 0, 0.07);
+    
+    /* Z-Index Scale */
+    --slds-g-z-index-default: 1;
+    --slds-g-z-index-dropdown: 7000;
+    --slds-g-z-index-popup: 6000;
+    --slds-g-z-index-modal: 9000;
+    --slds-g-z-index-overlay: 8000;
+    --slds-g-z-index-toast: 10000;
+    --slds-g-z-index-spinner: 9050;
+}
+
+/* ============================================
+   Dark Theme Support
+   ============================================ */
+[data-theme="dark"]:root,
+.slds-theme_dark {
+    --slds-g-color-background: #0c0c0c;
+    --slds-g-color-background-alt: #171717;
+    --slds-g-color-background-alt-2: #2e2e2e;
+    
+    --slds-g-color-border-base-1: #2e2e2e;
+    --slds-g-color-border-base-2: #444444;
+    --slds-g-color-border-base-3: #5c5c5c;
+    --slds-g-color-border-base-4: #747474;
+    
+    --slds-g-color-neutral-base-100: #0c0c0c;
+    --slds-g-color-neutral-base-95: #171717;
+    --slds-g-color-neutral-base-90: #2e2e2e;
+}
+
+/* ============================================
+   Base Reset & Foundation
+   ============================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--slds-g-font-family);
+    font-size: var(--slds-g-font-size-5);
+    line-height: var(--slds-g-line-height-text);
+    color: var(--slds-g-color-neutral-base-10);
+    background-color: var(--slds-g-color-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   Extension-Specific Fixes
+   ============================================ */
+
+/* Fix VS Code Extension Container */
+.vscode-body,
+body.vscode-body {
+    background: var(--slds-g-color-background);
+    color: var(--slds-g-color-neutral-base-10);
+}
+
+/* Fix SLDS scope in extension context */
+.slds-scope {
+    background: transparent;
+    color: inherit;
+}
+
+/* Page Container */
+.app-container,
+.slds-container_fluid {
+    background: var(--slds-g-color-background);
+    min-height: 100vh;
+}
+
+/* ============================================
+   Component Overrides
+   ============================================ */
+
+/* Cards */
+.slds-card {
+    background: var(--slds-g-color-background);
+    border: 1px solid var(--slds-g-color-border-base-1);
+    border-radius: var(--slds-g-radius-border-2);
+    box-shadow: var(--slds-g-shadow-1);
+}
+
+.slds-card__header {
+    background: var(--slds-g-color-background-alt);
+    border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+/* Buttons */
+.slds-button {
+    font-family: var(--slds-g-font-family);
+    font-size: var(--slds-g-font-size-4);
+    border-radius: var(--slds-g-radius-border-2);
+    transition: all 0.2s ease;
+}
+
+.slds-button_brand {
+    background-color: var(--slds-g-color-brand-base-50);
+    border-color: var(--slds-g-color-brand-base-50);
+}
+
+.slds-button_brand:hover,
+.slds-button_brand:focus {
+    background-color: var(--slds-g-color-brand-base-40);
+    border-color: var(--slds-g-color-brand-base-40);
+}
+
+/* Forms */
+.slds-input,
+.slds-select,
+.slds-textarea {
+    background-color: var(--slds-g-color-background);
+    border: 1px solid var(--slds-g-color-border-base-2);
+    border-radius: var(--slds-g-radius-border-2);
+    font-family: var(--slds-g-font-family);
+    font-size: var(--slds-g-font-size-4);
+}
+
+.slds-input:focus,
+.slds-select:focus,
+.slds-textarea:focus {
+    border-color: var(--slds-g-color-brand-base-50);
+    box-shadow: 0 0 3px var(--slds-g-color-brand-base-60);
+}
+
+/* Tables */
+.slds-table {
+    background-color: var(--slds-g-color-background);
+    font-size: var(--slds-g-font-size-4);
+}
+
+.slds-table thead th {
+    background-color: var(--slds-g-color-background-alt);
+    border-bottom: 2px solid var(--slds-g-color-border-base-1);
+    font-weight: var(--slds-g-font-weight-bold);
+}
+
+.slds-table tbody tr {
+    border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-table tbody tr:hover {
+    background-color: var(--slds-g-color-background-alt);
+}
+
+/* Tabs */
+.slds-tabs_default__nav {
+    background-color: var(--slds-g-color-background-alt);
+    border-bottom: 2px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-tabs_default__link {
+    font-size: var(--slds-g-font-size-4);
+    color: var(--slds-g-color-neutral-base-30);
+}
+
+.slds-tabs_default__item.slds-is-active .slds-tabs_default__link {
+    color: var(--slds-g-color-neutral-base-10);
+    border-bottom-color: var(--slds-g-color-brand-base-50);
+}
+
+/* Modals */
+.slds-modal__container {
+    background: var(--slds-g-color-background);
+    border-radius: var(--slds-g-radius-border-3);
+    box-shadow: var(--slds-g-shadow-4);
+}
+
+.slds-modal__header {
+    background: var(--slds-g-color-background-alt);
+    border-bottom: 1px solid var(--slds-g-color-border-base-1);
+}
+
+/* Spinners */
+.slds-spinner_container {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.slds-spinner:before,
+.slds-spinner:after,
+.slds-spinner__dot-a:before,
+.slds-spinner__dot-b:before,
+.slds-spinner__dot-a:after,
+.slds-spinner__dot-b:after {
+    background-color: var(--slds-g-color-brand-base-50);
+}
+
+/* Toast Notifications */
+.slds-notify_container {
+    z-index: var(--slds-g-z-index-toast);
+}
+
+.slds-notify_toast {
+    border-radius: var(--slds-g-radius-border-2);
+    font-size: var(--slds-g-font-size-4);
+}
+
+.slds-theme_success {
+    background-color: var(--slds-g-color-success);
+}
+
+.slds-theme_warning {
+    background-color: var(--slds-g-color-warning);
+}
+
+.slds-theme_error {
+    background-color: var(--slds-g-color-error);
+}
+
+.slds-theme_info {
+    background-color: var(--slds-g-color-info);
+}
+
+/* Path Component */
+.slds-path__item {
+    background-color: var(--slds-g-color-background-alt);
+    border: 1px solid var(--slds-g-color-border-base-1);
+}
+
+.slds-path__item.slds-is-current,
+.slds-path__item.slds-is-active {
+    background-color: var(--slds-g-color-brand-base-50);
+    border-color: var(--slds-g-color-brand-base-50);
+}
+
+.slds-path__item.slds-is-current .slds-path__title,
+.slds-path__item.slds-is-active .slds-path__title {
+    color: white;
+}
+
+/* Page Headers */
+.slds-page-header {
+    background: var(--slds-g-color-background);
+    border-bottom: 1px solid var(--slds-g-color-border-base-1);
+    padding: var(--slds-g-spacing-medium) var(--slds-g-spacing-large);
+}
+
+/* ============================================
+   Utility Overrides
+   ============================================ */
+
+/* Text Colors */
+.slds-text-color_default {
+    color: var(--slds-g-color-neutral-base-10) !important;
+}
+
+.slds-text-color_weak {
+    color: var(--slds-g-color-neutral-base-50) !important;
+}
+
+.slds-text-color_inverse {
+    color: var(--slds-g-color-neutral-base-100) !important;
+}
+
+.slds-text-color_error {
+    color: var(--slds-g-color-error) !important;
+}
+
+.slds-text-color_success {
+    color: var(--slds-g-color-success) !important;
+}
+
+/* Background Colors */
+.slds-theme_default {
+    background-color: var(--slds-g-color-background) !important;
+}
+
+.slds-theme_shade {
+    background-color: var(--slds-g-color-background-alt) !important;
+}
+
+.slds-theme_alt-inverse {
+    background-color: var(--slds-g-color-brand-base-50) !important;
+    color: white !important;
+}
+
+/* ============================================
+   Responsive Utilities
+   ============================================ */
+@media (max-width: 48em) {
+    .slds-container_fluid {
+        padding: var(--slds-g-spacing-small);
+    }
+    
+    .slds-page-header {
+        padding: var(--slds-g-spacing-small);
+    }
+}
+
+/* ============================================
+   Accessibility Enhancements
+   ============================================ */
+.slds-assistive-text:not(:focus) {
+    position: absolute !important;
+    margin: -1px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+}
+
+/* Focus Styles */
+.slds-button:focus,
+.slds-input:focus,
+.slds-select:focus,
+.slds-checkbox:focus,
+.slds-radio:focus,
+a:focus {
+    outline: 0;
+    box-shadow: 0 0 3px var(--slds-g-color-brand-base-50);
+}
+
+/* ============================================
+   Animation & Transitions
+   ============================================ */
+.slds-transition-show,
+.slds-transition-hide {
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.slds-fade-in-open {
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   Extension-Specific Components
+   ============================================ */
+
+/* Config Generator Panels */
+.config-panel {
+    background: var(--slds-g-color-background);
+    border: 1px solid var(--slds-g-color-border-base-1);
+    border-radius: var(--slds-g-radius-border-2);
+    padding: var(--slds-g-spacing-medium);
+    margin-bottom: var(--slds-g-spacing-medium);
+}
+
+/* Object Lists */
+.object-list-item {
+    padding: var(--slds-g-spacing-x-small) var(--slds-g-spacing-small);
+    border-bottom: 1px solid var(--slds-g-color-border-base-1);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.object-list-item:hover {
+    background-color: var(--slds-g-color-background-alt);
+}
+
+.object-list-item.selected {
+    background-color: var(--slds-g-color-brand-base-95);
+    border-left: 3px solid var(--slds-g-color-brand-base-50);
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--slds-g-radius-border-circle);
+    margin-right: var(--slds-g-spacing-xx-small);
+}
+
+.status-indicator.success {
+    background-color: var(--slds-g-color-success);
+}
+
+.status-indicator.warning {
+    background-color: var(--slds-g-color-warning);
+}
+
+.status-indicator.error {
+    background-color: var(--slds-g-color-error);
+}
+
+/* Code Blocks */
+.code-block {
+    background-color: var(--slds-g-color-neutral-base-95);
+    border: 1px solid var(--slds-g-color-border-base-1);
+    border-radius: var(--slds-g-radius-border-2);
+    padding: var(--slds-g-spacing-small);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: var(--slds-g-font-size-3);
+    overflow-x: auto;
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    .slds-no-print {
+        display: none !important;
+    }
+    
+    .slds-page-header,
+    .slds-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}

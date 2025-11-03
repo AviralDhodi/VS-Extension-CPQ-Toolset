@@ -1,0 +1,24 @@
+/* Report Generator Styles */
+
+/* Preview Box */
+#report-preview {
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Chart section visibility */
+#chart-types-section {
+    transition: all 0.3s ease;
+}
+
+/* Recent reports table */
+#recent-reports-list tr:hover {
+    background-color: var(--lwc-colorBackgroundRowHover);
+}
+
+/* Loading state in button */
+.slds-spinner_container .slds-spinner_inverse .slds-spinner__dot-a,
+.slds-spinner_container .slds-spinner_inverse .slds-spinner__dot-b {
+    background-color: white;
+}
